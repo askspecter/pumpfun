@@ -1,4 +1,5 @@
 import { getKv } from "@/lib/kv";
+import { PUMP_HEADERS } from "./http";
 
 /**
  * ─────────────────────────────────────────────────────────────────────────
@@ -107,26 +108,26 @@ export interface PumpMetadataInput {
   website?: string;
 }
 
-/** Upload image + metadata to Pump.fun's IPFS endpoint; returns the metadata URI. */
-export async function uploadPumpMetadata(input: PumpMetadataInput): Promise<{ uri: string; name: string; symbol: string }> {
+const EXT: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/gif": "gif" };
+
+type MetadataResult = { uri: string; name: string; symbol: string };
+
+/** Pump.fun's own IPFS endpoint, called the way the pump.fun web app calls it. */
+async function uploadViaPumpFun(input: PumpMetadataInput, image: Blob): Promise<MetadataResult> {
   const form = new FormData();
-  form.append("file", await loadImage(input.image), "avatar");
+  // Pump.fun expects a real filename with an image extension.
+  form.append("file", image, `${input.symbol.toLowerCase() || "avatar"}.${EXT[image.type] ?? "png"}`);
   form.append("name", input.name);
   form.append("symbol", input.symbol);
   form.append("description", input.description);
-  if (input.twitter) form.append("twitter", input.twitter);
-  if (input.telegram) form.append("telegram", input.telegram);
-  if (input.website) form.append("website", input.website);
+  form.append("twitter", input.twitter ?? "");
+  form.append("telegram", input.telegram ?? "");
+  form.append("website", input.website ?? "");
   form.append("showName", "true");
 
   let res: Response;
   try {
-    res = await fetch(PUMP_IPFS_URL, {
-      method: "POST",
-      body: form,
-      headers: { origin: "https://pump.fun", referer: "https://pump.fun/" },
-      cache: "no-store",
-    });
+    res = await fetch(PUMP_IPFS_URL, { method: "POST", body: form, headers: PUMP_HEADERS, cache: "no-store" });
   } catch {
     throw new PumpLaunchError("Couldn't reach Pump.fun to upload metadata.", 502);
   }
@@ -136,11 +137,62 @@ export async function uploadPumpMetadata(input: PumpMetadataInput): Promise<{ ur
     | { metadataUri?: string; metadata?: { name?: string; symbol?: string } }
     | null;
   if (!data?.metadataUri) throw new PumpLaunchError("Pump.fun didn't return a metadata URI.", 502);
-  return {
-    uri: data.metadataUri,
-    name: data.metadata?.name || input.name,
-    symbol: data.metadata?.symbol || input.symbol,
+  return { uri: data.metadataUri, name: data.metadata?.name || input.name, symbol: data.metadata?.symbol || input.symbol };
+}
+
+const PINATA_GATEWAY = (process.env.PINATA_GATEWAY || "https://ipfs.io").replace(/\/+$/, "");
+
+/**
+ * Fallback: pin the image and a Metaplex-style metadata JSON to IPFS through
+ * Pinata (PINATA_JWT). Pump.fun accepts any metadata URI with this shape.
+ */
+async function uploadViaPinata(input: PumpMetadataInput, image: Blob, jwt: string): Promise<MetadataResult> {
+  const auth = { authorization: `Bearer ${jwt}` };
+
+  const fileForm = new FormData();
+  fileForm.append("file", image, `${input.symbol.toLowerCase() || "avatar"}.${EXT[image.type] ?? "png"}`);
+  const fileRes = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", { method: "POST", body: fileForm, headers: auth });
+  if (!fileRes.ok) throw new PumpLaunchError(`IPFS image upload failed (${fileRes.status}).`, 502);
+  const { IpfsHash: imageCid } = (await fileRes.json()) as { IpfsHash: string };
+
+  const metadata = {
+    name: input.name,
+    symbol: input.symbol,
+    description: input.description,
+    image: `${PINATA_GATEWAY}/ipfs/${imageCid}`,
+    showName: true,
+    createdOn: "https://usenoir.app",
+    ...(input.twitter ? { twitter: input.twitter } : {}),
+    ...(input.telegram ? { telegram: input.telegram } : {}),
+    ...(input.website ? { website: input.website } : {}),
   };
+  const jsonRes = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+    method: "POST",
+    headers: { ...auth, "content-type": "application/json" },
+    body: JSON.stringify({ pinataContent: metadata, pinataMetadata: { name: `${input.symbol}-metadata.json` } }),
+  });
+  if (!jsonRes.ok) throw new PumpLaunchError(`IPFS metadata upload failed (${jsonRes.status}).`, 502);
+  const { IpfsHash: metaCid } = (await jsonRes.json()) as { IpfsHash: string };
+  return { uri: `${PINATA_GATEWAY}/ipfs/${metaCid}`, name: input.name, symbol: input.symbol };
+}
+
+/**
+ * Upload image + metadata and return the metadata URI. Tries Pump.fun's IPFS
+ * endpoint first; if it refuses (it often does for server requests) and
+ * PINATA_JWT is set, pins to IPFS through Pinata instead.
+ */
+export async function uploadPumpMetadata(input: PumpMetadataInput): Promise<MetadataResult> {
+  const image = await loadImage(input.image);
+  const jwt = process.env.PINATA_JWT?.trim();
+  try {
+    return await uploadViaPumpFun(input, image);
+  } catch (err) {
+    if (!jwt) {
+      const msg = err instanceof Error ? err.message : "Metadata upload failed.";
+      throw new PumpLaunchError(`${msg} Pump.fun is refusing uploads from the server right now.`, 502);
+    }
+    return uploadViaPinata(input, image, jwt);
+  }
 }
 
 export interface PumpCreateTxInput {
