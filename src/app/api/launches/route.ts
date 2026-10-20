@@ -44,7 +44,8 @@ export async function GET(req: Request) {
   const raw = (await kv.lrange<LaunchRecord | string>(KEY, 0, 199)) ?? [];
   const all = raw
     .map((r) => (typeof r === "string" ? safeParse(r) : r))
-    .filter((r): r is LaunchRecord => !!r && isTokenFor(r.chain ?? "robinhood", r.token));
+    .filter((r): r is LaunchRecord => !!r && isTokenFor(r.chain ?? "robinhood", r.token))
+    .filter((r) => !isHidden(r.token));
   const chainFilter = searchParams.get("chain"); // optional: "robinhood" | "solana"
 
   // Single-token lookup (used as an image/metadata fallback on the profile page).
@@ -160,6 +161,16 @@ export async function DELETE(req: Request) {
   }
 
   return NextResponse.json({ ok: true, removed });
+}
+
+/**
+ * Launches hidden from the NOIR feed (test coins, abuse reports): a
+ * comma-separated list of token addresses / mints in HIDDEN_LAUNCHES. The
+ * coins still exist on-chain; NOIR just stops listing them.
+ */
+function isHidden(token: string): boolean {
+  const list = (process.env.HIDDEN_LAUNCHES ?? "").split(",").map((t) => t.trim()).filter(Boolean);
+  return list.some((h) => sameId(h, token));
 }
 
 /** Token/mint shape check for the record's chain. */
