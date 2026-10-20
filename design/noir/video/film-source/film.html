@@ -1,0 +1,257 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#050506;font-family:Inter,sans-serif}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.world{position:absolute;left:0;top:0;transform-origin:0 0}
+.world>img{display:block}
+.ov{position:absolute}
+#cap{position:absolute;left:0;right:0;bottom:84px;text-align:center;font:500 44px Inter;letter-spacing:-.01em;color:#f3f4f6;text-shadow:0 2px 24px rgba(0,0,0,.85);opacity:0;z-index:50}
+#cap b{font-weight:500;color:#c7cdff}
+#vign{position:absolute;inset:0;z-index:40;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55));opacity:0}
+#grain{position:absolute;inset:0;z-index:60;opacity:.07;mix-blend-mode:overlay;pointer-events:none}
+.cursor{position:absolute;width:34px;height:34px;z-index:30;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0;z-index:29}
+.callout{position:absolute;width:620px;padding:34px 36px;border-radius:28px;background:rgba(14,15,18,.92);border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 120px -20px rgba(0,0,0,.9);opacity:0}
+.k{font:500 15px 'JetBrains Mono';letter-spacing:.18em;color:#8a8f98}
+.big{margin-top:16px;font:600 64px/1 'Inter Display';letter-spacing:-.04em;color:#fff}
+.sub{margin-top:14px;font:400 22px/1.45 Inter;color:#8a8f98}
+.wm{font:500 40px Inter;letter-spacing:.7em;padding-left:.7em;color:#eef0f3}
+</style></head><body>
+
+<!-- ═══ A · line-art intro / outro ═══ -->
+<div class=layer id=art>
+ <div id=artbg style="position:absolute;inset:0;background:#e9e8e4"></div>
+ <div id=paper style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(255,255,255,.55),transparent 60%),radial-gradient(ellipse at 20% 90%,rgba(120,110,95,.12),transparent 50%)"></div>
+ <div id=glow style="position:absolute;left:-10%;right:-10%;top:420px;height:300px;background:radial-gradient(ellipse 900px 120px at 50% 50%,rgba(199,205,255,.75),rgba(150,160,230,.25) 45%,transparent 75%);opacity:0"></div>
+ <svg id=lines width="1920" height="1080" style="position:absolute;inset:0"></svg>
+ <div id=hline style="position:absolute;top:579px;height:3px;left:50%;width:0;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#c7cdff 20%,#ffffff 50%,#c7cdff 80%,transparent);box-shadow:0 0 24px 6px rgba(199,205,255,.55);opacity:0"></div>
+ <img id=sunN src="n-black.png" style="position:absolute;left:885px;top:395px;width:150px;height:150px;opacity:0">
+ <img id=sunC src="n-chrome.png" style="position:absolute;left:885px;top:395px;width:150px;height:150px;opacity:0;filter:drop-shadow(0 0 40px rgba(205,212,235,.5))">
+ <div id=outroTxt style="position:absolute;left:0;right:0;top:690px;text-align:center;opacity:0">
+  <div style="font:600 128px/1 'Inter Display';letter-spacing:-.05em;color:#fff">noir<span style="color:#c7cdff">.</span></div>
+  <div style="margin-top:22px;font:500 24px Inter;letter-spacing:.06em;color:#8a8f98">usenoir.app &nbsp;·&nbsp; @usenoirapp</div>
+ </div>
+</div>
+
+<!-- ═══ B · home hero ═══ -->
+<div class=layer id=home><div class=world id=homeW><img src="shots/home.png"></div></div>
+
+<!-- ═══ C · leaderboard ═══ -->
+<div class=layer id=lb><div class=world id=lbW><img src="shots/leaderboard.png">
+ <div class=ripple id=lbR style="left:1466px;top:338px"></div>
+</div></div>
+
+<!-- ═══ D · create ═══ -->
+<div class=layer id=cr><div class=world id=crW>
+ <img id=cr1 src="shots/create-1.png" style="position:absolute;left:0;top:0">
+ <img id=cr2 src="shots/create-2.png" style="position:absolute;left:0;top:0;opacity:0">
+ <img id=cr3 src="shots/create-3.png" style="position:absolute;left:0;top:0;opacity:0">
+ <div style="width:1920px;height:1080px"></div>
+ <div class=ripple id=crR1 style="left:688px;top:566px"></div>
+ <div class=ripple id=crR2 style="left:1376px;top:367px"></div>
+</div></div>
+
+<!-- ═══ E · Solana coin page ═══ -->
+<div class=layer id=coin><div class=world id=coinW><img src="shots/coin.png">
+ <svg class=ov id=chart style="left:401px;top:454px" width="738" height="520"></svg>
+ <div class=ov id=mcBox style="left:442px;top:277px;width:224px;height:48px;background:#111214">
+  <div id=mcVal style="font:600 18px 'JetBrains Mono';color:#fff;line-height:28px">$5.8K</div>
+  <div id=mcSol style="font:400 11px Inter;color:#50545c;margin-top:2px">31.20 SOL</div></div>
+ <div class=ov id=pBox style="left:1253px;top:277px;width:224px;height:28px;background:#111214;font:600 18px 'JetBrains Mono';color:#fff;line-height:28px">12.4%</div>
+ <div class=ov id=pFill style="left:426px;top:357px;height:6px;width:132px;border-radius:9px;background:linear-gradient(90deg,#2fe39a,#7cf3ff)"></div>
+ <div class=ov id=amtBox style="left:1198px;top:528px;width:200px;height:28px;background:#151618;font:600 20px 'JetBrains Mono';color:#50545c;line-height:28px">0.0</div>
+ <div class=ov id=estBox style="left:1380px;top:623px;width:116px;height:20px;background:#0d0e10;text-align:right;font:500 12px 'JetBrains Mono';color:#fff;line-height:20px">—</div>
+ <div class=ov id=buyBtn style="left:1181px;top:683px;width:318px;height:44px;border-radius:12px;background:#2fe39a;color:#03130b;font:700 15px Inter;display:flex;align-items:center;justify-content:center">Buy $NOVA</div>
+ <div class=ripple id=coR1 style="left:1340px;top:593px"></div>
+ <div class=ripple id=coR2 style="left:1340px;top:705px"></div>
+ <div class=ov id=toast style="left:1181px;top:740px;width:318px;padding:12px 14px;border-radius:12px;background:rgba(47,227,154,.12);border:1px solid rgba(47,227,154,.35);font:600 13px Inter;color:#2fe39a;opacity:0">✓ Bought 1,848,203 NOVA · 0.5 SOL</div>
+</div>
+ <div class=callout id=co1 style="left:150px;top:300px"><div class=k>NON-CUSTODIAL</div><div class=big>Your keys.<br>Your coin.</div><div class=sub>Every launch and trade is signed by your own wallet.</div></div>
+ <div class=callout id=co2 style="left:1150px;top:300px"><div class=k>CREATOR FEES</div><div class=big>Paid to<br>the profile.</div><div class=sub>On Robinhood, fees route straight to the fomo profile’s wallet.</div></div>
+</div>
+
+<!-- ═══ F · two chains ═══ -->
+<div class=layer id=chains style="background:#050506">
+ <div style="position:absolute;left:0;top:0;width:960px;height:1080px;background:radial-gradient(ellipse 560px 460px at 50% 48%,rgba(204,255,0,.12),transparent 70%)"></div>
+ <div style="position:absolute;right:0;top:0;width:960px;height:1080px;background:radial-gradient(ellipse 560px 460px at 50% 48%,rgba(153,69,255,.18),transparent 70%)"></div>
+ <div id=ch1 style="position:absolute;left:0;width:960px;top:300px;text-align:center"><img src="robinhood.png" style="width:200px;height:200px;border-radius:52px;box-shadow:0 40px 110px -20px rgba(204,255,0,.5)"><div style="margin-top:40px;font:600 62px 'Inter Display';letter-spacing:-.035em;color:#fff">Robinhood Chain</div><div style="margin-top:12px" class=k>PONS V2 · ETH</div></div>
+ <div id=ch2 style="position:absolute;right:0;width:960px;top:300px;text-align:center"><img src="solana.jpg" style="width:200px;height:200px;border-radius:52px;box-shadow:0 40px 110px -20px rgba(153,69,255,.6)"><div style="margin-top:40px;font:600 62px 'Inter Display';letter-spacing:-.035em;color:#fff">Solana</div><div style="margin-top:12px" class=k>PUMP.FUN · SOL</div></div>
+ <div style="position:absolute;left:960px;top:240px;bottom:240px;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.2),transparent)"></div>
+</div>
+
+<svg class=cursor id=cur viewBox="0 0 24 24" style="left:0;top:0;opacity:0"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.6 L14.4 20.4 L11.3 13.7 L17.6 13.7 Z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+<div id=vign></div>
+<div id=capbg style="position:absolute;left:0;right:0;bottom:0;height:300px;z-index:45;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(5,5,6,.78) 55%,rgba(5,5,6,.92));opacity:0"></div>
+<div id=cap></div>
+<svg id=grain width="100%" height="100%"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="3"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+<div id=black style="position:absolute;inset:0;background:#000;z-index:70;opacity:1"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const inout = (x) => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+/** keyframes: [[t, v...], ...] → eased interpolation of the value array */
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, ...a] = keys[i], [t1, ...b] = keys[i + 1];
+    if (t <= t1) { const k = inout((t - t0) / (t1 - t0)); return a.map((v, j) => lerp(v, b[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+function show(id, t, a, b, fade = 0.6) { const o = Math.min(ease(seg(t, a, a + fade)), 1 - ease(seg(t, b - fade, b))); $(id).style.opacity = o; return o > 0; }
+/** camera: focus point (fx, fy) at screen centre, scale s */
+function cam(id, fx, fy, s) { $(id).style.transform = `translate(${960 - fx * s}px, ${540 - fy * s}px) scale(${s})`; }
+/** cursor in world coords of a camera */
+let CAM = { fx: 960, fy: 540, s: 1 };
+function camKF(id, t, keys) { const [fx, fy, s] = kf(t, keys); CAM = { fx, fy, s }; cam(id, fx, fy, s); }
+function cursorAt(x, y, o) { const c = $("cur"); c.style.left = (960 + (x - CAM.fx) * CAM.s) + "px"; c.style.top = (540 + (y - CAM.fy) * CAM.s) + "px"; c.style.opacity = o; }
+function ripple(id, t, at) { const k = seg(t, at, at + 0.55); const el = $(id); el.style.opacity = k > 0 && k < 1 ? 1 - k : 0; el.style.transform = `scale(${0.3 + k * 1.1})`; }
+function caption(t, items) { // items: [a, b, html]
+  const c = $("cap"); let o = 0, html = "";
+  for (const [a, b, h] of items) if (t >= a && t <= b) { o = Math.min(ease(seg(t, a, a + 0.45)), 1 - ease(seg(t, b - 0.45, b))); html = h; }
+  c.style.opacity = o; $("capbg").style.opacity = o; if (html && c.innerHTML !== html) c.innerHTML = html; c.style.transform = `translateY(${(1 - o) * 14}px)`;
+}
+
+/* ── line art (deterministic) ── */
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const CX = 960, CY = 470, R = 92, HZ = 580;
+const paths = []; // {d, delay}
+// rays
+for (let i = 0; i < 300; i++) {
+  const a = -Math.PI * (0.02 + 0.96 * (i / 300)) + (rnd() - 0.5) * 0.01;
+  const r0 = R + 16 + rnd() * 10, r1 = r0 + 90 + Math.pow(rnd(), 0.7) * 520;
+  const x0 = CX + Math.cos(a) * r0, y0 = CY + Math.sin(a) * r0;
+  let x1 = CX + Math.cos(a) * r1, y1 = CY + Math.sin(a) * r1;
+  if (y1 > HZ - 6) continue;
+  paths.push({ d: `M${x0.toFixed(1)} ${y0.toFixed(1)} L${x1.toFixed(1)} ${y1.toFixed(1)}`, delay: 0.15 + (i % 7) * 0.02, w: 0.9 });
+}
+// sun rings
+paths.push({ d: `M${CX - R} ${CY} a${R} ${R} 0 1 0 ${2 * R} 0 a${R} ${R} 0 1 0 ${-2 * R} 0`, delay: 0, w: 1.6 });
+paths.push({ d: `M${CX - R - 9} ${CY} a${R + 9} ${R + 9} 0 1 0 ${2 * (R + 9)} 0 a${R + 9} ${R + 9} 0 1 0 ${-2 * (R + 9)} 0`, delay: 0.05, w: 0.8 });
+// mountains (left & right ranges with hatching)
+function ridge(x0, x1, base, peak, px) {
+  let d = `M${x0} ${base}`; const n = 40;
+  for (let i = 1; i <= n; i++) { const x = x0 + (x1 - x0) * (i / n); const k = 1 - Math.abs((x - px) / ((x1 - x0) / 2)); const y = base - Math.max(0, k) ** 1.6 * peak - Math.sin(i * 1.7) * 3 - rnd() * 4; d += ` L${x.toFixed(1)} ${y.toFixed(1)}`; }
+  return d;
+}
+[[0, 760, HZ, 210, 380], [180, 980, HZ, 120, 600], [1100, 1920, HZ, 230, 1560], [940, 1500, HZ, 110, 1220], [-80, 420, HZ, 90, 170], [1600, 2000, HZ, 80, 1820]].forEach(([a, b, base, pk, px], i) => {
+  paths.push({ d: ridge(a, b, base, pk, px), delay: 0.25 + i * 0.05, w: 1.3 });
+  // a second, softer contour inside each range for depth
+  paths.push({ d: ridge(a + (b - a) * 0.12, b - (b - a) * 0.12, base, pk * 0.62, px + (b - a) * 0.04), delay: 0.4 + i * 0.05, w: 0.8 });
+});
+// cloud bands
+for (let i = 0; i < 9; i++) { const left = i % 2 === 0; const y = 150 + rnd() * 260; const x0 = left ? 40 + rnd() * 200 : 1300 + rnd() * 300; const len = 260 + rnd() * 280; paths.push({ d: `M${x0} ${y} C${x0 + len * 0.3} ${y - 40} ${x0 + len * 0.6} ${y + 30} ${x0 + len} ${y - 8}`, delay: 0.35 + rnd() * 0.25, w: 0.9 }); }
+// horizon + sea dashes
+paths.push({ d: `M0 ${HZ} L1920 ${HZ}`, delay: 0.2, w: 1.4 });
+for (let i = 0; i < 220; i++) { const y = HZ + 12 + Math.pow(rnd(), 1.4) * 480; const len = 20 + rnd() * (40 + (y - HZ) * 0.35); const x = rnd() * 1920; paths.push({ d: `M${x.toFixed(1)} ${y.toFixed(1)} L${(x + len).toFixed(1)} ${y.toFixed(1)}`, delay: 0.3 + ((y - HZ) / 480) * 0.35, w: 0.8 }); }
+$("lines").innerHTML = paths.map((p, i) => `<path id=p${i} d="${p.d}" pathLength="1" fill="none" stroke-width="${p.w}" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="1"/>`).join("");
+const pathEls = paths.map((_, i) => $("p" + i));
+function drawArt(prog, color) { pathEls.forEach((el, i) => { const k = ease(seg(prog, paths[i].delay, paths[i].delay + 0.45)); el.setAttribute("stroke-dashoffset", 1 - k); el.setAttribute("stroke", color); }); }
+
+/* ── coin chart ── */
+seed = 5; const CAN = []; let price = 40;
+for (let i = 0; i < 64; i++) { const pump = i >= 34; const drift = pump ? 2.4 + rnd() * 3.5 : (rnd() - 0.48) * 2.2; const o = price, c = o + drift + (pump && rnd() < 0.2 ? -3 * rnd() : 0); const hi = Math.max(o, c) + rnd() * 2, lo = Math.min(o, c) - rnd() * 2; price = c; CAN.push([o, c, hi, lo, 6 + rnd() * (pump ? 40 : 16)]); }
+const mn = Math.min(...CAN.map((d) => d[3])), mx = Math.max(...CAN.map((d) => d[2]));
+const CW = 738, CH = 430, cw = CW / 64, Yc = (v) => 30 + CH - 10 - ((v - mn) / (mx - mn)) * (CH - 20);
+let ch = ""; for (let k = 1; k < 5; k++) ch += `<line x1=0 x2=${CW} y1=${30 + (CH * k) / 5} y2=${30 + (CH * k) / 5} stroke="#ffffff0d"/>`;
+CAN.forEach((d, i) => { const x = i * cw + cw / 2, col = d[1] >= d[0] ? "#2fe39a" : "#ff5c6c"; ch += `<g id=c${i} opacity=0><rect x=${x - cw * 0.32} y=${505 - d[4]} width=${cw * 0.64} height=${d[4]} fill="${col}" opacity=".22"/><line x1=${x} x2=${x} y1=${Yc(d[2])} y2=${Yc(d[3])} stroke="${col}" stroke-width=1.4 /><rect x=${x - cw * 0.32} y=${Math.min(Yc(d[0]), Yc(d[1]))} width=${cw * 0.64} height=${Math.max(2, Math.abs(Yc(d[0]) - Yc(d[1])))} rx=1 fill="${col}"/></g>`; });
+ch += `<line id=lastL x1=0 x2=${CW} stroke="#2fe39a" stroke-dasharray="3 4" opacity=".7"/>`;
+$("chart").innerHTML = ch;
+const fmtK = (n) => n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : `$${n.toFixed(0)}`;
+
+/* ── timeline ── */
+const T = { artIn: [0, 9.4], home: [9.0, 17.4], lb: [17.0, 24.6], cr: [24.2, 35.2], coin: [34.8, 52.4], chains: [52.0, 57.0], out: [56.6, 66] };
+window.DURATION = 66;
+
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0, 0.8)) + ease(seg(t, 64.6, 65.8));
+  $("vign").style.opacity = t > 9 && t < 57 ? 1 : 0.6;
+
+  // A · art (intro + outro)
+  const inArt = t < T.artIn[1] || t > T.out[0];
+  if (show("art", t, t < 30 ? T.artIn[0] : T.out[0], t < 30 ? T.artIn[1] : T.out[1] + 1, 0.6)) {
+    const intro = t < 30, lt = intro ? t : t - T.out[0];
+    // light→dark flip at 4.6s in the intro; the outro starts dark
+    const dark = intro ? ease(seg(lt, 4.4, 5.2)) : 1;
+    $("artbg").style.background = `rgb(${lerp(233, 6, dark)},${lerp(232, 6, dark)},${lerp(228, 8, dark)})`;
+    $("paper").style.opacity = 1 - dark;
+    const col = dark > 0.5 ? `rgba(160,166,180,${0.55 + 0.2 * dark})` : "rgba(40,40,44,.72)";
+    drawArt(intro ? seg(lt, 0.8, 3.6) : seg(lt, 0, 2.2) * 1, col);
+    $("glow").style.opacity = intro ? ease(seg(lt, 3.2, 4.2)) * (1 - dark) + dark * 0.35 : 0.35;
+    $("sunN").style.opacity = intro ? ease(seg(lt, 2.9, 3.8)) * (1 - dark) : 0;
+    $("sunC").style.opacity = intro ? ease(seg(lt, 4.5, 5.3)) : ease(seg(lt, 0.6, 1.4));
+    const hl = intro ? seg(lt, 6.2, 7.6) : seg(lt, 1.6, 3);
+    $("hline").style.opacity = hl > 0 ? 1 : 0; $("hline").style.width = (ease(hl) * 1700) + "px";
+    $("outroTxt").style.opacity = intro ? 0 : ease(seg(lt, 2.4, 3.4));
+    $("outroTxt").style.transform = `translateY(${intro ? 0 : 24 * (1 - ease(seg(lt, 2.4, 3.4)))}px)`;
+    const z = intro ? 1 + 0.06 * seg(lt, 0, 9.4) : 1.04 - 0.04 * seg(lt, 0, 8);
+    $("lines").style.transform = `scale(${z})`; $("lines").style.transformOrigin = "960px 470px";
+  }
+
+  // B · home hero: push in, then glide down to the product shot
+  if (show("home", t, ...T.home)) camKF("homeW", t, [[9.0, 960, 560, 1.0], [11.5, 960, 600, 1.06], [15.0, 960, 1080, 1.12], [17.4, 960, 1180, 1.14]]);
+
+  // C · leaderboard: zoom to the table, cursor to "Tokenize", click
+  if (show("lb", t, ...T.lb)) {
+    camKF("lbW", t, [[17.0, 960, 420, 1.15], [19.0, 960, 470, 1.45], [24.6, 1180, 420, 1.62]]);
+    const [x, y] = kf(t, [[19.6, 1150, 700], [21.4, 1466, 340], [24.6, 1470, 342]]);
+    cursorAt(x, y, ease(seg(t, 19.4, 19.9)) * (1 - ease(seg(t, 24.0, 24.5))));
+    ripple("lbR", t, 21.8);
+  }
+
+  // D · create: detect, fields fill, pick Solana
+  if (show("cr", t, ...T.cr)) {
+    camKF("crW", t, [[24.2, 960, 500, 1.2], [25.6, 700, 520, 1.5], [29.5, 760, 520, 1.42], [31.0, 1250, 470, 1.5], [35.2, 1250, 520, 1.38]]);
+    $("cr2").style.opacity = ease(seg(t, 27.0, 27.4)); $("cr3").style.opacity = ease(seg(t, 31.9, 32.3));
+    const [x, y] = kf(t, [[24.8, 520, 760], [26.6, 690, 568], [28.2, 690, 568], [30.6, 1376, 368], [35.2, 1380, 372]]);
+    cursorAt(x, y, ease(seg(t, 24.6, 25.1)) * (1 - ease(seg(t, 34.4, 34.9))));
+    ripple("crR1", t, 26.8); ripple("crR2", t, 31.7);
+  }
+
+  // E · Solana coin page: buy, chart pumps, market cap climbs, callouts
+  if (show("coin", t, ...T.coin)) {
+    camKF("coinW", t, [[34.8, 960, 560, 1.12], [37.0, 1100, 600, 1.38], [40.4, 1320, 610, 1.62], [42.0, 1000, 560, 1.3], [46.5, 960, 560, 1.22], [52.4, 960, 560, 1.15]]);
+    const base = 34, pumpStart = 41.2;
+    const shown = t < pumpStart ? 34 : 34 + Math.floor(30 * ease(seg(t, pumpStart, 45.6)));
+    for (let i = 0; i < 64; i++) $("c" + i).setAttribute("opacity", i < Math.min(shown, base + 30) ? 1 : 0);
+    const last = CAN[Math.max(0, Math.min(shown, 64) - 1)]; $("lastL").setAttribute("y1", Yc(last[1])); $("lastL").setAttribute("y2", Yc(last[1]));
+    const k = ease(seg(t, pumpStart, 45.8));
+    const mc = lerp(5830, 84219, k); $("mcVal").textContent = fmtK(mc); $("mcSol").textContent = `${(mc / 186.9).toFixed(2)} SOL`;
+    $("pBox").textContent = `${lerp(12.4, 78.3, k).toFixed(1)}%`; $("pFill").style.width = lerp(132, 836, k) + "px";
+    const typed = t > 38.6; $("amtBox").textContent = typed ? "0.5" : "0.0"; $("amtBox").style.color = typed ? "#fff" : "#50545c";
+    $("estBox").textContent = typed ? "1,848,203 NOVA" : "—";
+    const btn = $("buyBtn"); btn.textContent = t < 40.0 ? "Buy $NOVA" : t < 40.9 ? "Sign in your wallet…" : t < 41.2 ? "Confirming…" : "Bought ✓";
+    $("toast").style.opacity = ease(seg(t, 41.2, 41.6)) * (1 - ease(seg(t, 45.6, 46.0)));
+    const [x, y] = kf(t, [[36.2, 900, 760], [38.2, 1340, 594], [39.0, 1340, 594], [39.8, 1340, 706], [42.0, 1345, 712]]);
+    cursorAt(x, y, ease(seg(t, 36.0, 36.5)) * (1 - ease(seg(t, 41.6, 42.0))));
+    ripple("coR1", t, 38.5); ripple("coR2", t, 39.9);
+    // callouts over a dimmed page
+    const dim = ease(seg(t, 46.4, 47.0)) * (1 - ease(seg(t, 51.6, 52.2)));
+    $("coinW").style.filter = `brightness(${1 - 0.55 * dim}) blur(${dim * 3}px)`;
+    for (const [id, a] of [["co1", 46.8], ["co2", 47.5]]) { const o = ease(seg(t, a, a + 0.6)) * (1 - ease(seg(t, 51.6, 52.1))); $(id).style.opacity = o; $(id).style.transform = `translateY(${40 * (1 - o)}px)`; }
+  }
+
+  // F · two chains
+  if (show("chains", t, ...T.chains)) {
+    for (const [id, a] of [["ch1", 52.3], ["ch2", 52.7]]) { const o = ease(seg(t, a, a + 0.7)); $(id).style.opacity = o; $(id).style.transform = `translateY(${50 * (1 - o)}px)`; }
+  }
+
+  if (!(t > 19 && t < 24.6) && !(t > 24.4 && t < 35) && !(t > 36 && t < 42.1)) $("cur").style.opacity = 0;
+
+  caption(t, [
+    [10.0, 16.8, "Your profile. <b>Now a market.</b>"],
+    [17.8, 24.0, "The most-followed profiles on <b>@fomo &amp; @Pumpfun</b>"],
+    [25.2, 30.2, "Detect a profile. <b>Everything fills in.</b>"],
+    [30.6, 34.6, "Pick your chain. <b>Robinhood or Solana.</b>"],
+    [35.6, 41.0, "Trade it live, <b>right on NOIR.</b>"],
+    [41.6, 46.0, "From the first buy <b>to the bonding curve.</b>"],
+    [47.2, 51.8, "Non-custodial. <b>Your wallet signs everything.</b>"],
+    [53.4, 56.6, "Two chains. <b>One click.</b>"],
+  ]);
+};
+window.render(0);
+</script></body></html>
