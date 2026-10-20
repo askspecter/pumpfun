@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;box-sizing:border-box}
+body{background:#000;font-family:Inter,sans-serif;padding:0}
+.c{width:800px;height:800px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.label{position:absolute;bottom:28px;left:0;right:0;text-align:center;font:500 15px Inter;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.holo{background:linear-gradient(100deg,#8fd3ff 0%,#a9b8ff 30%,#c79bff 60%,#ff9ad5 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{margin-top:26px;font:500 20px Inter;color:rgba(255,255,255,.55);letter-spacing:.04em}
+</style></head><body>
+
+<!-- 1 Holographic wordmark -->
+<div class="c" id="c1" style="background:radial-gradient(ellipse at 50% 40%,#1a1640 0%,#07070d 60%)">
+  <div style="position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(169,184,255,.18),transparent 65%);filter:blur(20px)"></div>
+  <div class="holo" style="font:900 190px 'Inter Display';letter-spacing:.06em;position:relative">NOIR</div>
+  <div class="tag">Tokenize your @fomo &amp; @Pumpfun profile</div>
+  <div class="label">01 · Holographic wordmark</div>
+</div>
+
+<!-- 2 Monogram app icon -->
+<div class="c" id="c2" style="background:#0b0b12">
+  <svg width="420" height="420" viewBox="0 0 420 420">
+    <defs>
+      <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset=".5" stop-color="#b59cff"/><stop offset="1" stop-color="#ff9ad5"/></linearGradient>
+      <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1c28"/><stop offset="1" stop-color="#050508"/></linearGradient>
+    </defs>
+    <rect x="10" y="10" width="400" height="400" rx="96" fill="url(#bg2)" stroke="url(#g2)" stroke-width="3" stroke-opacity=".6"/>
+    <path d="M120 300 L120 120 L160 120 L260 250 L260 120 L300 120 L300 300 L260 300 L160 170 L160 300 Z" fill="url(#g2)"/>
+  </svg>
+  <div style="margin-top:34px;font:800 44px 'Inter Display';letter-spacing:.35em;color:#fff;padding-left:.35em">NOIR</div>
+  <div class="label">02 · Monogram app icon</div>
+</div>
+
+<!-- 3 Luxe serif -->
+<div class="c" id="c3" style="background:#050505">
+  <div style="width:520px;height:1px;background:linear-gradient(90deg,transparent,#d8c49a,transparent)"></div>
+  <div style="font:400 170px Caladea,'Bitstream Charter',serif;letter-spacing:.22em;padding-left:.22em;margin:30px 0;background:linear-gradient(180deg,#f6e7c1,#b8975a);-webkit-background-clip:text;background-clip:text;color:transparent">NOIR</div>
+  <div style="width:520px;height:1px;background:linear-gradient(90deg,transparent,#d8c49a,transparent)"></div>
+  <div style="margin-top:28px;font:italic 400 24px Caladea,serif;color:#cdb98d;letter-spacing:.08em">your profile, minted</div>
+  <div class="label">03 · Luxe serif</div>
+</div>
+
+<!-- 4 Eclipse symbol -->
+<div class="c" id="c4" style="background:#000">
+  <svg width="360" height="360" viewBox="0 0 360 360">
+    <defs>
+      <radialGradient id="glow4"><stop offset=".55" stop-color="#a9b8ff" stop-opacity="0"/><stop offset=".72" stop-color="#a9b8ff" stop-opacity=".55"/><stop offset="1" stop-color="#ff9ad5" stop-opacity="0"/></radialGradient>
+      <linearGradient id="rim4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#ff9ad5"/></linearGradient>
+    </defs>
+    <circle cx="180" cy="180" r="175" fill="url(#glow4)"/>
+    <circle cx="180" cy="180" r="118" fill="none" stroke="url(#rim4)" stroke-width="5"/>
+    <circle cx="198" cy="168" r="116" fill="#000"/>
+  </svg>
+  <div style="margin-top:26px;font:300 64px 'Inter Display';letter-spacing:.5em;padding-left:.5em;color:#f2f2ff">noir</div>
+  <div class="label">04 · Eclipse symbol</div>
+</div>
+
+<!-- 5 Split identity -->
+<div class="c" id="c5" style="background:linear-gradient(90deg,#000 50%,#f4f4f6 50%)">
+  <div style="font:900 210px 'Inter Display';letter-spacing:-.02em;line-height:1;color:#fff;mix-blend-mode:difference">NOIR</div>
+  <div style="display:flex;width:800px;margin-top:30px;font:600 22px Inter;letter-spacing:.2em;color:#fff;mix-blend-mode:difference">
+    <span style="flex:1;text-align:center">@FOMO</span>
+    <span style="flex:1;text-align:center">@PUMPFUN</span>
+  </div>
+  <div class="label" style="color:#fff;mix-blend-mode:difference;opacity:.5">05 · Split identity</div>
+</div>
+
+<!-- 6 Ticker / terminal -->
+<div class="c" id="c6" style="background:#06070a;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px">
+  <div style="font:800 150px 'JetBrains Mono';background:linear-gradient(90deg,#14f195,#9945ff);-webkit-background-clip:text;background-clip:text;color:transparent">$NOIR</div>
+  <div style="margin-top:22px;font:500 22px 'JetBrains Mono';color:#7dffc4">&gt; launch --chain robinhood|solana<span style="display:inline-block;width:12px;height:24px;background:#7dffc4;margin-left:6px;vertical-align:-4px"></span></div>
+  <div class="label">06 · Ticker terminal</div>
+</div>
+
+</body></html>
