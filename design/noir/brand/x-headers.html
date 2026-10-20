@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{width:1500px;height:500px;position:relative;overflow:hidden;background:#07080a}
+.g{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay}
+.t{background:linear-gradient(180deg,#fff 35%,rgba(255,255,255,.5));-webkit-background-clip:text;color:transparent}
+</style></head><body>
+<!-- 1: Silver beam + wordmark -->
+<div class=c id=a>
+ <div style="position:absolute;left:50%;top:-420px;width:1300px;height:900px;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(214,219,240,.32) 0%,rgba(140,150,200,.10) 35%,transparent 62%)"></div>
+ 
+ <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+  <div class=t style="font:600 120px/1 'Inter Display';letter-spacing:.32em;padding-left:.32em">NOIR</div>
+  <div style="margin-top:26px;font:400 22px Inter;letter-spacing:.06em;color:#8a8f98">Your profile. Now a market.</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="n1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n1)"/></svg>
+</div>
+<!-- 2: Giant mark, cropped -->
+<div class=c id=b>
+ <div style="position:absolute;right:-60px;top:-260px;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(199,205,255,.22),transparent 60%)"></div>
+ <img src="mark.png" style="position:absolute;right:70px;top:50%;width:400px;height:400px;transform:translateY(-50%) rotate(-8deg);border-radius:94px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 60px 140px -30px rgba(199,205,255,.5),0 30px 60px -10px #000">
+ <div style="position:absolute;left:440px;top:50%;transform:translateY(-50%)">
+  <div style="font:700 22px Inter;letter-spacing:.34em;color:#fff">NOIR</div>
+  <div class=t style="margin-top:20px;font:600 76px/1 'Inter Display';letter-spacing:-.045em">Your profile.<br>Now a market.</div>
+  <div style="margin-top:22px;font:500 19px Inter;color:#6b707a">usenoir.app</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="n2"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n2)"/></svg>
+</div>
+<!-- 3: Ultra-minimal horizon -->
+<div class=c id=c style="background:#050506">
+ <div style="position:absolute;left:-10%;right:-10%;top:300px;height:700px;border-radius:50%;background:#050506;box-shadow:0 -2px 0 rgba(255,255,255,.5),0 -30px 120px rgba(199,205,255,.35),inset 0 30px 80px rgba(199,205,255,.06)"></div>
+ <div style="position:absolute;left:0;right:0;top:150px;height:350px;background:radial-gradient(ellipse 720px 170px at 50% 150px,rgba(199,205,255,.16),transparent 70%)"></div>
+ <div style="position:absolute;left:0;right:0;top:120px;text-align:center">
+  <div style="display:inline-flex;align-items:center;gap:22px"><img src="mark.png" style="width:78px;height:78px;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 20px 60px -15px rgba(199,205,255,.6)"><span class=t style="font:600 78px/1 'Inter Display';letter-spacing:.3em">NOIR</span></div>
+  <div style="margin-top:28px;font:400 20px Inter;letter-spacing:.14em;color:#8a8f98">TOKENIZE YOUR PROFILE · ROBINHOOD &amp; SOLANA</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="n3"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n3)"/></svg>
+</div>
+</body></html>
