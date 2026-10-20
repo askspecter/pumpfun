@@ -130,7 +130,11 @@ export function ProfileStudio({
   }
 
   /** Prefill from a detected profile — everything stays editable before launch. */
-  function prefill(p: { displayName: string; bio: string; avatar: string }) {
+  function prefill(p: { handle: string; displayName: string; bio: string; avatar: string }) {
+    // Ticker from the @nick, e.g. @john_doe → JOHNDOE. Skipped for a Pump.fun
+    // profile without a username (its "handle" is a shortened wallet).
+    const fromHandle = p.handle.includes("…") ? "" : p.handle.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
+    if (fromHandle.length >= 2) setTicker((prev) => prev || fromHandle);
     if (p.displayName) {
       setDisplayName(p.displayName);
       setName((prev) => prev || p.displayName.slice(0, 32));
@@ -143,7 +147,7 @@ export function ProfileStudio({
   }
 
   /**
-   * Detect the real profile behind the handle: prefill name, bio and avatar
+   * Detect the real profile behind the handle: prefill name, ticker, bio and avatar
    * from live data, and capture the profile's wallets (EVM for Pons creator
    * fees, Solana for display on the Pump.fun path).
    */
@@ -192,7 +196,7 @@ export function ProfileStudio({
           wallets: { evm: null, solana: p.address },
           url: `https://pump.fun/profile/${p.address}`,
         });
-        prefill({ displayName: p.username, bio: p.bio, avatar: p.avatar });
+        prefill({ handle: p.username, displayName: p.username, bio: p.bio, avatar: p.avatar });
       }
     } catch (err) {
       setProfile(null);
