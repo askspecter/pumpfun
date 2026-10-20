@@ -5,8 +5,8 @@ export const SITE = {
   tagline: "Your profile. Now a market.",
   description:
     "Turn your fomo.family or Pump.fun profile into a token. Launch it on the Pons v2 bonding curve on Robinhood Chain, or on Pump.fun on Solana, non-custodial. Your wallet signs every transaction.",
-  x: "https://x.com/dimedotfamily",
-  xHandle: "@dimedotfamily",
+  x: "https://x.com/usenoirapp",
+  xHandle: "@usenoirapp",
   company: "NOIR",
   chain: "Robinhood Chain",
   poweredBy: "Pons",

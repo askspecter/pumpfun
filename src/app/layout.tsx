@@ -72,9 +72,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="cinema-bg" aria-hidden />
         <div className="grain" aria-hidden />
         <Providers>
-          <div className="flex min-h-dvh flex-col overflow-x-hidden">
+          <div className="flex min-h-dvh flex-col overflow-x-clip">
             <SiteHeader />
-            <main className="flex-1 pb-24 md:pb-0">{children}</main>
+            <main className="flex-1">{children}</main>
             <SiteFooter />
           </div>
           <BottomNav />

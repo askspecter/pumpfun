@@ -12,7 +12,7 @@ import { compact } from "./format";
 
 function Bento({ className = "", children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={`relative overflow-hidden rounded-3xl border border-white/[0.07] bg-gradient-to-b from-[#0f1013] to-[#0a0b0d] p-7 sm:p-8 ${className}`}>
+    <div className={`relative overflow-hidden rounded-3xl border border-white/[0.07] bg-gradient-to-b from-[#0f1013] to-[#0a0b0d] p-6 sm:p-8 ${className}`}>
       {children}
     </div>
   );
@@ -42,7 +42,7 @@ export function HomeView() {
       />
 
       {/* ── Hero ── */}
-      <section className="mx-auto max-w-6xl px-4 pt-16 text-center sm:pt-24">
+      <section className="mx-auto max-w-6xl px-4 pt-10 text-center sm:pt-24">
         <Link
           href="/create?chain=solana&source=pumpfun"
           className="animate-fade-up inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] py-1.5 pl-1.5 pr-3.5 text-[13px] text-zinc-600 transition hover:border-white/20"
@@ -75,7 +75,7 @@ export function HomeView() {
       </section>
 
       {/* ── Product shot ── */}
-      <section className="relative mx-auto mt-16 max-w-6xl px-4 sm:mt-20 lg:[perspective:2400px]">
+      <section className="relative mx-auto mt-10 max-w-6xl px-4 sm:mt-20 lg:[perspective:2400px]">
         <div aria-hidden className="absolute -top-px left-1/2 z-10 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#c7cdff] to-transparent" />
         <div className="origin-top lg:[transform:rotateX(14deg)]">
           <ProductShot profiles={profiles} />
@@ -101,14 +101,14 @@ export function HomeView() {
       </div>
 
       {/* ── Bento ── */}
-      <section className="mx-auto mt-28 max-w-6xl px-4">
+      <section className="mx-auto mt-16 max-w-6xl px-4 sm:mt-28">
         <h2 className="max-w-3xl text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-white sm:text-[54px]">
           Designed for creators.
           <br />
           <span className="text-zinc-400">Engineered for traders.</span>
         </h2>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-6">
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:gap-4 md:grid-cols-6">
           <Bento className="md:col-span-3 md:min-h-[320px]">
             <div className="text-xl font-semibold text-white">Detect in one click</div>
             <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-zinc-600">
@@ -194,7 +194,7 @@ export function HomeView() {
       </section>
 
       {/* ── Real top profiles ── */}
-      <div id="top-profiles" className="mx-auto mt-28 max-w-6xl scroll-mt-24 px-4">
+      <div id="top-profiles" className="mx-auto mt-16 max-w-6xl scroll-mt-24 px-4 sm:mt-28">
         <TopProfiles profiles={profiles} />
         <div className="mt-6 text-center">
           <Link href="/leaderboard" className="text-sm font-medium text-zinc-600 transition hover:text-white">
@@ -204,7 +204,7 @@ export function HomeView() {
       </div>
 
       {/* ── Coins launched on NOIR ── */}
-      <section className="mx-auto mt-24 max-w-6xl px-4">
+      <section className="mx-auto mt-14 max-w-6xl px-4 sm:mt-24">
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-[44px] sm:leading-none">Launched on NOIR</h2>
@@ -218,9 +218,9 @@ export function HomeView() {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="mx-auto mt-28 max-w-6xl px-4">
+      <section className="mx-auto mt-16 max-w-6xl px-4 sm:mt-28">
         <div
-          className="overflow-hidden rounded-[28px] border border-white/[0.07] px-6 py-16 text-center sm:py-20"
+          className="overflow-hidden rounded-[28px] border border-white/[0.07] px-6 py-12 text-center sm:py-20"
           style={{ background: "radial-gradient(ellipse at 50% 120%, rgba(93,107,255,0.25), transparent 60%), #0b0c0e" }}
         >
           <h2 className="text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl">

@@ -47,9 +47,12 @@
 }
 
 @layer base {
+  /* overflow-x: clip (not hidden) on html/body: "hidden" on both turns body
+     into its own scroll container, which breaks scrolling to the bottom on
+     iOS. "clip" stops sideways overflow without creating a scroller. */
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     @apply antialiased;
@@ -59,7 +62,7 @@
     min-height: 100dvh;
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   ::selection {
     background: rgba(199, 205, 255, 0.25);
