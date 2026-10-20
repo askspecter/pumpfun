@@ -13,7 +13,9 @@ export default function HomePage() {
             <span className="h-1.5 w-1.5 rounded-full bg-pink" /> Profile coins on {SITE.poweredBy} v2 · Pump.fun
           </span>
           <h1 className="mt-3 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-zinc-900 sm:text-5xl">
-            Tokenize your <span className="grad-text">@fomo</span> &amp;{" "}
+            Tokenize your <span className="grad-text">@fomo</span>{" "}
+            {/* The display font's ampersand is a stylized glyph; use the body font's plain one. */}
+            <span className="font-sans font-bold">&amp;</span>{" "}
             <span className="grad-text">@Pumpfun</span> profile.
           </h1>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-600 sm:text-base">
