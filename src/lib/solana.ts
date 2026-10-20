@@ -35,10 +35,10 @@ export function pumpProfileUrl(addressOrName: string): string {
 
 export type LaunchChain = "robinhood" | "solana";
 
-/** Where a feed record's coin page lives: our Pons page, or Pump.fun for Solana. */
+/** Where a feed record's coin page lives on NOIR: /sol/{mint} or /launch/{address}. */
 export function coinLink(item: { chain?: LaunchChain; token: string }): { href: string; external: boolean } {
   return item.chain === "solana"
-    ? { href: pumpCoinUrl(item.token), external: true }
+    ? { href: `/sol/${item.token}`, external: false }
     : { href: `/launch/${item.token}`, external: false };
 }
 

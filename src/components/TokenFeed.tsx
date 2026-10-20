@@ -19,9 +19,14 @@ interface LaunchItem {
 }
 
 interface McInfo {
-  eth: number;
+  /** Native-denominated market cap: ETH on Robinhood, SOL on Solana. */
+  native: number;
+  unit: "ETH" | "SOL";
   usd: number | null;
 }
+
+/** Feed keys: EVM addresses are case-insensitive, Solana mints are not. */
+const mcKey = (it: { chain?: LaunchChain; token: string }) => (it.chain === "solana" ? it.token : it.token.toLowerCase());
 
 function short(a: string) {
   return a ? `${a.slice(0, 6)}…${a.slice(-4)}` : "";
@@ -46,10 +51,10 @@ function fmtMc(m: McInfo): string {
     if (n >= 1e3) return `$${(n / 1e3).toFixed(1)}K`;
     return `$${n.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
   }
-  const e = m.eth;
-  if (e >= 1000) return `${(e / 1000).toFixed(1)}K ETH`;
-  if (e >= 1) return `${e.toFixed(2)} ETH`;
-  return `${e.toFixed(4).replace(/0+$/, "").replace(/\.$/, "")} ETH`;
+  const e = m.native;
+  if (e >= 1000) return `${(e / 1000).toFixed(1)}K ${m.unit}`;
+  if (e >= 1) return `${e.toFixed(2)} ${m.unit}`;
+  return `${e.toFixed(4).replace(/0+$/, "").replace(/\.$/, "")} ${m.unit}`;
 }
 
 /**
@@ -80,22 +85,32 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   useEffect(() => {
     if (!items || items.length === 0) return;
     let cancelled = false;
-    // Market caps come from the Pons readers, so only Robinhood coins are priced.
-    const evm = items.filter((i) => (i.chain ?? "robinhood") === "robinhood");
-    if (evm.length === 0) return;
-    const tokens = evm.map((i) => i.token).join(",");
-    const load = () =>
-      fetch(`/api/v2/prices?tokens=${tokens}`, { cache: "no-store" })
+    // Robinhood coins are priced by the Pons readers, Solana coins from their
+    // Pump.fun bonding curves.
+    const evm = items.filter((i) => (i.chain ?? "robinhood") === "robinhood").map((i) => i.token);
+    const sol = items.filter((i) => i.chain === "solana").map((i) => i.token);
+    type Rows = Record<string, { marketCapEth?: number; marketCapSol?: number; marketCapUsd: number | null }>;
+    const get = (url: string): Promise<Rows> =>
+      fetch(url, { cache: "no-store" })
         .then((r) => r.json())
-        .then((d) => {
-          if (cancelled || !d.prices) return;
-          const next: Record<string, McInfo> = {};
-          for (const [k, v] of Object.entries(d.prices as Record<string, { marketCapEth: number; marketCapUsd: number | null }>)) {
-            if (v && typeof v.marketCapEth === "number") next[k] = { eth: v.marketCapEth, usd: v.marketCapUsd ?? null };
-          }
-          setMcaps(next);
-        })
-        .catch(() => {});
+        .then((d) => (d.prices ?? {}) as Rows)
+        .catch(() => ({}));
+    const none: Promise<Rows> = Promise.resolve({});
+    const load = () =>
+      Promise.all([
+        evm.length ? get(`/api/v2/prices?tokens=${evm.join(",")}`) : none,
+        sol.length ? get(`/api/pumpfun/prices?mints=${sol.join(",")}`) : none,
+      ]).then(([e, s]) => {
+        if (cancelled) return;
+        const next: Record<string, McInfo> = {};
+        for (const [k, v] of Object.entries(e)) {
+          if (typeof v?.marketCapEth === "number") next[k.toLowerCase()] = { native: v.marketCapEth, unit: "ETH", usd: v.marketCapUsd ?? null };
+        }
+        for (const [k, v] of Object.entries(s)) {
+          if (typeof v?.marketCapSol === "number") next[k] = { native: v.marketCapSol, unit: "SOL", usd: v.marketCapUsd ?? null };
+        }
+        setMcaps(next);
+      });
     load();
     const id = setInterval(load, 15_000);
     return () => {
@@ -108,8 +123,9 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   const ranked = useMemo(() => {
     if (!items) return null;
     return [...items].sort((a, b) => {
-      const ma = mcaps[a.token.toLowerCase()]?.eth;
-      const mb = mcaps[b.token.toLowerCase()]?.eth;
+      // Rank by USD so ETH and SOL coins compare fairly.
+      const ma = mcaps[mcKey(a)]?.usd;
+      const mb = mcaps[mcKey(b)]?.usd;
       if (ma != null && mb != null) return mb - ma;
       if (ma != null) return -1;
       if (mb != null) return 1;
@@ -139,7 +155,7 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {ranked.map((it, rank) => {
-        const mc = mcaps[it.token.toLowerCase()];
+        const mc = mcaps[mcKey(it)];
         const link = coinLink(it);
         const solana = it.chain === "solana";
         return (

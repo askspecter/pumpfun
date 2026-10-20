@@ -238,3 +238,46 @@ export async function buildPumpCreateTx(input: PumpCreateTxInput): Promise<strin
   if (buf.byteLength === 0) throw new PumpLaunchError("PumpPortal returned an empty transaction.", 502);
   return buf.toString("base64");
 }
+
+export interface PumpTradeTxInput {
+  publicKey: string;
+  mint: string;
+  action: "buy" | "sell";
+  /** SOL for buys; tokens or a percentage string like "50%" for sells. */
+  amount: number | string;
+  denominatedInSol: boolean;
+  slippage: number;
+  priorityFee: number;
+}
+
+/** Build an unsigned buy/sell transaction via PumpPortal. Returns base64. */
+export async function buildPumpTradeTx(input: PumpTradeTxInput): Promise<string> {
+  let res: Response;
+  try {
+    res = await fetch(PUMPPORTAL_TRADE_LOCAL_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        publicKey: input.publicKey,
+        action: input.action,
+        mint: input.mint,
+        amount: input.amount,
+        denominatedInSol: input.denominatedInSol ? "true" : "false",
+        slippage: input.slippage,
+        priorityFee: input.priorityFee,
+        // "auto" trades on the bonding curve, or on PumpSwap after graduation.
+        pool: "auto",
+      }),
+      cache: "no-store",
+    });
+  } catch {
+    throw new PumpLaunchError("Couldn't reach PumpPortal to build the trade.", 502);
+  }
+  if (!res.ok) {
+    const detail = (await res.text().catch(() => "")).slice(0, 200);
+    throw new PumpLaunchError(`PumpPortal rejected the trade (${res.status})${detail ? `: ${detail}` : ""}.`, 502);
+  }
+  const buf = Buffer.from(await res.arrayBuffer());
+  if (buf.byteLength === 0) throw new PumpLaunchError("PumpPortal returned an empty transaction.", 502);
+  return buf.toString("base64");
+}

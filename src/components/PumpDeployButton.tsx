@@ -139,8 +139,11 @@ export function PumpDeployButton({
   if (status === "sent" && mint) {
     return (
       <div className="space-y-2">
-        <a className="btn-brand w-full" href={pumpCoinUrl(mint)} target="_blank" rel="noreferrer">
-          ✓ Profile launched. Open on Pump.fun
+        <a className="btn-brand w-full" href={`/sol/${mint}`}>
+          ✓ Profile launched. Open your coin →
+        </a>
+        <a className="btn-ghost w-full" href={pumpCoinUrl(mint)} target="_blank" rel="noreferrer">
+          View on Pump.fun ↗
         </a>
         {signature && (
           <a className="btn-ghost w-full" href={solanaTx(signature)} target="_blank" rel="noreferrer">

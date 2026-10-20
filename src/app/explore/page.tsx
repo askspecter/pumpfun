@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { coinLink, isSolanaAddress, pumpCoinUrl, type LaunchChain } from "@/lib/solana";
+import { coinLink, isSolanaAddress, type LaunchChain } from "@/lib/solana";
 
 interface FeedItem {
   chain?: LaunchChain;
@@ -39,9 +39,7 @@ export default function ExplorePage() {
 
   function go() {
     if (!valid) return;
-    // Solana mints open on Pump.fun; EVM contracts open our Pons page.
-    if (isMint) window.open(pumpCoinUrl(q.trim()), "_blank", "noopener");
-    else router.push(`/launch/${q.trim()}`);
+    router.push(isMint ? `/sol/${q.trim()}` : `/launch/${q.trim()}`);
   }
 
   return (
@@ -51,7 +49,7 @@ export default function ExplorePage() {
       </h1>
       <p className="mt-2 text-sm text-zinc-600">
         Paste a Robinhood token contract (0x…) to open its page, trade on the curve, see holders and chat, or a
-        Solana mint to open it on Pump.fun.
+        Solana mint to open its Pump.fun coin page.
       </p>
 
       <div className="mt-5 flex gap-2">
