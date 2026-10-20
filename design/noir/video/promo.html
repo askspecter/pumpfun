@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}html,body{width:1920px;height:1080px;overflow:hidden;background:#050506;font-family:Inter,sans-serif}
+.s{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0}
+.t{background:linear-gradient(180deg,#fff 35%,rgba(255,255,255,.5));-webkit-background-clip:text;color:transparent}
+.g{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;pointer-events:none;z-index:99}
+.card{border-radius:28px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg,#101115,#0a0b0d)}
+</style></head><body>
+<div id=beam style="position:absolute;left:50%;top:-500px;width:1800px;height:1200px;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(205,212,235,.22),rgba(124,140,255,.07) 40%,transparent 65%)"></div>
+
+<!-- S1 logo -->
+<div class=s id=s1>
+ <img id=n1 src="n-chrome.png" style="width:300px;height:300px;filter:drop-shadow(0 0 70px rgba(205,212,235,.35))">
+ <div id=w1 style="margin-top:56px;font:500 44px Inter;letter-spacing:.7em;padding-left:.7em;color:#eef0f3">NOIR</div>
+ <div id=sweep style="position:absolute;top:0;bottom:0;width:260px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:skewX(-18deg)"></div>
+</div>
+
+<!-- S2 headline -->
+<div class=s id=s2>
+ <div style="overflow:hidden;padding:0 20px"><div id=h1 class=t style="font:600 170px/1.02 'Inter Display';letter-spacing:-.05em">Your profile.</div></div>
+ <div style="overflow:hidden;padding:0 20px"><div id=h2 class=t style="font:600 170px/1.08 'Inter Display';letter-spacing:-.05em">Now a market.</div></div>
+</div>
+
+<!-- S3 sources -->
+<div class=s id=s3>
+ <div style="display:flex;gap:40px;align-items:center">
+  <div id=src1 style="display:flex;align-items:center;gap:26px"><img src="fomo.jpg" style="width:130px;height:130px;border-radius:34px"><span class=t style="font:600 110px 'Inter Display';letter-spacing:-.04em">@fomo</span></div>
+  <span id=amp style="font:700 90px Inter;color:#6b707a">&amp;</span>
+  <div id=src2 style="display:flex;align-items:center;gap:26px"><img src="pumpfun.jpg" style="width:130px;height:130px;border-radius:34px"><span class=t style="font:600 110px 'Inter Display';letter-spacing:-.04em">@Pumpfun</span></div>
+ </div>
+ <div id=detect class=card style="margin-top:80px;width:760px;padding:26px;display:flex;align-items:center;gap:22px">
+  <div style="width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#7cf3ff,#a77bff 55%,#ff6fd8)"></div>
+  <div style="flex:1"><div style="font:600 34px Inter;color:#fff">your profile <span style="color:#c7cdff">✓</span></div><div style="font:400 24px Inter;color:#6b707a;margin-top:4px">name · avatar · bio · wallet</div></div>
+  <div id=chip style="padding:12px 20px;border-radius:12px;background:rgba(47,227,154,.15);color:#2fe39a;font:600 24px Inter">Detected</div>
+ </div>
+</div>
+
+<!-- S4 market -->
+<div class=s id=s4 style="perspective:2400px">
+ <div id=ui class=card style="width:1500px;height:760px;padding:40px;transform-origin:center top">
+  <div style="display:flex;align-items:center;gap:22px">
+   <div style="width:76px;height:76px;border-radius:20px;background:linear-gradient(135deg,#7cf3ff,#a77bff 55%,#ff6fd8);display:flex;align-items:center;justify-content:center;font:700 34px Inter;color:#08090a">Y</div>
+   <div><div style="font:700 36px Inter;color:#fff">You <span style="font:500 24px 'JetBrains Mono';color:#6b707a">$YOU</span></div><div style="font:400 22px Inter;color:#6b707a">your profile · your coin</div></div>
+   <div style="margin-left:auto;text-align:right"><div id=price style="font:700 54px 'JetBrains Mono';color:#fff;letter-spacing:-.02em">$0</div><div id=pct style="font:600 24px 'JetBrains Mono';color:#2fe39a">▲ 0%</div></div>
+  </div>
+  <svg id=chart width="1420" height="470" style="margin-top:34px;overflow:visible"></svg>
+  <div style="margin-top:24px;height:10px;border-radius:9px;background:rgba(255,255,255,.06)"><div id=bar style="height:10px;width:0;border-radius:9px;background:linear-gradient(90deg,#2fe39a,#7cf3ff)"></div></div>
+ </div>
+</div>
+
+<!-- S5 chains -->
+<div class=s id=s5>
+ <div style="display:flex;gap:220px;align-items:center">
+  <div id=c1 style="text-align:center"><img src="robinhood.png" style="width:220px;height:220px;border-radius:58px;box-shadow:0 40px 120px -20px rgba(204,255,0,.5)"><div style="margin-top:44px;font:600 60px 'Inter Display';color:#fff;letter-spacing:-.03em">Robinhood</div><div style="margin-top:10px;font:500 22px Inter;letter-spacing:.4em;color:#6b707a">PONS V2</div></div>
+  <div id=c2 style="text-align:center"><img src="solana.jpg" style="width:220px;height:220px;border-radius:58px;box-shadow:0 40px 120px -20px rgba(153,69,255,.6)"><div style="margin-top:44px;font:600 60px 'Inter Display';color:#fff;letter-spacing:-.03em">Solana</div><div style="margin-top:10px;font:500 22px Inter;letter-spacing:.4em;color:#6b707a">PUMP.FUN</div></div>
+ </div>
+ <div id=c3 class=t style="margin-top:90px;font:600 76px 'Inter Display';letter-spacing:-.04em">Two chains. One click.</div>
+</div>
+
+<!-- S6 end -->
+<div class=s id=s6>
+ <img id=n6 src="n-chrome.png" style="width:200px;height:200px;filter:drop-shadow(0 0 60px rgba(205,212,235,.35))">
+ <div style="margin-top:46px;font:500 40px Inter;letter-spacing:.7em;padding-left:.7em;color:#eef0f3">NOIR</div>
+ <div id=e2 style="margin-top:34px;font:400 30px Inter;color:#8a8f98">Tokenize your @fomo &amp; @Pumpfun profile.</div>
+ <div id=e3 style="margin-top:44px;padding:18px 34px;border-radius:16px;background:#fff;color:#08090a;font:600 30px Inter">usenoir.app</div>
+</div>
+
+<svg class=g width="100%" height="100%"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);            // easeOutCubic
+const inout=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+// scene window: fade in over 0.5s, out over 0.5s
+function vis(el,t,a,b){const o=Math.min(ease(seg(t,a,a+.5)),1-ease(seg(t,b-.5,b)));el.style.opacity=o;return o}
+
+// deterministic candles
+let seed=7;const r=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const N=60,data=[];let p=40;for(let i=0;i<N;i++){const o=p,c=o+(r()-.35)*6,hi=Math.max(o,c)+r()*2.5,lo=Math.min(o,c)-r()*2.5;p=c;data.push([o,c,hi,lo])}
+const mn=Math.min(...data.map(d=>d[3])),mx=Math.max(...data.map(d=>d[2]));
+const W=1420,H=470,cw=W/N,Y=v=>H-10-(v-mn)/(mx-mn)*(H-20);
+const svg=$("chart");let html="";for(let k=1;k<4;k++)html+=`<line x1=0 x2=${W} y1=${H*k/4} y2=${H*k/4} stroke="#ffffff10"/>`;
+data.forEach((d,i)=>{const x=i*cw+cw/2,col=d[1]>=d[0]?"#2fe39a":"#ff5c6c";html+=`<g id=k${i} opacity=0><line x1=${x} x2=${x} y1=${Y(d[2])} y2=${Y(d[3])} stroke="${col}" stroke-width=2 /><rect x=${x-cw*.32} y=${Math.min(Y(d[0]),Y(d[1]))} width=${cw*.64} height=${Math.max(3,Math.abs(Y(d[0])-Y(d[1])))} rx=2 fill="${col}"/></g>`});
+svg.innerHTML=html;
+
+window.render=function(t){
+ // S1 0-3.6
+ if(vis($("s1"),t,0,3.6)){const k=ease(seg(t,0,1.6));$("n1").style.transform=`scale(${.7+.3*k}) rotate(${-12+12*k}deg)`;$("n1").style.opacity=k;
+  $("w1").style.opacity=ease(seg(t,1.0,1.9));$("w1").style.letterSpacing=(1.2-.5*ease(seg(t,1.0,2.2)))+"em";
+  $("sweep").style.left=(-300+2500*inout(seg(t,1.4,2.8)))+"px";}
+ // S2 3.4-6.6
+ if(vis($("s2"),t,3.4,6.6)){$("h1").style.transform=`translateY(${110*(1-ease(seg(t,3.5,4.3)))}%)`;$("h2").style.transform=`translateY(${110*(1-ease(seg(t,4.1,4.9)))}%)`;}
+ // S3 6.4-10.2
+ if(vis($("s3"),t,6.4,10.2)){$("src1").style.transform=`translateX(${-120*(1-ease(seg(t,6.5,7.3)))}px)`;$("src1").style.opacity=ease(seg(t,6.5,7.2));
+  $("amp").style.opacity=ease(seg(t,7.0,7.5));$("src2").style.transform=`translateX(${120*(1-ease(seg(t,7.1,7.9)))}px)`;$("src2").style.opacity=ease(seg(t,7.1,7.8));
+  const d=ease(seg(t,8.0,8.7));$("detect").style.opacity=d;$("detect").style.transform=`translateY(${40*(1-d)}px)`;$("chip").style.opacity=ease(seg(t,8.8,9.1));}
+ // S4 10-14.6
+ if(vis($("s4"),t,10,14.6)){const k=ease(seg(t,10,11));$("ui").style.transform=`rotateX(${22-10*k}deg) translateY(${60*(1-k)}px) scale(${.92+.06*k})`;
+  const prog=seg(t,10.6,13.6);for(let i=0;i<N;i++)$("k"+i).setAttribute("opacity",prog*N>i?1:0);
+  const pr=84219*ease(prog);$("price").textContent="$"+Math.round(pr).toLocaleString("en-US");$("pct").textContent="▲ "+(212.4*ease(prog)).toFixed(1)+"%";$("bar").style.width=(78*ease(prog))+"%";}
+ // S5 14.4-18.2
+ if(vis($("s5"),t,14.4,18.2)){const a=ease(seg(t,14.5,15.3)),b=ease(seg(t,14.8,15.6));$("c1").style.transform=`translateY(${60*(1-a)}px)`;$("c1").style.opacity=a;$("c2").style.transform=`translateY(${60*(1-b)}px)`;$("c2").style.opacity=b;
+  const c=ease(seg(t,15.8,16.5));$("c3").style.opacity=c;$("c3").style.transform=`translateY(${30*(1-c)}px)`;}
+ // S6 18-22
+ if(vis($("s6"),t,18,22.6)){const k=ease(seg(t,18.1,19.1));$("n6").style.transform=`scale(${.8+.2*k})`;$("e2").style.opacity=ease(seg(t,19,19.6));$("e3").style.opacity=ease(seg(t,19.6,20.2));$("e3").style.transform=`translateY(${20*(1-ease(seg(t,19.6,20.2)))}px)`;}
+ $("beam").style.opacity=.6+.4*Math.sin(t*.8);
+};
+window.render(0);
+</script></body></html>
