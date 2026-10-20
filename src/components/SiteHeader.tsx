@@ -19,11 +19,6 @@ export function SiteHeader() {
         <Link href="/" className="group flex shrink-0 items-center gap-2.5">
           <Logo className="h-8 w-8 transition group-hover:scale-105" />
           <span className="wordmark text-lg text-zinc-900">{SITE.name}</span>
-          <span className="hidden items-center gap-1 rounded-full border border-ink-line px-1.5 py-1 sm:inline-flex" title="Robinhood · Solana · fomo · Pump.fun">
-            {(["robinhood", "solana", "fomo", "pumpfun"] as const).map((b) => (
-              <BrandLogo key={b} brand={b} className="h-4 w-4 rounded-full" />
-            ))}
-          </span>
         </Link>
 
         {/* Desktop nav pill */}

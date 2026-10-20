@@ -166,10 +166,7 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
                 <div className="truncate font-bold text-zinc-900">{it.name || short(it.token)}</div>
                 {it.symbol && <div className="font-mono text-xs text-pink">${it.symbol}</div>}
               </div>
-              <span className="inline-flex shrink-0 -space-x-1.5" title={solana ? "Pump.fun on Solana" : "Pons v2 on Robinhood Chain"}>
-                <BrandLogo brand={solana ? "solana" : "robinhood"} className="h-6 w-6 rounded-full ring-1 ring-black/20" />
-                {solana && <BrandLogo brand="pumpfun" className="h-6 w-6 rounded-full ring-1 ring-black/20" />}
-              </span>
+              <BrandLogo brand={solana ? "solana" : "robinhood"} className="h-6 w-6 rounded-full" />
               {mc && (
                 <div className="shrink-0 text-right">
                   <div className="text-[10px] uppercase tracking-wider text-zinc-500">MC</div>

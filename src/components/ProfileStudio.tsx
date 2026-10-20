@@ -34,8 +34,8 @@ const SOURCE_LABEL: Record<ProfileSource, string> = {
 };
 
 const CHAIN_LABEL: Record<LaunchChain, string> = {
-  robinhood: "Robinhood · Pons v2",
-  solana: "Solana · Pump.fun",
+  robinhood: "Robinhood",
+  solana: "Solana",
 };
 
 /** Normalize a handle for display + ticker seeding. */
@@ -386,10 +386,7 @@ export function ProfileStudio({
                 chain === c ? "bg-zinc-900 text-white shadow" : "text-pink hover:text-zinc-900"
               }`}
             >
-              <span className="inline-flex -space-x-1.5">
-                <BrandLogo brand={c} className="h-5 w-5 rounded-full ring-1 ring-black/20" />
-                {c === "solana" && <BrandLogo brand="pumpfun" className="h-5 w-5 rounded-full ring-1 ring-black/20" />}
-              </span>
+              <BrandLogo brand={c} className="h-5 w-5 rounded-full" />
               {CHAIN_LABEL[c]}
             </button>
           ))}

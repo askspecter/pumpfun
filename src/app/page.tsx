@@ -13,17 +13,8 @@ export default function HomePage() {
             <span className="h-1.5 w-1.5 rounded-full bg-pink" /> Profile coins on {SITE.poweredBy} v2 · Pump.fun
           </span>
           <h1 className="mt-3 max-w-3xl font-display text-3xl font-black leading-[1.05] tracking-tight text-zinc-900 sm:text-5xl">
-            Tokenize your{" "}
-            <span className="inline-flex items-center gap-2 align-middle">
-              <BrandLogo brand="fomo" className="h-8 w-8 rounded-xl sm:h-11 sm:w-11" />
-              <span className="grad-text">@fomo</span>
-            </span>{" "}
-            &amp;{" "}
-            <span className="inline-flex items-center gap-2 align-middle">
-              <BrandLogo brand="pumpfun" className="h-8 w-8 rounded-xl sm:h-11 sm:w-11" />
-              <span className="grad-text">@Pumpfun</span>
-            </span>{" "}
-            profile.
+            Tokenize your <span className="grad-text">@fomo</span> &amp;{" "}
+            <span className="grad-text">@Pumpfun</span> profile.
           </h1>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-600 sm:text-base">
             Launch your profile coin on the {SITE.poweredBy} v2 bonding curve on {SITE.chain}, or on
@@ -34,7 +25,7 @@ export default function HomePage() {
               <BrandLogo brand="robinhood" className="h-5 w-5 rounded-full" /> Launch on Robinhood →
             </Link>
             <Link href="/create?chain=solana&source=pumpfun" className="btn-brand">
-              <BrandLogo brand="solana" className="h-5 w-5 rounded-full" /> Launch on Pump.fun →
+              <BrandLogo brand="solana" className="h-5 w-5 rounded-full" /> Launch on Solana →
             </Link>
             <Link href="/explore" className="btn-ghost">Search by contract</Link>
           </div>
