@@ -18,13 +18,8 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   applicationName: SITE.name,
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-64.png", type: "image/png", sizes: "64x64" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
+  // Icons come from the file conventions: src/app/favicon.ico, icon.png,
+  // apple-icon.png (cache-busted URLs) and manifest.ts.
   openGraph: {
     title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
