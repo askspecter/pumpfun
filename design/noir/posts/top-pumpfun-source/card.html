@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+#c{width:1600px;height:900px;position:relative;overflow:hidden;background:#060607;padding:58px 70px}
+.t{background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.6));-webkit-background-clip:text;color:transparent}
+.p{position:relative;flex:1;border-radius:30px;padding:30px 22px 28px;text-align:center;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#111216,#0a0b0d)}
+.p.top{border-color:rgba(199,205,255,.35);box-shadow:0 30px 90px -30px rgba(199,205,255,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+.rank{position:absolute;left:20px;top:18px;font:600 18px 'JetBrains Mono';color:#50545c}
+.p.top .rank{color:#c7cdff}
+.av{width:176px;height:176px;border-radius:50%;display:block;margin:6px auto 0;box-shadow:0 0 0 3px #0a0b0d,0 0 0 4px rgba(255,255,255,.12),0 24px 50px -16px rgba(0,0,0,.9)}
+.n{margin-top:26px;font:600 30px 'Inter Display';letter-spacing:-.02em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h{margin-top:6px;font:400 19px Inter;color:#6b707a}
+.f{margin-top:24px;font:700 44px 'Inter Display';letter-spacing:-.03em;color:#fff}
+.fl{font:500 15px Inter;letter-spacing:.16em;color:#6b707a;margin-top:4px}
+.g{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none}
+</style></head><body>
+<div id=c>
+ <div style="position:absolute;left:250px;top:-460px;width:1100px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(199,205,255,.20),transparent 65%)"></div>
+ <div style="position:relative;display:flex;align-items:center;gap:16px">
+  <img src="noir-logo-128.png" style="width:46px;height:46px;border-radius:12px">
+  <span style="font:600 26px Inter;letter-spacing:.34em;color:#eef0f3">NOIR</span>
+  <span style="margin-left:auto;display:flex;align-items:center;gap:10px;font:500 20px Inter;color:#8a8f98"><span style="width:10px;height:10px;border-radius:50%;background:#2fe39a;box-shadow:0 0 10px #2fe39a"></span>Ranked by followers</span>
+ </div>
+ <div style="position:relative;margin-top:34px;display:flex;align-items:center;gap:20px">
+  <div class=t style="font:700 68px/1.05 'Inter Display';letter-spacing:-.045em">Top profiles on</div>
+  <img src="pumpfun.jpg" style="width:62px;height:62px;border-radius:16px">
+  <div class=t style="font:700 68px/1.05 'Inter Display';letter-spacing:-.045em">Pump.fun</div>
+ </div>
+ <div style="position:relative;margin-top:12px;font:400 25px Inter;color:#8a8f98">The most-followed creators on Pump.fun, ready to tokenize on NOIR.</div>
+ <div id=row style="position:relative;margin-top:44px;display:flex;gap:22px"></div>
+ <div style="position:absolute;left:70px;right:70px;bottom:48px;display:flex;align-items:center;font:500 20px Inter;color:#6b707a">
+  <img src="robinhood.png" style="width:28px;height:28px;border-radius:8px"><img src="solana.jpg" style="width:28px;height:28px;border-radius:8px;margin-left:8px">
+  <span style="margin-left:14px">Tokenize on Robinhood Chain or Solana</span>
+  <span style="margin-left:auto">Public profile data · not endorsements</span>
+  <span style="margin-left:22px;color:#fff;font-weight:600">usenoir.app</span>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+</div>
+<script>
+const P=[["logjam","_logjam","AH39…SKfL","142.6K"],["mirage","mirage","9oqc…Euww","128.7K"],["punter","punter","BGSe…Vm8o","118K"],["counter17","counter17","HsQn…Rd52","112K"],["soby0x","soby0x","EJa8…Z5xp","3.2K"]];
+document.getElementById("row").innerHTML=P.map(([img,n,h,f],i)=>`<div class="p ${i===0?"top":""}"><div class=rank>#${i+1}</div><img class=av src="${img}.png"><div class=n>${n}</div><div class=h style="font-family:JetBrains Mono;font-size:17px">${h}</div><div class=f>${f}</div><div class=fl>FOLLOWERS</div></div>`).join("");
+</script></body></html>
