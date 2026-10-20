@@ -1,9 +1,8 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Dime — holographic-glass design tokens.
- * Near-black canvas, an iridescent cyan→periwinkle→violet signature gradient,
- * hairline glass surfaces — matching the glass "D" logo.
+ * NOIR design tokens: near-black canvas, white primary, a soft periwinkle
+ * accent and hairline surfaces.
  */
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
@@ -12,27 +11,28 @@ const config: Config = {
       colors: {
         // Dark glass surfaces (ink.* utilities flip to dark).
         ink: {
-          950: "#0b0d16",
-          900: "#0a0b12",
-          800: "#12141f",
-          700: "#1a1d2b",
-          line: "rgba(255,255,255,0.10)",
+          950: "#060707",
+          900: "#08090a",
+          800: "#0f1013",
+          700: "#16171b",
+          line: "rgba(255,255,255,0.08)",
         },
-        // Brand accent = iridescent periwinkle sampled from the logo's glow.
+        // Accent: soft periwinkle (links, active states).
         pink: {
-          DEFAULT: "#a9b8ff",
-          soft: "#8fd0ff",
-          deep: "#c9a2ff",
+          DEFAULT: "#c7cdff",
+          soft: "#e3e6ff",
+          deep: "#9aa3ff",
         },
-        // Legacy aliases kept on the holographic ramp.
         rose: {
-          DEFAULT: "#a9b8ff",
-          soft: "#8fd0ff",
+          DEFAULT: "#c7cdff",
+          soft: "#e3e6ff",
         },
         ember: {
-          DEFAULT: "#8fd0ff",
-          soft: "#c9a2ff",
+          DEFAULT: "#c7cdff",
+          soft: "#9aa3ff",
         },
+        up: "#2fe39a",
+        down: "#ff5c6c",
       },
       fontFamily: {
         display: ["var(--font-display)", "ui-sans-serif", "system-ui", "sans-serif"],
@@ -40,8 +40,8 @@ const config: Config = {
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(140,160,255,0.35), 0 20px 60px -20px rgba(120,140,255,0.5)",
-        card: "0 40px 90px -50px rgba(90,120,255,0.55)",
+        glow: "0 0 0 1px rgba(255,255,255,0.12), 0 20px 60px -20px rgba(124,140,255,0.45)",
+        card: "0 40px 90px -50px rgba(0,0,0,0.9)",
       },
       keyframes: {
         "fade-up": {

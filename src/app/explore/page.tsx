@@ -72,7 +72,7 @@ export default function ExplorePage() {
       )}
 
       <div className="mt-10">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">Recent on Dime</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">Recent on NOIR</h2>
         {recent === null ? (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -80,7 +80,7 @@ export default function ExplorePage() {
             ))}
           </div>
         ) : recent.length === 0 ? (
-          <p className="mt-3 text-sm text-zinc-500">No profiles launched on Dime yet.</p>
+          <p className="mt-3 text-sm text-zinc-500">No profiles launched on NOIR yet.</p>
         ) : (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {recent.map((it) => (

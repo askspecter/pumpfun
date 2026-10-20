@@ -1,13 +1,13 @@
 /** Shared site constants (links, copy). */
 export const SITE = {
-  name: "Dime",
-  shortName: "Dime",
-  tagline: "Tokenize your @fomo & @Pumpfun profile.",
+  name: "NOIR",
+  shortName: "NOIR",
+  tagline: "Your profile. Now a market.",
   description:
     "Turn your fomo.family or Pump.fun profile into a token. Launch it on the Pons v2 bonding curve on Robinhood Chain, or on Pump.fun on Solana, non-custodial. Your wallet signs every transaction.",
   x: "https://x.com/dimedotfamily",
   xHandle: "@dimedotfamily",
-  company: "Dime",
+  company: "NOIR",
   chain: "Robinhood Chain",
   poweredBy: "Pons",
   ponsUrl: "https://ponsfamily.com",
@@ -16,7 +16,7 @@ export const SITE = {
 } as const;
 
 export const NAV = [
-  { href: "/", label: "Home" },
+  { href: "/", label: "Markets" },
   { href: "/explore", label: "Explore" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/create", label: "Launch" },

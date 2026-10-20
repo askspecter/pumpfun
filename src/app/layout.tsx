@@ -11,26 +11,26 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE.name} · tokenize your @fomo & @Pumpfun profile`,
+    default: `${SITE.name} · ${SITE.tagline}`,
     template: `%s · ${SITE.name}`,
   },
   description: SITE.description,
   applicationName: SITE.name,
   icons: {
-    icon: "/dime-logo.png",
-    apple: "/dime-logo.png",
+    icon: "/noir-logo.svg",
+    apple: "/noir-logo.png",
   },
   openGraph: {
-    title: `${SITE.name} · tokenize your @fomo & @Pumpfun profile`,
+    title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
     type: "website",
-    images: ["/dime-logo.png"],
+    images: ["/noir-og.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} · tokenize your @fomo & @Pumpfun profile`,
+    title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
-    images: ["/dime-logo.png"],
+    images: ["/noir-og.png"],
     site: SITE.xHandle,
   },
 };
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#05060a",
+  themeColor: "#08090a",
 };
 
 // Render at request time, not static export. RainbowKit's config throws
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=JetBrains+Mono:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
       </head>

@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 const KEY = "fomo:launches";
 
-/** A profile coin launched through Dime (Pons on Robinhood, or Pump.fun on Solana). */
+/** A profile coin launched through NOIR (Pons on Robinhood, or Pump.fun on Solana). */
 export interface LaunchRecord {
   /** Missing on older records, which are all Robinhood. */
   chain?: LaunchChain;
@@ -61,7 +61,7 @@ export async function GET(req: Request) {
   return NextResponse.json({ items });
 }
 
-/** POST /api/launches - record a profile launch made through Dime. */
+/** POST /api/launches - record a profile launch made through NOIR. */
 export async function POST(req: Request) {
   const kv = getKv();
   if (!kv) return NextResponse.json({ error: "Storage not configured." }, { status: 503 });
@@ -110,7 +110,7 @@ export async function POST(req: Request) {
 
 /** The message a creator signs to remove one of their launches from the feed. */
 function removeMessage(token: string): string {
-  return `Remove ${token.toLowerCase()} from the Dime feed`;
+  return `Remove ${token.toLowerCase()} from the NOIR feed`;
 }
 
 /**

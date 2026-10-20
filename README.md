@@ -1,12 +1,12 @@
-# 🫆 Dime — tokenize your @fomo & @Pumpfun profile
+# NOIR — tokenize your @fomo & @Pumpfun profile
 
-**Dime** turns a [fomo.family](https://fomo.family) or [Pump.fun](https://pump.fun) profile into a
+**NOIR** turns a [fomo.family](https://fomo.family) or [Pump.fun](https://pump.fun) profile into a
 token and launches it either on **[Pons v2](https://ponsfamily.com)** — the launchpad on Robinhood
 Chain — or on **[Pump.fun](https://pump.fun)** on Solana, using the **bonding curve**. Drop your handle, we draft your profile coin (name, ticker, bio, avatar, launch thread),
 you tune it, and deploy in one signed transaction. Non-custodial: every transaction is signed by
 your own wallet.
 
-> Dime is a third-party interface to the Pons protocol and Pump.fun, not an official Pons,
+> NOIR is a third-party interface to the Pons protocol and Pump.fun, not an official Pons,
 > fomo.family or Pump.fun product. Not financial advice.
 
 ## ✨ What it does
@@ -41,7 +41,7 @@ your own wallet.
 ## 🧱 Architecture
 
 ```
-Frontend (Next.js, Dime UI)
+Frontend (Next.js, NOIR UI)
    → ProfileStudio (handle → drafted package → editable launch form)
    → DeployButton → PonsAdapter → launchToken() → bonding curve → graduate to Uniswap V4
    → Wallet (wagmi/viem, Robinhood Chain, non-custodial)

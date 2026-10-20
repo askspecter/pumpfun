@@ -1,8 +1,8 @@
 {
-  "name": "fomo-profile",
+  "name": "noir",
   "version": "0.1.0",
   "private": true,
-  "description": "Dime \u2014 tokenize your @fomo & @Pumpfun profile: launch on the Pons v2 bonding curve on Robinhood Chain or on Pump.fun on Solana, non-custodial.",
+  "description": "NOIR \u2014 tokenize your @fomo & @Pumpfun profile: launch on the Pons v2 bonding curve on Robinhood Chain or on Pump.fun on Solana, non-custodial.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
 import { BrandLogo } from "./BrandLogo";
 
-/** A profile coin launched through Dime (from /api/launches). */
+/** A profile coin launched through NOIR (from /api/launches). */
 interface LaunchItem {
   chain?: LaunchChain;
   source?: "fomo" | "pumpfun";
@@ -53,7 +53,7 @@ function fmtMc(m: McInfo): string {
 }
 
 /**
- * Live feed of profile coins launched through Dime. Refreshes on an interval
+ * Live feed of profile coins launched through NOIR. Refreshes on an interval
  * and ranks by market cap, so a coin that gets bought rises up the list.
  */
 export function TokenFeed({ limit = 48 }: { limit?: number }) {
@@ -130,7 +130,7 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   if (ranked.length === 0) {
     return (
       <div className="card p-10 text-center">
-        <p className="text-sm text-zinc-600">No profiles launched on Dime yet. Be the first.</p>
+        <p className="text-sm text-zinc-600">No profiles launched on NOIR yet. Be the first.</p>
         <Link href="/create" className="btn-brand mt-4 inline-flex">Launch my profile →</Link>
       </div>
     );

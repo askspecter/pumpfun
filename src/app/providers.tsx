@@ -27,7 +27,7 @@ import { SOLANA_RPC_URL } from "@/lib/solana";
 //      viem. Forcing a single viem broke WalletConnect and crashed the app.
 // And "@rainbow-me/rainbowkit/styles.css" is imported in layout.tsx.
 const wagmiConfig = getDefaultConfig({
-  appName: "Dime",
+  appName: "NOIR",
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "fomo_missing_wc_project_id",
   chains: [robinhoodChain],
   transports: {
@@ -42,10 +42,10 @@ const wagmiConfig = getDefaultConfig({
   ],
 });
 
-// Holographic dark theme to match the Dime glass logo.
+// Monochrome dark theme to match NOIR.
 const fomoTheme = darkTheme({
-  accentColor: "#a9b8ff",
-  accentColorForeground: "#0a0b16",
+  accentColor: "#ffffff",
+  accentColorForeground: "#08090a",
   borderRadius: "large",
   overlayBlur: "small",
   fontStack: "system",

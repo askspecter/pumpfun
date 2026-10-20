@@ -5,7 +5,7 @@ import { V2_GRADUATION_THRESHOLD_ETH } from "@/lib/pons";
 
 export const metadata: Metadata = {
   title: "Docs",
-  description: "How Dime tokenizes fomo.family profiles on the Pons bonding curve.",
+  description: "How NOIR tokenizes fomo.family and Pump.fun profiles on Robinhood Chain and Solana.",
 };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {

@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 
 /**
- * Mobile bottom tab bar — the app-style navigation matching fomo.family's
- * layout: Home, Explore, Dime (center), Leaderboard, Create.
+ * Mobile bottom tab bar: Markets, Explore, NOIR (center), Leaderboard, Create.
  * Desktop keeps the top SiteHeader, so this is hidden from md up.
  */
 type Tab = { href: string; label: string; icon: React.ReactNode };
@@ -33,29 +32,29 @@ export function BottomNav() {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 md:hidden" aria-label="Primary">
-      <div className="mx-auto mb-3 flex max-w-md items-center justify-between gap-1 rounded-full border border-ink-line bg-ink-900/85 px-3 py-2 shadow-card backdrop-blur-xl">
+      <div className="mx-auto mb-3 flex max-w-md items-center justify-between gap-1 rounded-full border border-ink-line bg-[#0f1013]/90 px-3 py-2 shadow-card backdrop-blur-xl">
         {TABS.slice(0, 2).map((t) => (
           <Link
             key={t.href}
             href={t.href}
             aria-label={t.label}
             className={`flex flex-1 flex-col items-center gap-0.5 py-1 transition ${
-              active(t.href) ? "text-pink" : "text-zinc-500 hover:text-zinc-900"
+              active(t.href) ? "text-white" : "text-zinc-500 hover:text-zinc-900"
             }`}
           >
             {t.icon}
           </Link>
         ))}
 
-        {/* Center: elevated Dime logo */}
-        <Link href="/" aria-label="Dime home" className="flex flex-1 justify-center">
+        {/* Center: NOIR mark */}
+        <Link href="/" aria-label="NOIR home" className="flex flex-1 justify-center">
           <span
             className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl transition ${
-              pathname === "/" ? "ring-2 ring-[#a9b8ff]/60" : ""
+              pathname === "/" ? "ring-2 ring-white/30" : ""
             }`}
-            style={{ boxShadow: "0 10px 30px -12px rgba(130,150,255,0.7)" }}
+            style={{ boxShadow: "0 10px 30px -12px rgba(255,255,255,0.35)" }}
           >
-            <Logo className="h-11 w-11" />
+            <Logo className="h-10 w-10" />
           </span>
         </Link>
 
@@ -65,7 +64,7 @@ export function BottomNav() {
             href={t.href}
             aria-label={t.label}
             className={`flex flex-1 flex-col items-center gap-0.5 py-1 transition ${
-              active(t.href) ? "text-pink" : "text-zinc-500 hover:text-zinc-900"
+              active(t.href) ? "text-white" : "text-zinc-500 hover:text-zinc-900"
             }`}
           >
             {t.icon}
