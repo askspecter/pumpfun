@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+#c{width:1600px;height:900px;position:relative;overflow:hidden;background:#060607;padding:56px 70px}
+.col{flex:1;padding:24px 30px;border-radius:28px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#101115,#0a0b0d)}
+.hd{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.hd img{width:40px;height:40px;border-radius:11px}
+.hd b{font:600 30px Inter;color:#fff;letter-spacing:-.01em}
+.hd span{margin-left:auto;font:400 18px Inter;color:#6b707a}
+.r{display:flex;align-items:center;gap:18px;padding:9px 0}
+.r+.r{border-top:1px solid rgba(255,255,255,.05)}
+.rk{width:30px;font:400 22px 'JetBrains Mono';color:#50545c}
+.av{width:56px;height:56px;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.nm{flex:1;min-width:0}
+.nm b{display:block;font:600 27px Inter;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm i{display:block;font-style:normal;font:400 19px Inter;color:#6b707a;margin-top:1px}
+.nm i.m{font:400 17px 'JetBrains Mono'}
+.fl{font:600 28px Inter;color:#fff}
+.g{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none}
+</style></head><body>
+<div id=c>
+ <div style="position:absolute;left:300px;top:-420px;width:1000px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(199,205,255,.20),transparent 65%)"></div>
+ <div style="position:relative;display:flex;align-items:center;gap:16px">
+  <img src="noir-logo-128.png" style="width:46px;height:46px;border-radius:12px">
+  <span style="font:600 26px Inter;letter-spacing:.34em;color:#eef0f3">NOIR</span>
+  <span style="margin-left:auto;display:flex;align-items:center;gap:10px;font:400 20px Inter;color:#8a8f98"><span style="width:10px;height:10px;border-radius:50%;background:#2fe39a"></span>Live ranking</span>
+ </div>
+ <div style="position:relative;margin-top:30px;font:700 64px/1.15 'Inter Display';letter-spacing:-.045em;color:#fff">Top profiles on @fomo &amp; @Pumpfun</div>
+ <div style="position:relative;margin-top:12px;font:400 25px Inter;color:#8a8f98">The most-followed creators right now. Tokenize any of them on NOIR.</div>
+ <div style="position:relative;display:flex;gap:28px;margin-top:32px">
+  <div class=col id=fomo><div class=hd><img src="fomo.jpg"><b>fomo.family</b><span>followers</span></div></div>
+  <div class=col id=pump><div class=hd><img src="pumpfun.jpg"><b>Pump.fun</b><span>followers</span></div></div>
+ </div>
+ <div style="position:absolute;left:70px;right:70px;bottom:52px;display:flex;align-items:center;font:400 21px Inter;color:#6b707a">
+  <img src="robinhood.png" style="width:28px;height:28px;border-radius:8px"><img src="solana.jpg" style="width:28px;height:28px;border-radius:8px;margin-left:10px">
+  <span style="margin-left:16px">Launch on Robinhood Chain or Solana</span>
+  <span style="margin-left:auto">Ranked by followers · public data, not endorsements</span>
+  <span style="margin-left:22px;color:#fff;font-weight:600">usenoir.app</span>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+</div>
+<script>
+const F=[["unipcs","Unipcs","@unipcs","799.3K"],["pointfarmcap","point farm capital","@pointfarmcap","415.9K"],["ogle","ogle","@ogle","185.5K"],["runningclam","Clam","@RunningClam","39.5K"],["chubbi230","230","@Chubbi230","37.1K"]];
+const P=[["logjam","_logjam","AH39…SKfL","142.6K"],["mirage","mirage","9oqc…Euww","128.7K"],["punter","punter","BGSe…Vm8o","118K"],["counter17","counter17","HsQn…Rd52","112K"],["soby0x","soby0x","EJa8…Z5xp","3.2K"]];
+const row=(m)=>([img,n,h,f],i)=>`<div class=r><div class=rk>${i+1}</div><img class=av src="${img}.png"><div class=nm><b>${n}</b><i class="${m?"m":""}">${h}</i></div><div class=fl>${f}</div></div>`;
+document.getElementById("fomo").insertAdjacentHTML("beforeend",F.map(row(false)).join(""));
+document.getElementById("pump").insertAdjacentHTML("beforeend",P.map(row(true)).join(""));
+</script></body></html>
