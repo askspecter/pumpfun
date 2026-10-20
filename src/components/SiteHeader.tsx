@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { WalletButton } from "./WalletButton";
 import { SolanaWalletButton } from "./SolanaWalletButton";
+import { BrandLogo } from "./BrandLogo";
 import { SITE, NAV } from "@/lib/site";
 
 export function SiteHeader() {
@@ -18,8 +19,10 @@ export function SiteHeader() {
         <Link href="/" className="group flex shrink-0 items-center gap-2.5">
           <Logo className="h-8 w-8 transition group-hover:scale-105" />
           <span className="wordmark text-lg text-zinc-900">{SITE.name}</span>
-          <span className="hidden rounded-full border border-ink-line px-2 py-0.5 text-[10px] font-medium text-zinc-500 sm:inline">
-            {SITE.poweredBy} v2 · Pump.fun
+          <span className="hidden items-center gap-1 rounded-full border border-ink-line px-1.5 py-1 sm:inline-flex" title="Robinhood · Solana · fomo · Pump.fun">
+            {(["robinhood", "solana", "fomo", "pumpfun"] as const).map((b) => (
+              <BrandLogo key={b} brand={b} className="h-4 w-4 rounded-full" />
+            ))}
           </span>
         </Link>
 
@@ -38,7 +41,8 @@ export function SiteHeader() {
           ))}
           <span className="mx-1 h-5 w-px bg-black/10" aria-hidden />
           <WalletButton variant="inline" />
-          <SolanaWalletButton label="Connect SOL" className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-pink transition hover:text-zinc-900" />
+          <BrandLogo brand="solana" className="h-4 w-4 rounded-full" />
+          <SolanaWalletButton label="Connect SOL" className="-ml-2 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-pink transition hover:text-zinc-900" />
         </nav>
 
         {/* Mobile: Connect only — navigation lives in the bottom bar. */}

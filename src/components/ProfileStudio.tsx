@@ -7,6 +7,7 @@ import { zeroAddress } from "viem";
 import { QuoteAssetSelect, type QuoteAsset } from "./QuoteAssetSelect";
 import { DeployButton } from "./DeployButton";
 import { PumpDeployButton, type PumpLaunchInput } from "./PumpDeployButton";
+import { BrandLogo } from "./BrandLogo";
 import { uploadLogo } from "@/lib/upload";
 import { V2_GRADUATION_THRESHOLD_ETH } from "@/lib/pons";
 import type { LaunchInput } from "@/lib/pons";
@@ -276,10 +277,11 @@ export function ProfileStudio({
               key={s}
               type="button"
               onClick={() => switchSource(s)}
-              className={`rounded-full px-3 py-2 text-sm font-semibold transition ${
+              className={`inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition ${
                 source === s ? "bg-zinc-900 text-white shadow" : "text-pink hover:text-zinc-900"
               }`}
             >
+              <BrandLogo brand={s} className="h-5 w-5 rounded-full" />
               @{s === "fomo" ? "fomo" : "Pumpfun"}
             </button>
           ))}
@@ -380,10 +382,14 @@ export function ProfileStudio({
               key={c}
               type="button"
               onClick={() => setChain(c)}
-              className={`rounded-full px-3 py-2 text-xs font-semibold transition sm:text-sm ${
+              className={`inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition sm:text-sm ${
                 chain === c ? "bg-zinc-900 text-white shadow" : "text-pink hover:text-zinc-900"
               }`}
             >
+              <span className="inline-flex -space-x-1.5">
+                <BrandLogo brand={c} className="h-5 w-5 rounded-full ring-1 ring-black/20" />
+                {c === "solana" && <BrandLogo brand="pumpfun" className="h-5 w-5 rounded-full ring-1 ring-black/20" />}
+              </span>
               {CHAIN_LABEL[c]}
             </button>
           ))}

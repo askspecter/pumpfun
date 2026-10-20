@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
+import { BrandLogo } from "./BrandLogo";
 
 /** A profile coin launched through Dime (from /api/launches). */
 interface LaunchItem {
@@ -165,8 +166,9 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
                 <div className="truncate font-bold text-zinc-900">{it.name || short(it.token)}</div>
                 {it.symbol && <div className="font-mono text-xs text-pink">${it.symbol}</div>}
               </div>
-              <span className={`chip shrink-0 ${solana ? "" : "chip-accent"}`} title={solana ? "Pump.fun on Solana" : "Pons on Robinhood Chain"}>
-                {solana ? "SOL · Pump" : "RH · Pons"}
+              <span className="inline-flex shrink-0 -space-x-1.5" title={solana ? "Pump.fun on Solana" : "Pons v2 on Robinhood Chain"}>
+                <BrandLogo brand={solana ? "solana" : "robinhood"} className="h-6 w-6 rounded-full ring-1 ring-black/20" />
+                {solana && <BrandLogo brand="pumpfun" className="h-6 w-6 rounded-full ring-1 ring-black/20" />}
               </span>
               {mc && (
                 <div className="shrink-0 text-right">
@@ -182,9 +184,10 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
                   href={profileLink(it.handle, it.source)}
                   target="_blank"
                   rel="noreferrer"
-                  className="truncate font-medium text-pink hover:underline"
+                  className="inline-flex min-w-0 items-center gap-1.5 truncate font-medium text-pink hover:underline"
                   title={it.source === "pumpfun" ? "Pump.fun profile" : "fomo.family profile"}
                 >
+                  <BrandLogo brand={it.source === "pumpfun" ? "pumpfun" : "fomo"} className="h-4 w-4 rounded-full" />
                   @{it.handle.replace(/^@+/, "")}
                 </a>
               ) : (
