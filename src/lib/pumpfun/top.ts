@@ -1,4 +1,5 @@
 import { isSolanaAddress } from "@/lib/solana";
+import { pumpGet, type PumpAttempt } from "./http";
 import { resolvePumpProfile, type PumpProfile } from "./resolve";
 
 /**
@@ -12,49 +13,44 @@ import { resolvePumpProfile, type PumpProfile } from "./resolve";
  * ─────────────────────────────────────────────────────────────────────────
  */
 
-const BASE_URL = (process.env.PUMPFUN_API_BASE_URL || "https://frontend-api-v3.pump.fun").replace(/\/+$/, "");
-
-/** How many top coins to scan for creators, and how many creators to resolve. */
 const COIN_SCAN = 60;
 const CREATOR_LIMIT = 24;
 
-async function topCoinCreators(): Promise<string[]> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12_000);
-  try {
-    const res = await fetch(
-      `${BASE_URL}/coins?offset=0&limit=${COIN_SCAN}&sort=market_cap&order=DESC&includeNsfw=false`,
-      {
-        headers: { accept: "application/json", origin: "https://pump.fun", referer: "https://pump.fun/" },
-        signal: controller.signal,
-        cache: "no-store",
-      },
-    );
-    if (!res.ok) return [];
-    const data = (await res.json()) as unknown;
-    const rows = Array.isArray(data)
-      ? data
-      : Array.isArray((data as { coins?: unknown[] })?.coins)
-        ? (data as { coins: unknown[] }).coins
-        : [];
+/** Coin listings to try, best first; later ones are fallbacks if Pump.fun renames things. */
+const COIN_LISTS = [
+  `/coins?offset=0&limit=${COIN_SCAN}&sort=market_cap&order=DESC&includeNsfw=false`,
+  `/coins/currently-live?offset=0&limit=${COIN_SCAN}&includeNsfw=false`,
+  `/coins/for-you?offset=0&limit=${COIN_SCAN}&includeNsfw=false`,
+];
+
+function rowsOf(data: unknown): Record<string, unknown>[] {
+  if (Array.isArray(data)) return data as Record<string, unknown>[];
+  const obj = data as { coins?: unknown; data?: unknown } | null;
+  if (Array.isArray(obj?.coins)) return obj!.coins as Record<string, unknown>[];
+  if (Array.isArray(obj?.data)) return obj!.data as Record<string, unknown>[];
+  return [];
+}
+
+async function topCoinCreators(log?: PumpAttempt[]): Promise<string[]> {
+  for (const path of COIN_LISTS) {
+    const res = await pumpGet(path, log);
+    if (!res?.ok) continue;
+    const rows = rowsOf(await res.json().catch(() => null));
     const creators: string[] = [];
-    for (const row of rows as Record<string, unknown>[]) {
+    for (const row of rows) {
       const c = row?.creator;
       if (isSolanaAddress(c) && !creators.includes(c)) creators.push(c);
       if (creators.length >= CREATOR_LIMIT) break;
     }
-    return creators;
-  } catch {
-    return [];
-  } finally {
-    clearTimeout(timeout);
+    if (creators.length > 0) return creators;
   }
+  return [];
 }
 
 /** Top Pump.fun profiles by followers. Returns [] when Pump.fun is unreachable. */
-export async function fetchTopPumpProfiles(limit = 20): Promise<PumpProfile[]> {
-  const creators = await topCoinCreators();
-  const settled = await Promise.allSettled(creators.map((c) => resolvePumpProfile(c)));
+export async function fetchTopPumpProfiles(limit = 20, log?: PumpAttempt[]): Promise<PumpProfile[]> {
+  const creators = await topCoinCreators(log);
+  const settled = await Promise.allSettled(creators.map((c, i) => resolvePumpProfile(c, i < 2 ? log : undefined)));
   return settled
     .filter((r): r is PromiseFulfilledResult<PumpProfile> => r.status === "fulfilled")
     .map((r) => r.value)

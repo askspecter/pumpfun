@@ -1,4 +1,5 @@
 import { isSolanaAddress } from "@/lib/solana";
+import { pumpGet, type PumpAttempt } from "./http";
 
 /**
  * ─────────────────────────────────────────────────────────────────────────
@@ -10,11 +11,9 @@ import { isSolanaAddress } from "@/lib/solana";
  *  (CORS), so it goes through /api/pumpfun/{id}.
  *
  *  The Pump.fun API is unofficial and can change; every field is read
- *  defensively and the base URL is overridable with PUMPFUN_API_BASE_URL.
+ *  defensively. Host fallback and browser headers live in http.ts.
  * ─────────────────────────────────────────────────────────────────────────
  */
-
-const BASE_URL = (process.env.PUMPFUN_API_BASE_URL || "https://frontend-api-v3.pump.fun").replace(/\/+$/, "");
 
 export interface PumpProfile {
   /** The profile's Solana wallet (base58). */
@@ -60,30 +59,14 @@ function num(v: unknown): number | null {
  * Throws PumpResolveError for bad input (400), unknown profile (404),
  * rate limits (429) and upstream failures (502).
  */
-export async function resolvePumpProfile(rawId: string): Promise<PumpProfile> {
+export async function resolvePumpProfile(rawId: string, log?: PumpAttempt[]): Promise<PumpProfile> {
   const id = cleanPumpId(rawId);
   if (id.length < 2) {
     throw new PumpResolveError("Enter a Pump.fun username or Solana wallet address.", 400);
   }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12_000);
-  let res: Response;
-  try {
-    res = await fetch(`${BASE_URL}/users/${encodeURIComponent(id)}`, {
-      headers: {
-        accept: "application/json",
-        origin: "https://pump.fun",
-        referer: "https://pump.fun/",
-      },
-      signal: controller.signal,
-      cache: "no-store",
-    });
-  } catch {
-    throw new PumpResolveError("Couldn't reach Pump.fun. Try again.", 502);
-  } finally {
-    clearTimeout(timeout);
-  }
+  const res = await pumpGet(`/users/${encodeURIComponent(id)}`, log);
+  if (!res) throw new PumpResolveError("Couldn't reach Pump.fun. Try again.", 502);
 
   if (res.status === 404 || res.status === 400) {
     throw new PumpResolveError(

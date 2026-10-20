@@ -74,7 +74,9 @@ export function TopProfiles({
           ))
         ) : rows.length === 0 ? (
           <div className="card p-8 text-center text-sm text-zinc-500">
-            Couldn’t load profiles right now. Try again in a moment.
+            {profiles.length > 0 && filter !== "all"
+              ? `${filter === "pumpfun" ? "Pump.fun" : "fomo.family"} profiles are temporarily unavailable. Check back in a few minutes.`
+              : "Couldn’t load profiles right now. Try again in a moment."}
           </div>
         ) : (
           rows.map((p, i) => (
