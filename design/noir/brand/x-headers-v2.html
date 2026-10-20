@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{width:1500px;height:500px;position:relative;overflow:hidden;background:#050506}
+.n{position:absolute;-webkit-mask:url(n-white.png) center/contain no-repeat;mask:url(n-white.png) center/contain no-repeat}
+.chrome{background:linear-gradient(160deg,#ffffff 0%,#c9ced8 22%,#6d7380 46%,#e9ecf2 54%,#8d93a0 72%,#f4f6fa 100%)}
+.wm{font:500 30px Inter;letter-spacing:.62em;padding-left:.62em}
+.g{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none}
+</style></head><body>
+
+<!-- A · Chrome N -->
+<div class=c id=a>
+ <div style="position:absolute;right:120px;top:-180px;width:860px;height:860px;border-radius:50%;background:radial-gradient(circle,rgba(205,212,235,.16),transparent 62%)"></div>
+ <img src="n-chrome.png" style="position:absolute;right:150px;top:-140px;width:780px;height:780px;filter:drop-shadow(0 0 60px rgba(200,208,235,.22))">
+ <div style="position:absolute;left:150px;top:205px">
+  <div class=wm style="color:#f2f3f5;padding-left:0">NOIR</div>
+  <div style="margin-top:18px;width:56px;height:1px;background:rgba(255,255,255,.35)"></div>
+  <div style="margin-top:18px;font:400 17px Inter;letter-spacing:.08em;color:#7d828c">Your profile. Now a market.</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="na"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#na)"/></svg>
+</div>
+
+<!-- B · Silver -->
+<div class=c id=b style="background:radial-gradient(ellipse 900px 600px at 20% 0%,#ffffff 0%,#dfe3ea 35%,#aab1bf 75%,#8d94a3 100%)">
+ <img src="n-black.png" style="position:absolute;right:110px;top:-150px;width:800px;height:800px">
+ <div style="position:absolute;left:150px;top:205px">
+  <div class=wm style="color:#0a0b0d;padding-left:0;font-weight:600">NOIR</div>
+  <div style="margin-top:18px;width:56px;height:1px;background:rgba(0,0,0,.35)"></div>
+  <div style="margin-top:18px;font:400 17px Inter;letter-spacing:.08em;color:#3d424c">Your profile. Now a market.</div>
+ </div>
+ <svg class=g width="100%" height="100%" style="opacity:.12"><filter id="nb"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#nb)"/></svg>
+</div>
+
+<!-- C · Outline -->
+<div class=c id=c>
+ <img src="n-outline.png" style="position:absolute;left:50%;top:50%;width:1000px;height:1000px;transform:translate(-50%,-50%);opacity:.22">
+ <div style="position:absolute;inset:0;background:radial-gradient(ellipse 520px 240px at 50% 50%,rgba(5,5,6,.92) 30%,transparent 75%)"></div>
+ <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+  <div class=wm style="font-size:40px;background:linear-gradient(180deg,#fff,#9ba1ad);-webkit-background-clip:text;color:transparent">NOIR</div>
+  <div style="margin-top:20px;font:400 16px Inter;letter-spacing:.32em;color:#6b707a">TOKENIZE YOUR PROFILE</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="nc"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#nc)"/></svg>
+</div>
+
+<!-- D · Monolith -->
+<div class=c id=d style="background:#030304">
+ <div style="position:absolute;left:50%;top:50%;width:700px;height:260px;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(205,212,235,.12),transparent 70%)"></div>
+ <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:34px">
+  <img src="n-chrome.png" style="width:92px;height:92px">
+  <div style="width:1px;height:70px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.4),transparent)"></div>
+  <div class=wm style="font-size:44px;color:#eef0f3;padding-left:0">NOIR</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="nd"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#nd)"/></svg>
+</div>
+</body></html>
