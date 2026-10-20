@@ -10,6 +10,8 @@ import { WalletGate } from "@/components/WalletGate";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Absolute base for og:image / twitter:image (X and Telegram need full URLs).
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://usenoir.app"),
   title: {
     default: `${SITE.name} · ${SITE.tagline}`,
     template: `%s · ${SITE.name}`,
@@ -17,14 +19,17 @@ export const metadata: Metadata = {
   description: SITE.description,
   applicationName: SITE.name,
   icons: {
-    icon: "/noir-logo.svg",
-    apple: "/noir-logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-64.png", type: "image/png", sizes: "64x64" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
     type: "website",
-    images: ["/noir-og.png"],
+    images: [{ url: "/noir-og.png", width: 1200, height: 630, alt: "NOIR · Your profile. Now a market." }],
   },
   twitter: {
     card: "summary_large_image",

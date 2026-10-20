@@ -281,3 +281,15 @@
   /* The ticker marquee is core to the page's feel — keep it running. */
   .marquee-track { animation: marquee 32s linear infinite !important; }
 }
+
+/* Long-form copy on Docs / Privacy / Terms */
+.doc-prose { color: var(--ink-3); font-size: 15px; line-height: 1.75; }
+.doc-prose > * + * { margin-top: 1rem; }
+.doc-prose strong { color: var(--ink-1); font-weight: 600; }
+.doc-prose a { color: var(--holo-2); text-decoration: underline; text-underline-offset: 3px; }
+.doc-prose h3 { margin-top: 1.75rem; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-1); }
+.doc-prose ul { list-style: none; padding-left: 0; }
+.doc-prose ul > li { position: relative; padding-left: 1.25rem; }
+.doc-prose ul > li + li { margin-top: 0.5rem; }
+.doc-prose ul > li::before { content: ""; position: absolute; left: 0.25rem; top: 0.72em; width: 5px; height: 5px; border-radius: 9999px; background: var(--ink-4); }
+.doc-prose code { font-family: var(--font-mono); font-size: 0.85em; padding: 0.1em 0.4em; border-radius: 6px; background: rgba(255,255,255,0.06); color: var(--ink-1); }

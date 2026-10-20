@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getKv } from "@/lib/kv";
-import { fetchLeaderboard } from "@/lib/fomo/resolve";
+import { fetchTopFomoProfiles } from "@/lib/fomo/top";
 import { fetchTopPumpProfiles } from "@/lib/pumpfun/top";
 import type { PumpAttempt } from "@/lib/pumpfun/http";
 
@@ -34,18 +34,16 @@ export interface TopProfile {
  */
 const TTL_FULL = 60 * 30;
 const TTL_PARTIAL = 60 * 3;
-const KEY = "noir:top-profiles:v2";
+const KEY = "noir:top-profiles:v3";
 type Payload = { profiles: TopProfile[]; sources: { fomo: number; pumpfun: number } };
 let memo: { until: number; data: Payload } | null = null;
 
 async function build(log?: PumpAttempt[]): Promise<Payload & { fomoError?: string }> {
-  const [fomo, pump] = await Promise.allSettled([fetchLeaderboard("30d", 100), fetchTopPumpProfiles(20, log)]);
+  const [fomo, pump] = await Promise.allSettled([fetchTopFomoProfiles(25), fetchTopPumpProfiles(25, log)]);
 
   const fomoProfiles: TopProfile[] =
     fomo.status === "fulfilled"
-      ? fomo.value.traders
-          .filter((t) => t.handle)
-          .map((t) => ({
+      ? fomo.value.map((t) => ({
             source: "fomo" as const,
             handle: t.handle,
             displayName: t.displayName || t.handle,
@@ -56,8 +54,6 @@ async function build(log?: PumpAttempt[]): Promise<Payload & { fomoError?: strin
             url: `https://fomo.family/${t.handle}`,
             pnlUsd: t.pnlUsd,
           }))
-          .sort((a, b) => (b.followers ?? 0) - (a.followers ?? 0))
-          .slice(0, 20)
       : [];
 
   const pumpProfiles: TopProfile[] =
