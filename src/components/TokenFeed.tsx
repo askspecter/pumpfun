@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
 import { BrandLogo } from "./BrandLogo";
+import { OfficialCoin } from "./OfficialCoin";
+import { OFFICIAL_TOKEN } from "@/lib/site";
 
 /** A profile coin launched through NOIR (from /api/launches). */
 interface LaunchItem {
@@ -122,7 +124,8 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   // Rank by market cap (bought coins rise); unpriced new coins fall in by recency.
   const ranked = useMemo(() => {
     if (!items) return null;
-    return [...items].sort((a, b) => {
+    // The official coin is pinned above the feed, so it isn't listed twice.
+    return items.filter((i) => i.token.toLowerCase() !== OFFICIAL_TOKEN.address.toLowerCase()).sort((a, b) => {
       // Rank by USD so ETH and SOL coins compare fairly.
       const ma = mcaps[mcKey(a)]?.usd;
       const mb = mcaps[mcKey(b)]?.usd;
@@ -133,6 +136,15 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
     });
   }, [items, mcaps]);
 
+  return (
+    <div className="space-y-4">
+      <OfficialCoin />
+      <FeedBody ranked={ranked} mcaps={mcaps} />
+    </div>
+  );
+}
+
+function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Record<string, McInfo> }) {
   if (ranked === null) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

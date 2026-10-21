@@ -38,36 +38,48 @@ export function DeployButton({
   const ready = strategy.info().ready;
 
   async function recordLaunch(hash: `0x${string}`) {
+    if (!address) return;
+    const meta = {
+      chain: "robinhood",
+      version: "v2",
+      name: input.name,
+      symbol: input.ticker,
+      logo: input.imageUri,
+      handle,
+      source,
+      twitter: input.twitter,
+      telegram: input.telegram,
+      website: input.website,
+      deployer: address,
+      txHash: hash,
+    };
     try {
-      if (!publicClient || !address) return;
-      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      if (!publicClient) throw new Error("no client");
+      const receipt = await publicClient.waitForTransactionReceipt({ hash, timeout: 60_000 });
       const logs = parseEventLogs({ abi: [v2TokenLaunchedEvent], logs: receipt.logs });
       const ev = logs.find((l) => (l.args as { token?: string })?.token);
       const args = ev?.args as { token?: string; curve?: string } | undefined;
-      if (!args?.token) return;
+      if (!args?.token) throw new Error("no launch event");
       setTokenAddress(args.token);
       await fetch("/api/launches", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          chain: "robinhood",
-          token: args.token,
-          curve: args.curve,
-          version: "v2",
-          name: input.name,
-          symbol: input.ticker,
-          logo: input.imageUri,
-          handle,
-          source,
-          twitter: input.twitter,
-          telegram: input.telegram,
-          website: input.website,
-          deployer: address,
-          txHash: hash,
-        }),
+        body: JSON.stringify({ ...meta, token: args.token, curve: args.curve }),
       });
     } catch {
-      // best-effort: the feed record is non-critical
+      // The browser couldn't read the receipt (often a flaky RPC on the user's
+      // network): let the server find the token and record it instead.
+      try {
+        const res = await fetch("/api/launches/from-tx", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(meta),
+        });
+        const d = (await res.json()) as { token?: string };
+        if (d.token) setTokenAddress(d.token);
+      } catch {
+        // best-effort: the feed record is non-critical
+      }
     }
   }
 
@@ -113,16 +125,24 @@ export function DeployButton({
 
       if (publicClient) {
         try {
-          await publicClient.simulateContract({
-            account: address,
-            address: plan.address,
-            abi: plan.abi as Abi,
-            functionName: plan.functionName,
-            args: plan.args as unknown[],
-            value: plan.value,
-          });
+          await Promise.race([
+            publicClient.simulateContract({
+              account: address,
+              address: plan.address,
+              abi: plan.abi as Abi,
+              functionName: plan.functionName,
+              args: plan.args as unknown[],
+              value: plan.value,
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("simulation timed out")), 15_000)),
+          ]);
         } catch (simErr) {
-          throw new Error("This launch would revert on-chain. Reason: " + revertReason(simErr));
+          // Only a real revert blocks the launch. RPC/network trouble on the
+          // user's side (timeouts, rate limits) skips the pre-check: the wallet
+          // still estimates gas itself and will refuse a failing transaction.
+          const reverted =
+            simErr instanceof BaseError && simErr.walk((e) => e instanceof ContractFunctionRevertedError);
+          if (reverted) throw new Error("This launch would revert on-chain. Reason: " + revertReason(simErr));
         }
       }
 

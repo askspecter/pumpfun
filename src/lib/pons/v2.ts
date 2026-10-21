@@ -15,6 +15,36 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   ]);
 }
 
+type Prep = [boolean | null, `0x${string}`, bigint];
+
+/**
+ * The three launch reads, most reliable source first: NOIR's server (doesn't
+ * depend on the user's network reaching the Robinhood RPC), then the browser's
+ * own RPC, retried once. Only if every path fails does the launch error out.
+ */
+async function readLaunchPrep(account: Address, configId: bigint, pairToken: Address): Promise<Prep> {
+  if (typeof window !== "undefined") {
+    try {
+      const q = new URLSearchParams({ account, config: configId.toString(), pair: pairToken });
+      const res = await fetch(`/api/v2/launch-prep?${q}`, { cache: "no-store", signal: AbortSignal.timeout(15_000) });
+      const d = (await res.json()) as { allowed?: boolean | null; economics?: `0x${string}`; fee?: string };
+      if (res.ok && d.economics && d.fee) return [d.allowed ?? null, d.economics, BigInt(d.fee)];
+    } catch {
+      // fall through to a direct read
+    }
+  }
+  const direct = () =>
+    withTimeout(
+      Promise.all([canLaunch(account).catch(() => null), previewLaunchEconomics(configId, pairToken), launchFee()]),
+      20_000,
+    );
+  try {
+    return await direct();
+  } catch {
+    return direct();
+  }
+}
+
 /**
  * Pons v2 - the token starts on an ETH-denominated bonding curve holding the
  * full supply, then auto-graduates into a permanently-locked Uniswap V4 pool
@@ -56,14 +86,7 @@ export class PonsV2Adapter implements LaunchStrategy {
     // The whitelist check is NON-BLOCKING: Pons launches are gated on-chain, so
     // if the wallet isn't allowlisted launchToken() reverts regardless — we
     // never block here, we just surface the reason so a revert isn't a mystery.
-    const [allowed, expectedEconomics, fee] = await withTimeout(
-      Promise.all([
-        canLaunch(account).catch(() => null),
-        previewLaunchEconomics(launchConfigId, pairToken),
-        launchFee(),
-      ]),
-      25_000,
-    );
+    const [allowed, expectedEconomics, fee] = await readLaunchPrep(account, launchConfigId, pairToken);
     if (allowed === false) {
       warnings.push(
         "This wallet is not on the Pons whitelist, so the launch will revert on-chain " +
