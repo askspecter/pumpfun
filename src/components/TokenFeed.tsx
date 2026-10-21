@@ -5,6 +5,7 @@ import Link from "next/link";
 import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
 import { BrandLogo } from "./BrandLogo";
 import { OfficialCoin } from "./OfficialCoin";
+import { ProfileAvatar } from "./home/ProfileAvatar";
 import { OFFICIAL_TOKEN } from "@/lib/site";
 
 /** A profile coin launched through NOIR (from /api/launches). */
@@ -179,8 +180,8 @@ function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Recor
             >
               <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-ink-line bg-white">
                 {it.logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={it.logo} alt={it.symbol ?? "token"} className="h-full w-full object-cover" />
+                  // Broken logo URLs fall back to a gradient initial instead of alt text.
+                  <ProfileAvatar src={it.logo} name={it.symbol || it.name || "?"} className="h-full w-full" rounded="rounded-none" />
                 ) : (
                   <span className="text-lg">🫥</span>
                 )}

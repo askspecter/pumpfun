@@ -9,7 +9,6 @@ import { OFFICIAL_TOKEN } from "@/lib/site";
 interface TokenData {
   name?: string;
   symbol?: string;
-  logo?: string;
   marketCapUsd?: number | null;
   marketCapEth?: number | null;
   curve?: { progress?: number; graduated?: boolean } | null;
@@ -52,12 +51,8 @@ export function OfficialCoin() {
     >
       <div className="flex flex-wrap items-center gap-4">
         <Link href={`/launch/${ca}`} className="flex min-w-0 flex-1 items-center gap-4">
-          {data?.logo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={data.logo} alt="NOIR" className="h-16 w-16 shrink-0 rounded-2xl object-cover" />
-          ) : (
-            <Logo className="h-16 w-16" />
-          )}
+          {/* Always the brand mark: it's the official coin, and the on-chain logo URL may not load. */}
+          <Logo className="h-16 w-16" />
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xl font-semibold text-white">{data?.name || "NOIR"}</span>
