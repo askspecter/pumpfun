@@ -37,6 +37,15 @@ your own wallet.
 - **Creator Bank (`/profile`):** coins you launched plus coins whose fees pay you, combined market
   cap, and claims for ETH and every stock/stable quote asset (Pump.fun fees link to Pump.fun).
 
+## 🐙 GitHub profiles
+
+- **Launch from GitHub:** pick *GitHub* in the studio and enter a username; name, avatar, bio, website
+  and X link are pulled from GitHub's public API (`/api/github/profile/{login}`, cached 10 minutes).
+  Works with either launch chain. Set `GITHUB_TOKEN` to raise GitHub's rate limit (60 → 5,000/hour).
+- **Wallets via bio:** GitHub has no wallets, so a profile's wallets are the EVM / Solana addresses its
+  owner writes in their GitHub bio (only the owner can edit it). A listed EVM wallet receives Pons
+  creator fees, and launching from a listed wallet earns the ✓ Verified badge.
+
 ## 🟣 Solana · Pump.fun
 
 - **@Pumpfun profiles:** pick *@Pumpfun* in the studio and enter a Pump.fun username or Solana

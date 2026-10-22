@@ -5,6 +5,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, VersionedTransaction } from "@solana/web3.js";
 import { SolanaWalletButton } from "./SolanaWalletButton";
 import { pumpCoinUrl, solanaTx } from "@/lib/solana";
+import type { ProfileSource } from "@/lib/profile-source";
 
 export interface PumpLaunchInput {
   name: string;
@@ -50,7 +51,7 @@ export function PumpDeployButton({
 }: {
   input: PumpLaunchInput;
   handle?: string;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   disabled?: boolean;
 }) {
   const { connection } = useConnection();

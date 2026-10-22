@@ -1,4 +1,5 @@
 import type { MarketItem } from "@/lib/markets";
+import { toSource } from "@/lib/profile-source";
 
 /**
  * NOIR Terminal command language. Pure: parses a line into an action the
@@ -8,7 +9,7 @@ import type { MarketItem } from "@/lib/markets";
  *   buy [$coin] <amount>        (ETH/quote on Robinhood, SOL on Solana)
  *   sell [$coin] <amount|25%>
  *   watch [$coin]
- *   launch @handle [--chain robinhood|solana] [--source fomo|pumpfun]
+ *   launch @handle [--chain robinhood|solana] [--source fomo|pumpfun|github]
  *   markets | bank | help | clear
  */
 export type Command =
@@ -28,6 +29,7 @@ export const HELP: [string, string][] = [
   ["sell 50%", "prefill a sell of half your bag"],
   ["watch", "add / remove the open coin from ★"],
   ["launch @handle --chain solana", "go launch a profile coin"],
+  ["launch @you --source github", "launch from your GitHub profile"],
   ["markets · bank · clear", "go to Markets / Creator Bank, clear the log"],
 ];
 
@@ -96,7 +98,7 @@ export function parseCommand(line: string, items: MarketItem[]): Command {
         else handle ??= rest[i];
       }
       const flag = (name: string) => flags[name];
-      const source = flag("source") === "pumpfun" ? "pumpfun" : "fomo";
+      const source = toSource(flag("source"));
       const chain = flag("chain") === "solana" || source === "pumpfun" ? "solana" : "robinhood";
       const params = new URLSearchParams({ chain, source });
       if (handle) params.set("handle", handle.replace(/^@+/, ""));

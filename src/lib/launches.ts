@@ -1,6 +1,7 @@
 import { isAddress } from "viem";
 import { getKv } from "@/lib/kv";
 import { isSolanaAddress, type LaunchChain } from "@/lib/solana";
+import type { ProfileSource } from "@/lib/profile-source";
 
 /** KV list holding the launches made through NOIR, newest first. */
 export const LAUNCHES_KEY = "fomo:launches";
@@ -18,7 +19,7 @@ export interface LaunchRecord {
   /** The profile handle this coin represents. */
   handle?: string;
   /** Where the handle lives. Missing on older records, which are all fomo.family. */
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   twitter?: string;
   telegram?: string;
   website?: string;

@@ -1,6 +1,8 @@
 import { getKv } from "@/lib/kv";
 import { cleanHandle, type FomoProfile } from "@/lib/fomo/resolve";
 import { cleanPumpId, resolvePumpProfile } from "@/lib/pumpfun/resolve";
+import { cleanGithubLogin, githubCacheKey, resolveGithubProfile, type GithubProfile } from "@/lib/github/resolve";
+import type { ProfileSource } from "@/lib/profile-source";
 import { isSolanaAddress, type LaunchChain } from "@/lib/solana";
 
 /**
@@ -19,6 +21,9 @@ import { isSolanaAddress, type LaunchChain } from "@/lib/solana";
  *  fomo.family wallets are read from the profile cache the studio fills when
  *  a creator drafts their coin (/api/fomo), never resolved here: the FOMO
  *  free tier allows only 25 resolutions a month.
+ *
+ *  GitHub has no wallets: a GitHub profile's wallets are the addresses its
+ *  owner wrote in their bio, which only the owner can edit.
  * ─────────────────────────────────────────────────────────────────────────
  */
 
@@ -28,7 +33,7 @@ export interface VerifyInput {
   chain: LaunchChain;
   token: string;
   handle?: string;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   /** On-chain creator (Pons deployer / Pump.fun curve creator). */
   creator: string | null;
   /** On-chain creator-fee recipient (Pons only; Pump.fun pays the creator). */
@@ -50,8 +55,15 @@ const PUMP_PROFILE_TTL = 60 * 60 * 12;
 const same = (a: string | null | undefined, b: string | null | undefined) =>
   !!a && !!b && (a.startsWith("0x") ? a.toLowerCase() === b.toLowerCase() : a === b);
 
-async function profileWallets(handle: string, source: "fomo" | "pumpfun"): Promise<ProfileWallets | null> {
+async function profileWallets(handle: string, source: ProfileSource): Promise<ProfileWallets | null> {
   const kv = getKv();
+  if (source === "github") {
+    const login = cleanGithubLogin(handle);
+    const cached = kv ? await kv.get<GithubProfile>(githubCacheKey(login)).catch(() => null) : null;
+    const profile = cached ?? (await resolveGithubProfile(login).catch(() => null));
+    if (profile && !cached && kv) await kv.set(githubCacheKey(login), profile, { ex: 600 }).catch(() => {});
+    return profile ? profile.wallets : null;
+  }
   if (source === "fomo") {
     if (!kv) return null;
     const cached = await kv.get<FomoProfile>(`fomo:profile:${cleanHandle(handle).toLowerCase()}`).catch(() => null);

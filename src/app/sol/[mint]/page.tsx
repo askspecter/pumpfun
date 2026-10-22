@@ -9,6 +9,7 @@ import { VerifiedBadge } from "@/components/markets/Badges";
 import { useMarketItem } from "@/components/markets/useMarket";
 import { compact } from "@/components/home/format";
 import { isSolanaAddress, profileLink, pumpCoinUrl, SOLANA_EXPLORER_URL } from "@/lib/solana";
+import { toSource, type ProfileSource } from "@/lib/profile-source";
 
 interface CoinData {
   mint: string;
@@ -18,7 +19,7 @@ interface CoinData {
   description: string;
   creator: string;
   handle: string | null;
-  source: "fomo" | "pumpfun" | null;
+  source: ProfileSource | null;
   twitter: string | null;
   telegram: string | null;
   website: string | null;
@@ -140,7 +141,7 @@ export default function SolanaCoinPage() {
               </button>
               {data.handle && (
                 <a href={profileLink(data.handle, data.source ?? undefined)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-white">
-                  <BrandLogo brand={data.source === "pumpfun" ? "pumpfun" : "fomo"} className="h-3 w-3 rounded-full" />@{data.handle}
+                  <BrandLogo brand={toSource(data.source)} className="h-3 w-3 rounded-full" />@{data.handle}
                 </a>
               )}
               {data.creator && <span>Creator {short(data.creator)}</span>}

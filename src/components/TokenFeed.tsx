@@ -9,11 +9,12 @@ import { ProfileAvatar } from "./home/ProfileAvatar";
 import { PairChip, VerifiedBadge } from "./markets/Badges";
 import { useMarket, type MarketItem } from "./markets/useMarket";
 import { OFFICIAL_TOKEN } from "@/lib/site";
+import { SOURCE_LABEL, toSource, type ProfileSource } from "@/lib/profile-source";
 
 /** A profile coin launched through NOIR (from /api/launches). */
 interface LaunchItem {
   chain?: LaunchChain;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   token: string;
   name: string;
   symbol: string;
@@ -232,9 +233,9 @@ function FeedBody({
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex min-w-0 items-center gap-1.5 truncate font-medium text-pink hover:underline"
-                  title={it.source === "pumpfun" ? "Pump.fun profile" : "fomo.family profile"}
+                  title={`${SOURCE_LABEL[toSource(it.source)]} profile`}
                 >
-                  <BrandLogo brand={it.source === "pumpfun" ? "pumpfun" : "fomo"} className="h-4 w-4 rounded-full" />
+                  <BrandLogo brand={toSource(it.source)} className="h-4 w-4 rounded-full" />
                   @{it.handle.replace(/^@+/, "")}
                 </a>
               ) : (

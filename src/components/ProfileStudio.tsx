@@ -9,6 +9,7 @@ import { DeployButton } from "./DeployButton";
 import { PumpDeployButton, type PumpLaunchInput } from "./PumpDeployButton";
 import { BrandLogo } from "./BrandLogo";
 import { AssetLogo } from "./AssetLogo";
+import { PROFILE_SOURCES, SOURCE_LABEL, type ProfileSource } from "@/lib/profile-source";
 import { uploadLogo } from "@/lib/upload";
 import { V2_GRADUATION_THRESHOLD_ETH } from "@/lib/pons";
 import type { LaunchInput } from "@/lib/pons";
@@ -21,17 +22,12 @@ interface LaunchOptions {
   quoteAssets: QuoteAsset[];
 }
 
-export type ProfileSource = "fomo" | "pumpfun";
+export type { ProfileSource };
 
 const ETH_ASSET: QuoteAsset = {
   asset: zeroAddress,
   symbol: "ETH",
   name: "Ether",
-};
-
-const SOURCE_LABEL: Record<ProfileSource, string> = {
-  fomo: "fomo.family",
-  pumpfun: "Pump.fun",
 };
 
 const CHAIN_LABEL: Record<LaunchChain, string> = {
@@ -48,7 +44,14 @@ function short(a: string): string {
   return `${a.slice(0, a.startsWith("0x") ? 6 : 4)}…${a.slice(-4)}`;
 }
 
-/** A detected profile, normalized across fomo.family and Pump.fun. */
+/** What to type into the handle field, per source. */
+const HANDLE_PROMPT: Record<ProfileSource, { label: string; placeholder: string; missing: string }> = {
+  fomo: { label: "Handle", placeholder: "yourname", missing: "Enter your fomo.family handle first." },
+  pumpfun: { label: "Username or wallet address", placeholder: "yourname or 7xKX…", missing: "Enter your Pump.fun username or wallet first." },
+  github: { label: "GitHub username", placeholder: "octocat", missing: "Enter your GitHub username first." },
+};
+
+/** A detected profile, normalized across fomo.family, Pump.fun and GitHub. */
 interface DetectedProfile {
   source: ProfileSource;
   handle: string;
@@ -161,9 +164,7 @@ export function ProfileStudio({
   async function detectProfile() {
     const h = cleanHandle(handle);
     if (h.length < 2) {
-      setDetectError(
-        source === "fomo" ? "Enter your fomo.family handle first." : "Enter your Pump.fun username or wallet first.",
-      );
+      setDetectError(HANDLE_PROMPT[source].missing);
       return;
     }
     setDetectError(null);
@@ -190,6 +191,32 @@ export function ProfileStudio({
           url: `https://fomo.family/${p.handle}`,
         });
         prefill(p);
+      } else if (source === "github") {
+        const res = await fetch(`/api/github/profile/${encodeURIComponent(h)}`, { cache: "no-store" });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error ?? "Couldn't detect that profile.");
+        const p = data.profile as {
+          login: string;
+          displayName: string;
+          bio: string;
+          avatar: string;
+          url: string;
+          website: string;
+          twitter: string;
+          wallets: { evm: string | null; solana: string | null };
+        };
+        setProfile({ source, handle: p.login, displayName: p.displayName, verified: false, wallets: p.wallets, url: p.url });
+        // Wallets in the bio are proof, not copy: keep them out of the coin's description.
+        const bio = p.bio
+          .replace(/\b(?:wallet|eth|evm|sol|solana)\s*[:=]\s*/gi, " ")
+          .replace(/0x[a-fA-F0-9]{40}|[1-9A-HJ-NP-Za-km-z]{32,44}/g, "")
+          .replace(/\s{2,}/g, " ")
+          .trim()
+          .replace(/[.,;:|·-]+$/, "")
+          .trim();
+        prefill({ handle: p.login, displayName: p.displayName, bio, avatar: p.avatar });
+        setWebsite((prev) => prev || p.website || p.url);
+        if (p.twitter) setTwitter((prev) => prev || p.twitter);
       } else {
         const res = await fetch(`/api/pumpfun/profile/${encodeURIComponent(h)}`, { cache: "no-store" });
         const data = await res.json();
@@ -277,8 +304,8 @@ export function ProfileStudio({
         </div>
 
         {/* Profile source toggle */}
-        <div className="mt-4 grid grid-cols-2 gap-1 rounded-full border border-ink-line bg-white/60 p-1">
-          {(["fomo", "pumpfun"] as const).map((s) => (
+        <div className="mt-4 grid grid-cols-3 gap-1 rounded-full border border-ink-line bg-white/60 p-1">
+          {PROFILE_SOURCES.map((s) => (
             <button
               key={s}
               type="button"
@@ -288,7 +315,7 @@ export function ProfileStudio({
               }`}
             >
               <BrandLogo brand={s} className="h-5 w-5 rounded-full" />
-              @{s === "fomo" ? "fomo" : "Pumpfun"}
+              {s === "fomo" ? "@fomo" : s === "pumpfun" ? "@Pumpfun" : "GitHub"}
             </button>
           ))}
         </div>
@@ -296,19 +323,21 @@ export function ProfileStudio({
         <p className="mt-3 text-sm text-zinc-600">
           {source === "fomo"
             ? "Drop your fomo.family handle and detect your profile. We pull your name, avatar and bio straight from fomo.family and route Pons creator fees to your profile’s wallet."
-            : "Drop your Pump.fun username or Solana wallet address. We pull your username, avatar and bio straight from your Pump.fun profile."}{" "}
+            : source === "pumpfun"
+              ? "Drop your Pump.fun username or Solana wallet address. We pull your username, avatar and bio straight from your Pump.fun profile."
+              : "Builders, this one’s for you. Drop your GitHub username and we pull your name, avatar and bio from GitHub. Put your wallet address in your GitHub bio to route creator fees to it and earn the ✓ Verified badge."}{" "}
           Everything stays editable before you launch.
         </p>
 
         <label className="mt-5 block text-xs font-semibold text-zinc-500">
-          {source === "fomo" ? "Handle" : "Username or wallet address"}
+          {HANDLE_PROMPT[source].label}
         </label>
         <div className="mt-1 flex items-center gap-2">
           <span className="text-sm text-zinc-400">@</span>
           <input
             value={handle}
             onChange={(e) => setHandle(e.target.value)}
-            placeholder={source === "fomo" ? "yourname" : "yourname or 7xKX…"}
+            placeholder={HANDLE_PROMPT[source].placeholder}
             className="field"
           />
         </div>
@@ -338,9 +367,16 @@ export function ProfileStudio({
                 </p>
               ) : (
                 <p className="mt-1 text-amber-600">
-                  No EVM wallet on this profile, so Pons fees fall back to your connected wallet.
+                  {profile.source === "github"
+                    ? "No EVM wallet in this GitHub bio, so Pons fees fall back to your connected wallet. Add your address to your bio, then re-detect."
+                    : "No EVM wallet on this profile, so Pons fees fall back to your connected wallet."}
                 </p>
               ))}
+            {profile.source === "github" && (
+              <p className="mt-1 text-zinc-500">
+                ✓ Verified when you launch from the {isSolana ? "Solana" : "EVM"} wallet listed in your GitHub bio.
+              </p>
+            )}
             {isSolana && profile.wallets.solana && (
               <p className="mt-1 text-zinc-500">
                 Profile Solana wallet: <span className="font-mono text-zinc-700">{short(profile.wallets.solana)}</span>

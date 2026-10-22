@@ -1,3 +1,5 @@
+import type { ProfileSource } from "@/lib/profile-source";
+
 /**
  * Solana network settings for the Pump.fun launch path.
  * Public values only — safe to expose to the browser.
@@ -43,7 +45,9 @@ export function coinLink(item: { chain?: LaunchChain; token: string }): { href: 
 }
 
 /** Public profile page for a feed record's handle. */
-export function profileLink(handle: string, source?: "fomo" | "pumpfun"): string {
+export function profileLink(handle: string, source?: ProfileSource): string {
   const h = handle.replace(/^@+/, "");
-  return source === "pumpfun" ? pumpProfileUrl(h) : `https://fomo.family/${h}`;
+  if (source === "pumpfun") return pumpProfileUrl(h);
+  if (source === "github") return `https://github.com/${h}`;
+  return `https://fomo.family/${h}`;
 }

@@ -10,6 +10,7 @@ import { ponsClient } from "@/lib/pons/reader";
 import { PONS_V2, V2_QUOTE_TOKENS } from "@/lib/pons/registry";
 import { verifyMany, type Verification } from "@/lib/verify";
 import type { LaunchChain } from "@/lib/solana";
+import type { ProfileSource } from "@/lib/profile-source";
 
 /**
  * ─────────────────────────────────────────────────────────────────────────
@@ -33,7 +34,7 @@ export interface MarketItem {
   symbol: string;
   logo: string;
   handle: string | null;
-  source: "fomo" | "pumpfun" | null;
+  source: ProfileSource | null;
   createdAt: number;
   /** On-chain creator (Pons deployer / Pump.fun curve creator). */
   creator: string | null;

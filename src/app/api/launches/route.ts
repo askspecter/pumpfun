@@ -11,6 +11,7 @@ import {
   type LaunchRecord,
 } from "@/lib/launches";
 import { proveRobinhoodLaunch, proveSolanaLaunch } from "@/lib/launch-proof";
+import { toSource } from "@/lib/profile-source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -86,7 +87,7 @@ export async function POST(req: Request) {
     symbol: String(body.symbol ?? "").slice(0, 16),
     logo: String(body.logo ?? "").slice(0, 2000),
     handle: body.handle ? String(body.handle).slice(0, 80) : undefined,
-    source: body.source === "pumpfun" ? "pumpfun" : "fomo",
+    source: toSource(body.source),
     twitter: body.twitter ? String(body.twitter).slice(0, 200) : undefined,
     telegram: body.telegram ? String(body.telegram).slice(0, 200) : undefined,
     website: body.website ? String(body.website).slice(0, 200) : undefined,
