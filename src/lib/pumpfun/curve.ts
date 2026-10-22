@@ -42,7 +42,7 @@ export function bondingCurvePda(mint: PublicKey): PublicKey {
 }
 
 let connection: Connection | null = null;
-function rpc(): Connection {
+export function rpc(): Connection {
   connection ??= new Connection(process.env.SOLANA_RPC_URL?.trim() || SOLANA_RPC_URL, "confirmed");
   return connection;
 }

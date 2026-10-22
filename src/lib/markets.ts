@@ -1,4 +1,4 @@
-import { parseAbi, zeroAddress, type Address } from "viem";
+import { isAddress, parseAbi, zeroAddress, type Address } from "viem";
 import { getKv } from "@/lib/kv";
 import { readLaunches, type LaunchRecord } from "@/lib/launches";
 import { dexQuotes, type DexQuote } from "@/lib/dexscreener";
@@ -7,7 +7,7 @@ import { solUsd } from "@/lib/sol-price";
 import { readCurves, type CurveState as PumpCurve } from "@/lib/pumpfun/curve";
 import { getCurveState, getLaunchedTokenV2, getQuoteMeta, type LaunchedTokenV2 } from "@/lib/pons/readerV2";
 import { ponsClient } from "@/lib/pons/reader";
-import { V2_QUOTE_TOKENS } from "@/lib/pons/registry";
+import { PONS_V2, V2_QUOTE_TOKENS } from "@/lib/pons/registry";
 import { verifyMany, type Verification } from "@/lib/verify";
 import type { LaunchChain } from "@/lib/solana";
 
@@ -157,7 +157,10 @@ async function robinhoodItems(launches: LaunchRecord[]): Promise<MarketItem[]> {
       const item = baseItem(l, "robinhood");
       const rec = records[i];
       if (rec?.exists) {
-        item.creator = rec.deployer;
+        // Launches with a dev buy record the LaunchAndBuy router as deployer;
+        // the person is the launch record's deployer (the tx sender) then.
+        const viaRouter = rec.deployer.toLowerCase() === PONS_V2.launchAndBuy.toLowerCase();
+        item.creator = viaRouter ? (isAddress(l.deployer) ? l.deployer : null) : rec.deployer;
         item.feeRecipient = rec.creatorFeeRecipient;
         if (rec.pairToken && rec.pairToken !== zeroAddress) {
           const meta = PAIRS.get(rec.pairToken.toLowerCase());

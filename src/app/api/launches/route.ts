@@ -10,10 +10,12 @@ import {
   sameId,
   type LaunchRecord,
 } from "@/lib/launches";
+import { proveRobinhoodLaunch, proveSolanaLaunch } from "@/lib/launch-proof";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const maxDuration = 60;
 
 export type { LaunchRecord };
 
@@ -44,7 +46,11 @@ export async function GET(req: Request) {
   return NextResponse.json({ items });
 }
 
-/** POST /api/launches - record a profile launch made through NOIR. */
+/**
+ * POST /api/launches - record a profile launch made through NOIR.
+ * The launch transaction (txHash) must prove the coin on-chain; the creator
+ * is taken from the chain, not from the request.
+ */
 export async function POST(req: Request) {
   const kv = getKv();
   if (!kv) return NextResponse.json({ error: "Storage not configured." }, { status: 503 });
@@ -61,11 +67,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing/invalid token address." }, { status: 400 });
   }
   const evm = chain === "robinhood";
+  const txHash = String(body.txHash ?? "");
+
+  // Already listed (the browser and the server fallback can both record).
+  if ((await readLaunches()).some((r) => sameId(r.token, body.token!))) return NextResponse.json({ ok: true });
+
+  const proof = evm ? await proveRobinhoodLaunch(txHash, body.token) : await proveSolanaLaunch(txHash, body.token);
+  if (!proof) {
+    return NextResponse.json({ error: "Couldn't verify this launch on-chain." }, { status: 422 });
+  }
 
   const record: LaunchRecord = {
     chain,
     token: body.token,
-    curve: evm && body.curve && isAddress(body.curve) ? body.curve : undefined,
+    curve: proof.curve,
     version: "v2",
     name: String(body.name ?? "").slice(0, 80),
     symbol: String(body.symbol ?? "").slice(0, 16),
@@ -75,13 +90,8 @@ export async function POST(req: Request) {
     twitter: body.twitter ? String(body.twitter).slice(0, 200) : undefined,
     telegram: body.telegram ? String(body.telegram).slice(0, 200) : undefined,
     website: body.website ? String(body.website).slice(0, 200) : undefined,
-    deployer:
-      body.deployer && (evm ? isAddress(body.deployer) : isSolanaAddress(body.deployer))
-        ? body.deployer
-        : evm
-          ? "0x0000000000000000000000000000000000000000"
-          : "11111111111111111111111111111111",
-    txHash: String(body.txHash ?? "").slice(0, 100),
+    deployer: proof.deployer,
+    txHash: txHash.slice(0, 100),
     createdAt: Date.now(),
   };
 
