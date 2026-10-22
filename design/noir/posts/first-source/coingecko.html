@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{position:relative;overflow:hidden;background:#000}
+.sq{width:1600px;height:1600px}.ls{width:1600px;height:900px}
+.wm{position:absolute;display:flex;align-items:center;gap:16px;font:600 30px Inter;letter-spacing:.42em;color:#eef0f3}
+.g{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+.stage{position:absolute;perspective:2200px}
+.rot{position:absolute;inset:0;transform-style:preserve-3d}
+.tile{position:absolute;inset:0;border-radius:22%;transform-style:preserve-3d;
+ background:linear-gradient(150deg,#2a2c33 0%,#121318 45%,#08090b 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -30px 60px rgba(0,0,0,.6),0 80px 160px rgba(0,0,0,.7)}
+.tile:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.05) 40%,rgba(199,205,255,.5) 75%,rgba(255,255,255,.1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2}
+.tile img.n{position:absolute;left:21%;top:21%;width:58%;height:58%;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55))}
+.tile img.cg{position:absolute;left:16%;top:16%;width:68%;height:68%;border-radius:50%;box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.side{position:absolute;inset:0;border-radius:22%;background:linear-gradient(160deg,#3b3e48,#0c0d10);transform:translateZ(-60px)}
+.t{background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.55));-webkit-background-clip:text;color:transparent}
+.k{font:500 22px Inter;letter-spacing:.38em;color:#7d828c}
+.x{position:absolute;font:200 110px Inter;color:#50545c}
+.status{display:inline-flex;align-items:center;gap:16px;padding:16px 30px;border-radius:999px;border:1px solid rgba(255,206,106,.35);background:rgba(255,206,106,.08);font:600 24px 'JetBrains Mono';letter-spacing:.2em;color:#ffce6a}
+.dot{width:12px;height:12px;border-radius:50%;background:#ffce6a;box-shadow:0 0 18px 4px rgba(255,206,106,.6)}
+.id{font:500 20px 'JetBrains Mono';letter-spacing:.12em;color:#50545c}
+.beam{position:absolute;left:-10%;right:-10%;height:420px;background:radial-gradient(ellipse 760px 140px at 50% 50%,rgba(124,140,255,.28),transparent 72%)}
+</style></head><body>
+
+<!-- Square 1600 -->
+<div class="c sq" id=A>
+ <div class=beam style="top:520px"></div>
+ <div class=wm style="left:96px;top:92px"><img src="../../../../public/noir-logo-128.png" style="width:46px;height:46px;border-radius:12px">NOIR</div>
+ <div style="position:absolute;right:96px;top:100px" class=k>FILE 003</div>
+ <div class=stage style="left:210px;top:420px;width:470px;height:470px"><div class=rot style="transform:rotateX(18deg) rotateY(26deg) rotateZ(4deg)"><div class=side></div><div class=tile><img class=n src="../../brand/n-chrome.png"></div></div></div>
+ <div class=x style="left:752px;top:560px">×</div>
+ <div class=stage style="left:920px;top:420px;width:470px;height:470px"><div class=rot style="transform:rotateX(18deg) rotateY(-26deg) rotateZ(-4deg)"><div class=side></div><div class=tile><img class=cg src="coingecko.jpg"></div></div></div>
+ <div style="position:absolute;left:0;right:0;top:1040px;text-align:center">
+  <div class=t style="font:700 120px/1 'Inter Display';letter-spacing:-.05em">$NOIR × CoinGecko</div>
+  <div class=k style="margin-top:40px">LISTING APPLICATION SUBMITTED</div>
+  <div style="margin-top:46px"><span class=status><span class=dot></span>UNDER REVIEW</span></div>
+  <div class=id style="margin-top:34px">REQUEST ID · CL1730618199</div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#a)"/></svg>
+</div>
+
+<!-- Wide 1600x900 -->
+<div class="c ls" id=B>
+ <div class=beam style="top:250px"></div>
+ <div class=wm style="left:80px;top:72px"><img src="../../../../public/noir-logo-128.png" style="width:42px;height:42px;border-radius:11px">NOIR</div>
+ <div style="position:absolute;right:80px;top:80px" class=k>FILE 003</div>
+ <div class=stage style="left:150px;top:250px;width:330px;height:330px"><div class=rot style="transform:rotateX(18deg) rotateY(26deg) rotateZ(4deg)"><div class=side></div><div class=tile><img class=n src="../../brand/n-chrome.png"></div></div></div>
+ <div class=x style="left:500px;top:340px;font-size:84px">×</div>
+ <div class=stage style="left:640px;top:250px;width:330px;height:330px"><div class=rot style="transform:rotateX(18deg) rotateY(-26deg) rotateZ(-4deg)"><div class=side></div><div class=tile><img class=cg src="coingecko.jpg"></div></div></div>
+ <div style="position:absolute;left:1050px;top:262px;width:480px">
+  <div class=k style="font-size:18px">LISTING APPLICATION</div>
+  <div class=t style="margin-top:22px;font:700 84px/1 'Inter Display';letter-spacing:-.05em">$NOIR<br>× CoinGecko</div>
+  <div style="margin-top:36px"><span class=status style="font-size:20px;padding:13px 24px"><span class=dot></span>UNDER REVIEW</span></div>
+  <div class=id style="margin-top:28px;font-size:17px">REQUEST ID · CL1730618199</div>
+ </div>
+ <div style="position:absolute;left:0;right:0;bottom:64px;text-align:center" class=k>NEXT STEP: THE LISTING &nbsp;·&nbsp; USENOIR.APP</div>
+ <svg class=g width="100%" height="100%"><filter id="b"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#b)"/></svg>
+</div>
+</body></html>
