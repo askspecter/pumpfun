@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { coinLink } from "@/lib/solana";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -8,6 +8,7 @@ import { ProfileAvatar } from "@/components/home/ProfileAvatar";
 import { MarketTicker } from "@/components/markets/MarketTicker";
 import { PairChip, VerifiedBadge } from "@/components/markets/Badges";
 import { fmtPct, fmtUsd, pctClass, useMarket, type MarketItem } from "@/components/markets/useMarket";
+import { useWatchlist } from "@/components/markets/useWatchlist";
 
 type Tab = "top" | "gainers" | "losers" | "new" | "verified" | "stocks" | "watchlist";
 
@@ -20,32 +21,6 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "stocks", label: "Stock-paired" },
   { id: "watchlist", label: "★ Watchlist" },
 ];
-
-const WATCH_KEY = "noir.watchlist";
-
-/** Watchlist kept in this browser (best-effort: storage can be unavailable). */
-function useWatchlist() {
-  const [list, setList] = useState<string[]>([]);
-  useEffect(() => {
-    try {
-      const raw = JSON.parse(localStorage.getItem(WATCH_KEY) ?? "[]");
-      if (Array.isArray(raw)) setList(raw.filter((x): x is string => typeof x === "string"));
-    } catch {
-      // storage unavailable
-    }
-  }, []);
-  const toggle = (token: string) =>
-    setList((prev) => {
-      const next = prev.includes(token) ? prev.filter((t) => t !== token) : [...prev, token];
-      try {
-        localStorage.setItem(WATCH_KEY, JSON.stringify(next));
-      } catch {
-        // storage unavailable
-      }
-      return next;
-    });
-  return { list, toggle };
-}
 
 function byMc(a: MarketItem, b: MarketItem) {
   return (b.marketCapUsd ?? -1) - (a.marketCapUsd ?? -1) || b.createdAt - a.createdAt;

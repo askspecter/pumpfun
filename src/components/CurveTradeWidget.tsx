@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { pctOf, type TradeIntent } from "./tradeIntent";
 import { useAccount, useBalance, useReadContract, useWriteContract } from "wagmi";
 import { formatEther, formatUnits, parseAbi, parseEther, parseUnits, zeroAddress, type Address } from "viem";
 import { v2CurveAbi } from "@/lib/pons/abisV2";
@@ -27,6 +28,7 @@ export function CurveTradeWidget({
   decimals,
   pairToken,
   curve,
+  intent,
 }: {
   curveAddress: Address;
   token: Address;
@@ -34,6 +36,8 @@ export function CurveTradeWidget({
   decimals: number;
   pairToken: Address;
   curve: CurveInfo;
+  /** Prefill from the Terminal (side / amount); never submits. */
+  intent?: TradeIntent;
 }) {
   const { address, isConnected } = useAccount();
   const { writeContractAsync } = useWriteContract();
@@ -89,6 +93,18 @@ export function CurveTradeWidget({
     if (x >= 1) return x.toLocaleString(undefined, { maximumFractionDigits: 4 });
     return x.toFixed(8).replace(/0+$/, "").replace(/\.$/, "");
   }
+
+  // Terminal prefill: switch side and/or fill the amount ("25%" = share of the token balance).
+  useEffect(() => {
+    if (!intent) return;
+    if (intent.side) setSide(intent.side);
+    if (intent.amount == null) return;
+    const pct = pctOf(intent.amount);
+    if (pct == null) setAmount(intent.amount.replace(/[^0-9.]/g, ""));
+    else if (tokenBalRaw !== undefined) setAmount(formatUnits(((tokenBalRaw as bigint) * BigInt(Math.round(pct * 10000))) / 10000n, decimals));
+    else setAmount("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intent?.nonce]);
 
   function setMax() {
     if (side === "buy") {

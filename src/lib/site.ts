@@ -25,6 +25,7 @@ export const OFFICIAL_TOKEN = {
 export const NAV = [
   { href: "/", label: "Home" },
   { href: "/markets", label: "Markets" },
+  { href: "/terminal", label: "Terminal" },
   { href: "/explore", label: "Explore" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/create", label: "Launch" },

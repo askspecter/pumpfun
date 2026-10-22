@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { pctOf, type TradeIntent } from "./tradeIntent";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, VersionedTransaction } from "@solana/web3.js";
 import { SolanaWalletButton } from "./SolanaWalletButton";
@@ -35,11 +36,14 @@ export function SolanaTradeWidget({
   symbol,
   reserves,
   onTraded,
+  intent,
 }: {
   mint: string;
   symbol: string;
   reserves: Reserves | null;
   onTraded?: () => void;
+  /** Prefill from the Terminal (side / amount); never submits. */
+  intent?: TradeIntent;
 }) {
   const { connection } = useConnection();
   const { publicKey, signTransaction, sendTransaction } = useWallet();
@@ -51,6 +55,17 @@ export function SolanaTradeWidget({
   const [status, setStatus] = useState<"idle" | "building" | "signing" | "confirming" | "done" | "error">("idle");
   const [sig, setSig] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Terminal prefill: switch side and/or fill the amount ("25%" = share of the token balance).
+  useEffect(() => {
+    if (!intent) return;
+    if (intent.side) setSide(intent.side);
+    if (intent.amount == null) return;
+    const pct = pctOf(intent.amount);
+    if (pct == null) setAmount(intent.amount.replace(/[^0-9.]/g, ""));
+    else setAmount(tokBal ? String(Math.floor(tokBal * pct * 1e6) / 1e6) : "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intent?.nonce]);
 
   const loadBalances = useCallback(async () => {
     if (!publicKey) return;
