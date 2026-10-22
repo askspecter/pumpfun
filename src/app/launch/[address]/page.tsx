@@ -103,7 +103,8 @@ export default function ProfileCoinPage() {
     );
   }
 
-  const onCurve = data.phase === 0 && data.curve && !data.curve.graduated;
+  // A coin with a live DEX pool trades there, even if the curve has not finalized graduation.
+  const onCurve = data.phase === 0 && data.curve && !data.curve.graduated && !data.dex;
   const pairToken = (data.pairToken || zeroAddress) as Address;
 
   return (

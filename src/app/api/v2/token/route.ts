@@ -76,9 +76,10 @@ export async function GET(req: Request) {
     let priceUsd = usd != null && priceEth != null ? priceEth * usd : null;
     let marketCapUsd = usd != null && marketCapEth != null ? marketCapEth * usd : null;
 
-    // Graduated: the curve no longer prices the coin, the DEX pool does.
-    const graduated = record.phase !== 0 || Boolean(curve?.graduated);
-    const dex = graduated ? await dexQuote(token) : null;
+    // Once a coin trades on a DEX pool, that pool is its market — even while the
+    // curve still reports phase 0 (threshold hit, graduation not yet finalized),
+    // when the curve's price is frozen. So a live DEX quote always wins.
+    const dex = await dexQuote(token);
     if (dex && (dex.priceUsd != null || dex.marketCapUsd != null)) {
       priceUsd = dex.priceUsd;
       marketCapUsd = dex.marketCapUsd ?? (dex.priceUsd != null && humanSupply != null ? dex.priceUsd * humanSupply : null);
@@ -149,7 +150,7 @@ export async function GET(req: Request) {
         const last = await kv.get<Record<string, unknown>>(lastKey(token));
         if (last) {
           // A graduated coin can still get a live price from the DEX.
-          const dex = last.phase !== 0 ? await dexQuote(token) : null;
+          const dex = await dexQuote(token);
           if (dex?.marketCapUsd != null) {
             const usd = await ethUsd();
             return NextResponse.json({

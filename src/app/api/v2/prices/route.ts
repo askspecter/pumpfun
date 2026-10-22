@@ -28,10 +28,13 @@ interface Price {
 }
 
 async function readPrice(token: Address, usd: number | null): Promise<Price | null> {
+  // A live DEX pool is the market whenever one exists (see /api/v2/token).
+  const fromDex = await readDexPrice(token, usd);
+  if (fromDex) return fromDex;
   const record = await getLaunchedTokenV2(token).catch(() => null);
   if (!record || !record.exists) return null;
   // Graduated coins trade on the DEX pool, so that's where their price is.
-  if (record.phase !== 0 || !record.curve || record.curve === zeroAddress) return readDexPrice(token, usd);
+  if (record.phase !== 0 || !record.curve || record.curve === zeroAddress) return null;
   const [curve, supplyRaw] = await Promise.all([
     getCurveState(record.curve).catch(() => null),
     ponsClient()
@@ -39,7 +42,6 @@ async function readPrice(token: Address, usd: number | null): Promise<Price | nu
       .catch(() => null),
   ]);
   if (!curve || supplyRaw == null) return null;
-  if (curve.graduated) return readDexPrice(token, usd);
   const supply = Number(supplyRaw as bigint) / 1e18; // factory tokens are 18-decimals
   const priceEth = curve.spotPrice;
   const marketCapEth = priceEth * supply;

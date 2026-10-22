@@ -44,7 +44,7 @@ export function OfficialCoin() {
   }, [ca]);
 
   const mc = data?.marketCapUsd ?? null;
-  const progress = data?.curve && !data.curve.graduated ? data.curve.progress ?? null : null;
+  const progress = data?.curve && !data.curve.graduated && data.priceSource !== "dex" ? data.curve.progress ?? null : null;
 
   return (
     <div
