@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{position:relative;overflow:hidden;width:1600px;height:900px}
+.dark{background:radial-gradient(120% 120% at 70% 40%,#1a1b20 0%,#0b0b0d 55%,#050506 100%)}
+.light{background:radial-gradient(120% 120% at 70% 40%,#f4f4f6 0%,#e4e5e9 55%,#d3d5da 100%)}
+.wm{position:absolute;left:80px;top:70px;display:flex;align-items:center;gap:14px;font:600 24px Inter;letter-spacing:.42em}
+.sub{font:500 16px 'JetBrains Mono',monospace;letter-spacing:.3em}
+.guide{position:absolute;background:currentColor;opacity:.12}
+.g2{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+.mark{position:absolute;right:-260px;top:40px;width:900px;height:900px;filter:blur(16px);transform:rotate(-12deg)}
+.ring{position:absolute;border-radius:50%;border:1px solid currentColor;opacity:.14}
+/* glass device */
+.dev{position:absolute;left:930px;top:150px;width:380px;height:620px;perspective:1800px}
+.slab{position:absolute;inset:0;border-radius:46px;transform:rotateY(-18deg) rotateX(6deg) rotateZ(5deg);transform-style:preserve-3d}
+.glass{position:absolute;inset:0;border-radius:46px;backdrop-filter:blur(22px) saturate(1.2);-webkit-backdrop-filter:blur(22px)}
+.dark .glass{background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.04) 45%,rgba(255,255,255,.08));border:1.5px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 10px rgba(255,255,255,.035),0 60px 120px -30px rgba(0,0,0,.9)}
+.light .glass{background:linear-gradient(150deg,rgba(255,255,255,.7),rgba(255,255,255,.35) 45%,rgba(255,255,255,.5));border:1.5px solid rgba(255,255,255,.9);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 10px rgba(255,255,255,.25),0 60px 120px -30px rgba(40,44,60,.45)}
+.edge{position:absolute;inset:0;border-radius:46px;transform:translateZ(-18px)}
+.dark .edge{background:linear-gradient(150deg,rgba(255,255,255,.18),rgba(255,255,255,.03))}
+.light .edge{background:linear-gradient(150deg,rgba(255,255,255,.9),rgba(200,204,214,.6))}
+.ui{position:absolute;inset:22px;border-radius:30px;padding:26px 24px;display:flex;flex-direction:column}
+.dark .ui{background:rgba(10,10,12,.72);color:#fff}
+.light .ui{background:rgba(255,255,255,.78);color:#0b0b0d}
+.mut{opacity:.5}
+.chip{font:600 12px Inter;padding:5px 10px;border-radius:99px}
+.dark .chip{background:rgba(255,255,255,.08)} .light .chip{background:rgba(0,0,0,.06)}
+.btns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns div{text-align:center;padding:15px 0;border-radius:16px;font:600 16px Inter}
+.dark .b1{background:#fff;color:#000} .dark .b2{border:1px solid rgba(255,255,255,.16)}
+.light .b1{background:#0b0b0d;color:#fff} .light .b2{border:1px solid rgba(0,0,0,.14)}
+</style></head><body>
+
+<div class="c dark" id=D style="color:#fff"></div>
+<div class="c light" id=L style="color:#0b0b0d"></div>
+
+<script>
+const chart = (col) => { let p = [], v = 122; for (let i = 0; i <= 40; i++) { v -= i > 18 ? 4.1 + Math.sin(i * 1.7) * 2.6 : Math.sin(i * 1.3) * 2.4; p.push(`${(i * 7.6).toFixed(1)},${v.toFixed(1)}`); } const id = "a" + col.slice(1); return `<svg viewBox="0 0 304 140" width="100%" height="150" style="margin-top:14px"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><polygon points="0,140 ${p.join(" ")} 304,140" fill="url(#${id})"/><polyline points="${p.join(" ")}" fill="none" stroke="${col}" stroke-width="2.6" stroke-linejoin="round"/></svg>`; };
+function card(dark) {
+  const fg = dark ? "#fff" : "#0b0b0d";
+  return `
+  <div class=wm><img src="noir-logo-128.png" style="width:38px;height:38px;border-radius:10px">NOIR</div>
+  <div class="guide" style="left:0;right:0;top:150px;height:1px"></div>
+  <div class="guide" style="left:0;right:0;bottom:120px;height:1px"></div>
+  <div class="guide" style="left:60px;top:0;bottom:0;width:1px"></div>
+  <div class="guide" style="right:60px;top:0;bottom:0;width:1px"></div>
+  <div class=ring style="right:-120px;top:60px;width:760px;height:760px"></div>
+  <img class=mark src="n-chrome.png" style="opacity:${dark ? 0.55 : 0.5};${dark ? "" : "filter:blur(16px) brightness(.55)"}">
+  <div style="position:absolute;left:120px;top:250px;width:760px">
+    <div class=sub style="opacity:.55">EVERY CYCLE HAS A MOMENT</div>
+    <div style="margin-top:26px;font:700 84px/1.02 'Inter Display';letter-spacing:-.045em">The moment it<br>gets serious.</div>
+    <div style="margin-top:30px;font:500 30px Inter;letter-spacing:-.01em;opacity:.62">Real funds. Real banks. Real builders.</div>
+  </div>
+  <div style="position:absolute;left:120px;bottom:60px;font:500 20px Inter;opacity:.6">We're building NOIR right in the middle of it.</div>
+  <div style="position:absolute;right:120px;bottom:60px;font:600 20px Inter">usenoir.app</div>
+  <div class=dev><div class=slab><div class=edge></div><div class=glass></div>
+    <div class=ui>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px;font:600 15px Inter;letter-spacing:.3em"><img src="noir-logo-128.png" style="width:26px;height:26px;border-radius:7px">NOIR</div>
+        <div style="display:grid;gap:4px"><i style="display:block;width:18px;height:2px;background:${fg};opacity:.6"></i><i style="display:block;width:18px;height:2px;background:${fg};opacity:.6"></i></div>
+      </div>
+      <div style="margin-top:30px;display:flex;align-items:center;gap:12px">
+        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#c7cdff,#6e7bff)"></div>
+        <div><div style="font:700 24px Inter;letter-spacing:-.02em">@nova</div><div class=mut style="font:500 13px 'JetBrains Mono',monospace">$NOVA</div></div>
+        <div class=chip style="margin-left:auto">PROFILE</div>
+      </div>
+      <div style="margin-top:28px" class=mut><span style="font:500 13px Inter">Market cap</span></div>
+      <div style="font:700 40px Inter;letter-spacing:-.03em">$84.2K</div>
+      <div style="font:600 15px Inter;color:#22c98a">▲ 412.6%</div>
+      ${chart("#22c98a")}
+      <div class=btns><div class=b1>Buy</div><div class=b2>Sell</div></div>
+    </div>
+  </div></div>
+  <svg class=g2 width="100%" height="100%"><filter id="n${dark}"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#n${dark})"/></svg>`;
+}
+document.getElementById("D").innerHTML = card(true);
+document.getElementById("L").innerHTML = card(false);
+</script>
+</body></html>
