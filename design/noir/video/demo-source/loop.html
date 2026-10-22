@@ -1,0 +1,194 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000;font-family:Inter,sans-serif}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.chap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#world{position:absolute;left:0;top:0;width:1920px;transform-origin:0 0}
+#world img{position:absolute;left:0;top:0;width:1920px;opacity:0}
+.cursor{position:absolute;width:34px;height:34px;z-index:30;filter:drop-shadow(0 4px 10px rgba(0,0,0,.7))}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0;z-index:29}
+.bar{position:absolute;left:0;right:0;height:0;background:#000;z-index:65}
+#vign{position:absolute;inset:0;z-index:40;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.6))}
+#grain{position:absolute;inset:0;z-index:60;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+.k{font:500 22px 'JetBrains Mono',monospace;letter-spacing:.3em;color:#8a8f98}
+.t{background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.55));-webkit-background-clip:text;color:transparent}
+.big{font:700 120px/1.02 'Inter Display';letter-spacing:-.05em;text-align:center}
+/* step card */
+.num{font:700 300px/1 'Inter Display';letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.22)}
+/* step chip over the app */
+#chip{position:absolute;left:72px;top:124px;z-index:66;display:flex;align-items:center;gap:18px;padding:16px 26px 16px 16px;border-radius:20px;background:rgba(8,8,10,.86);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);opacity:0}
+#chipN{width:52px;height:52px;border-radius:14px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font:700 24px 'Inter Display'}
+#chipT{font:600 30px Inter;letter-spacing:-.015em;color:#fff}
+#prog{position:absolute;left:72px;right:72px;bottom:44px;z-index:66;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;opacity:0}
+#prog div{height:4px;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden}
+#prog i{display:block;height:100%;width:0;background:#fff}
+#tag{position:absolute;right:72px;top:132px;z-index:66;display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:14px;background:rgba(8,8,10,.86);border:1px solid rgba(255,255,255,.12);font:600 22px Inter;color:#fff;opacity:0}
+#tag img{width:30px;height:30px;border-radius:8px}
+</style></head><body>
+
+<div class=layer id=sound style="background:#000"><div class=chap>
+ <svg id=spk width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path id=w1 d="M15.5 8.5a5 5 0 010 7"/><path id=w2 d="M18.5 5.5a9 9 0 010 13"/></svg>
+ <div id=soundT class="big t" style="margin-top:56px">Turn your sound on.</div>
+</div></div>
+
+<div class=layer id=intro style="background:#000"><div class=chap>
+ <img id=inN src="n-chrome.png" style="width:130px;height:130px">
+ <div id=inK class=k style="margin-top:50px">HERE IS</div>
+ <div id=inT class="big t" style="margin-top:26px">The full launch loop<br>on NOIR.</div>
+</div></div>
+
+<div class=layer id=step style="background:#000"><div class=chap>
+ <div id=stN class=num>01</div>
+ <div id=stT class="t" style="margin-top:-40px;font:700 92px/1.05 'Inter Display';letter-spacing:-.045em;text-align:center"></div>
+ <div id=stS style="margin-top:28px;font:400 30px Inter;color:#8a8f98;text-align:center"></div>
+</div></div>
+
+<div class=layer id=app style="background:#09090b"><div id=world></div></div>
+
+<div class=layer id=outro style="background:#000"><div class=chap>
+ <div style="display:flex;gap:40px;align-items:center">
+  <img id=o1 src="robinhood.png" style="width:110px;height:110px;border-radius:30px">
+  <img id=oN src="n-chrome.png" style="width:150px;height:150px">
+  <img id=o2 src="solana.jpg" style="width:110px;height:110px;border-radius:30px">
+ </div>
+ <div id=oT class="big t" style="margin-top:60px;font-size:96px">Profile coins on<br>Robinhood Chain and Solana.</div>
+ <div id=oU style="margin-top:46px;display:flex;align-items:center;gap:16px;padding:20px 34px;border-radius:999px;background:#fff;color:#000;font:600 34px Inter">Launch now · usenoir.app</div>
+</div></div>
+
+<div id=chip><div id=chipN>1</div><div id=chipT></div></div>
+<div id=tag><img id=tagI src="robinhood.png"><span id=tagT>Robinhood Chain</span></div>
+<div id=prog><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+<svg class=cursor id=cur viewBox="0 0 24 24" style="left:0;top:0;opacity:0"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.6 L14.4 20.4 L11.3 13.7 L17.6 13.7 Z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+<div class=ripple id=rip></div>
+<div id=vign></div>
+<div class=bar id=barT style="top:0"></div><div class=bar id=barB style="bottom:0"></div>
+<svg id=grain width="100%" height="100%"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="3"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+<div id=black style="position:absolute;inset:0;background:#000;z-index:70;opacity:1"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const inout = (x) => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, ...a] = keys[i], [t1, ...b] = keys[i + 1];
+    if (t <= t1) { const k = inout((t - t0) / (t1 - t0)); return a.map((v, j) => lerp(v, b[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+const fade = (t, a, b, f = 0.5) => Math.min(ease(seg(t, a, a + f)), 1 - ease(seg(t, b - f, b)));
+function rise(id, t, a, d = 0.8, dy = 30) { const o = ease(seg(t, a, a + d)); $(id).style.opacity = o; $(id).style.transform = `translateY(${dy * (1 - o)}px)`; }
+
+/* ── steps ── */
+const STEPS = [
+  { at: 6.2, app: [7.8, 12.6], title: "Drop any handle", sub: "@fomo or @Pumpfun. That's the whole input." },
+  { at: 12.6, app: [14.2, 19.0], title: "Everything fills in", sub: "Name, ticker, avatar and bio, from the real profile." },
+  { at: 19.0, app: [20.6, 27.6], title: "Pick a chain. Sign it.", sub: "Your own wallet signs. Nothing is custodied." },
+  { at: 27.6, app: [29.2, 37.2], title: "Trade it live", sub: "Chart, buy and sell, right inside NOIR." },
+];
+const CHIP = ["Drop any @fomo or @Pumpfun handle", "The profile fills in for you", "Pick your chain and sign", "Trade your profile coin live"];
+
+/* ── screenshots ── */
+const SHOTS = "r0 r1-t2 r1-t4 r1-t6 r1-t8 r1-t10 r2 r4 r5 r6 s4 s5 s6 r7 s8".split(" ");
+$("world").innerHTML = SHOTS.map((n) => `<img id="i-${n}" src="shots/${n}.png">`).join("");
+const CUTS = [
+  [7.8, "r0"], [9.4, "r1-t2"], [9.62, "r1-t4"], [9.84, "r1-t6"], [10.06, "r1-t8"], [10.28, "r1-t10"],
+  [15.0, "r2"], [22.0, "r4"], [23.4, "r5"], [24.2, "r6"], [25.0, "s4"], [26.2, "s5"], [26.8, "s6"],
+  [29.2, "r7"], [32.8, "s8"],
+];
+const DISSOLVE = { r2: 0.35, r4: 0.3, s4: 0.4, r7: 0.01, s8: 0.45, s6: 0.2, r6: 0.2 };
+function showShot(t) {
+  let cur = 0; for (let i = 0; i < CUTS.length; i++) if (t >= CUTS[i][0]) cur = i;
+  for (const n of SHOTS) { $("i-" + n).style.opacity = 0; $("i-" + n).style.zIndex = 0; }
+  const [t0, n] = CUTS[cur]; const d = DISSOLVE[n] || 0;
+  const k = d ? ease(seg(t, t0, t0 + d)) : 1;
+  if (cur > 0 && k < 1) { $("i-" + CUTS[cur - 1][1]).style.opacity = 1; $("i-" + CUTS[cur - 1][1]).style.zIndex = 1; }
+  $("i-" + n).style.opacity = k; $("i-" + n).style.zIndex = 2;
+}
+let CAM = { fx: 960, fy: 540, s: 1 };
+function camera(t) {
+  const [fx, fy, s] = kf(t, [
+    [7.8, 960, 560, 1.0], [9.0, 720, 520, 1.6], [12.6, 700, 520, 1.65],
+    [14.2, 700, 540, 1.55], [15.4, 1000, 600, 1.15], [17.2, 1260, 640, 1.45], [19.0, 1260, 820, 1.45],
+    [20.6, 1260, 900, 1.35], [21.8, 1260, 1000, 1.5], [22.4, 980, 600, 1.6], [23.3, 1000, 610, 1.75], [24.0, 1260, 1020, 1.45], [24.9, 1260, 1040, 1.5],
+    [25.0, 980, 600, 1.55], [26.0, 1000, 610, 1.75], [26.7, 1260, 930, 1.45], [27.6, 1260, 940, 1.5],
+    [29.2, 960, 560, 1.0], [30.6, 740, 480, 1.45], [32.7, 1180, 470, 1.4],
+    [32.8, 960, 560, 1.0], [34.0, 1300, 600, 1.55], [35.6, 1330, 660, 1.6], [37.2, 960, 600, 1.15],
+  ]);
+  CAM = { fx, fy, s };
+  $("world").style.transform = `translate(${960 - fx * s}px, ${540 - fy * s}px) scale(${s})`;
+}
+const sx = (x) => 960 + (x - CAM.fx) * CAM.s, sy = (y) => 540 + (y - CAM.fy) * CAM.s;
+function cursor(t) {
+  const [x, y] = kf(t, [
+    [8.2, 1000, 900], [9.1, 700, 506], [12.6, 700, 506],
+    [14.2, 700, 520], [14.8, 688, 567], [16.0, 900, 700],
+    [20.6, 1100, 800], [21.7, 1260, 1041], [22.4, 1180, 760], [23.1, 1049, 651], [24.9, 1100, 760],
+    [25.2, 1150, 760], [25.9, 1049, 651], [27.6, 1150, 760],
+    [33.0, 1100, 760], [33.9, 1313, 543], [34.8, 1313, 543], [35.5, 1340, 708], [37.2, 1345, 712],
+  ]);
+  const vis = (t > 8.2 && t < 12.5) || (t > 14.2 && t < 16.2) || (t > 20.6 && t < 27.5) || (t > 33.0 && t < 37.0);
+  $("cur").style.left = sx(x) + "px"; $("cur").style.top = sy(y) + "px"; $("cur").style.opacity = vis ? 1 : 0;
+  const CL = [[9.25, 700, 506], [14.85, 688, 567], [21.8, 1260, 1041], [23.2, 1049, 651], [26.0, 1049, 651], [34.0, 1313, 543], [35.6, 1340, 708]];
+  const r = $("rip"); r.style.opacity = 0;
+  for (const [ct, cx, cy] of CL) { const k = seg(t, ct, ct + 0.55); if (k > 0 && k < 1) { r.style.opacity = 1 - k; r.style.transform = `scale(${0.3 + k * 1.1})`; r.style.left = sx(cx) + "px"; r.style.top = sy(cy) + "px"; } }
+}
+
+window.DURATION = 44;
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0.1, 0.9)) + ease(seg(t, 42.8, 43.9));
+
+  // 0 · sound on
+  $("sound").style.opacity = fade(t, 0, 3.3, 0.5);
+  if (t < 3.4) {
+    rise("spk", t, 0.3, 0.7, 16); rise("soundT", t, 0.7);
+    $("w1").style.opacity = 0.3 + 0.7 * Math.abs(Math.sin(t * 4));
+    $("w2").style.opacity = 0.3 + 0.7 * Math.abs(Math.sin(t * 4 - 0.8));
+  }
+  // intro
+  $("intro").style.opacity = fade(t, 3.2, 6.4, 0.5);
+  if (t > 3.2 && t < 6.4) { rise("inN", t, 3.4, 0.9, 16); rise("inK", t, 3.8); rise("inT", t, 4.1); }
+
+  // step cards
+  let card = null; STEPS.forEach((s, i) => { if (t >= s.at && t < s.app[0] + 0.1) card = i; });
+  if (card !== null) {
+    const s = STEPS[card]; $("step").style.opacity = fade(t, s.at, s.app[0] + 0.1, 0.35);
+    $("stN").textContent = "0" + (card + 1); $("stT").textContent = s.title; $("stS").textContent = s.sub;
+    const k = ease(seg(t, s.at, s.at + 0.7));
+    $("stN").style.transform = `scale(${1.25 - 0.25 * k})`; $("stN").style.opacity = k;
+    rise("stT", t, s.at + 0.15, 0.6, 24); rise("stS", t, s.at + 0.35, 0.6, 18);
+  } else $("step").style.opacity = 0;
+
+  // app
+  let step = -1; STEPS.forEach((s, i) => { if (t >= s.app[0] && t < s.app[1]) step = i; });
+  if (step >= 0) {
+    const s = STEPS[step];
+    $("app").style.opacity = fade(t, s.app[0], s.app[1] + 0.05, 0.3);
+    showShot(t); camera(t); cursor(t);
+    const bh = 96; $("barT").style.height = bh + "px"; $("barB").style.height = bh + "px";
+    const co = fade(t, s.app[0] + 0.2, s.app[1], 0.4);
+    $("chip").style.opacity = co; $("chipN").textContent = step + 1; $("chipT").textContent = CHIP[step];
+    $("chip").style.transform = `translateX(${-30 * (1 - ease(seg(t, s.app[0] + 0.2, s.app[0] + 0.7)))}px)`;
+    $("prog").style.opacity = co;
+    [...document.querySelectorAll("#prog i")].forEach((el, i) => { el.style.width = (i < step ? 100 : i > step ? 0 : 100 * seg(t, s.app[0], s.app[1])) + "%"; });
+    // chain tag
+    const sol = (t >= 25.0 && t < 27.6) || t >= 32.8;
+    const showTag = step >= 2;
+    $("tag").style.opacity = showTag ? co : 0;
+    $("tagI").src = sol ? "solana.jpg" : "robinhood.png"; $("tagT").textContent = sol ? "Solana · Pump.fun" : "Robinhood Chain · Pons v2";
+  } else {
+    $("app").style.opacity = 0; $("chip").style.opacity = 0; $("prog").style.opacity = 0; $("tag").style.opacity = 0;
+    $("cur").style.opacity = 0; $("rip").style.opacity = 0;
+    $("barT").style.height = "0px"; $("barB").style.height = "0px";
+  }
+
+  // outro
+  $("outro").style.opacity = fade(t, 37.2, 44.5, 0.6);
+  if (t > 37.2) { rise("o1", t, 37.5); rise("oN", t, 37.7); rise("o2", t, 37.9); rise("oT", t, 38.4); rise("oU", t, 39.6); }
+};
+window.render(0);
+</script></body></html>
