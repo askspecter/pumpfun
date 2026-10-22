@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { SolanaTradeWidget } from "@/components/SolanaTradeWidget";
 import { BrandLogo } from "@/components/BrandLogo";
+import { VerifiedBadge } from "@/components/markets/Badges";
+import { useMarketItem } from "@/components/markets/useMarket";
 import { compact } from "@/components/home/format";
 import { isSolanaAddress, profileLink, pumpCoinUrl, SOLANA_EXPLORER_URL } from "@/lib/solana";
 
@@ -50,6 +52,7 @@ export default function SolanaCoinPage() {
   const [data, setData] = useState<CoinData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const market = useMarketItem(mint);
 
   const load = useCallback(() => {
     if (!isSolanaAddress(mint)) {
@@ -119,6 +122,7 @@ export default function SolanaCoinPage() {
               <span className="chip flex items-center gap-1">
                 <BrandLogo brand="solana" className="h-3 w-3 rounded-full" /> Solana · Pump.fun
               </span>
+              <VerifiedBadge verified={market?.verified ?? null} />
               {data.complete && <span className="chip chip-accent">graduated</span>}
             </div>
             {data.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-zinc-600">{data.description}</p>}

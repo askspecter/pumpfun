@@ -2,34 +2,20 @@ import { NextResponse } from "next/server";
 import { isAddress, verifyMessage, type Address } from "viem";
 import { getKv } from "@/lib/kv";
 import { isSolanaAddress, type LaunchChain } from "@/lib/solana";
+import {
+  LAUNCHES_KEY as KEY,
+  isTokenFor,
+  readLaunches,
+  safeParse,
+  sameId,
+  type LaunchRecord,
+} from "@/lib/launches";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const KEY = "fomo:launches";
-
-/** A profile coin launched through NOIR (Pons on Robinhood, or Pump.fun on Solana). */
-export interface LaunchRecord {
-  /** Missing on older records, which are all Robinhood. */
-  chain?: LaunchChain;
-  token: string;
-  curve?: string;
-  version: "v2";
-  name: string;
-  symbol: string;
-  logo: string;
-  /** The profile handle this coin represents. */
-  handle?: string;
-  /** Where the handle lives. Missing on older records, which are all fomo.family. */
-  source?: "fomo" | "pumpfun";
-  twitter?: string;
-  telegram?: string;
-  website?: string;
-  deployer: string;
-  txHash: string;
-  createdAt: number;
-}
+export type { LaunchRecord };
 
 /** GET /api/launches?limit=48 - newest profile launches (from KV). */
 export async function GET(req: Request) {
@@ -41,11 +27,7 @@ export async function GET(req: Request) {
   const token = searchParams.get("token"); // optional: fetch one record
   const deployer = searchParams.get("deployer"); // optional: filter by creator
 
-  const raw = (await kv.lrange<LaunchRecord | string>(KEY, 0, 199)) ?? [];
-  const all = raw
-    .map((r) => (typeof r === "string" ? safeParse(r) : r))
-    .filter((r): r is LaunchRecord => !!r && isTokenFor(r.chain ?? "robinhood", r.token))
-    .filter((r) => !isHidden(r.token));
+  const all = await readLaunches();
   const chainFilter = searchParams.get("chain"); // optional: "robinhood" | "solana"
 
   // Single-token lookup (used as an image/metadata fallback on the profile page).
@@ -161,32 +143,4 @@ export async function DELETE(req: Request) {
   }
 
   return NextResponse.json({ ok: true, removed });
-}
-
-/**
- * Launches hidden from the NOIR feed (test coins, abuse reports): a
- * comma-separated list of token addresses / mints in HIDDEN_LAUNCHES. The
- * coins still exist on-chain; NOIR just stops listing them.
- */
-function isHidden(token: string): boolean {
-  const list = (process.env.HIDDEN_LAUNCHES ?? "").split(",").map((t) => t.trim()).filter(Boolean);
-  return list.some((h) => sameId(h, token));
-}
-
-/** Token/mint shape check for the record's chain. */
-function isTokenFor(chain: LaunchChain, token: unknown): token is string {
-  return chain === "solana" ? isSolanaAddress(token) : typeof token === "string" && isAddress(token);
-}
-
-/** EVM addresses compare case-insensitively; Solana base58 is case-sensitive. */
-function sameId(a: string, b: string): boolean {
-  return a.startsWith("0x") ? a.toLowerCase() === b.toLowerCase() : a === b;
-}
-
-function safeParse(s: string): LaunchRecord | null {
-  try {
-    return JSON.parse(s) as LaunchRecord;
-  } catch {
-    return null;
-  }
 }

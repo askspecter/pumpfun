@@ -8,6 +8,7 @@ import { QuoteAssetSelect, type QuoteAsset } from "./QuoteAssetSelect";
 import { DeployButton } from "./DeployButton";
 import { PumpDeployButton, type PumpLaunchInput } from "./PumpDeployButton";
 import { BrandLogo } from "./BrandLogo";
+import { AssetLogo } from "./AssetLogo";
 import { uploadLogo } from "@/lib/upload";
 import { V2_GRADUATION_THRESHOLD_ETH } from "@/lib/pons";
 import type { LaunchInput } from "@/lib/pons";
@@ -120,6 +121,11 @@ export function ProfileStudio({
     if (list.length === 0) return [ETH_ASSET];
     return list;
   }, [options]);
+  // Tokenized stocks the factory accepts as a pair (not ETH or stablecoins), for one-tap picks.
+  const stockAssets = useMemo(
+    () => quoteAssets.filter((a) => a.asset.toLowerCase() !== zeroAddress && !/^USD/i.test(a.symbol)).slice(0, 6),
+    [quoteAssets],
+  );
 
   function switchSource(next: ProfileSource) {
     if (next === source) return;
@@ -440,6 +446,29 @@ export function ProfileStudio({
             <div className="mt-1">
               <QuoteAssetSelect assets={quoteAssets} value={pairToken} onChange={setPairToken} />
             </div>
+            {stockAssets.length > 0 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                <span className="text-[11px] text-zinc-500">Pair with a stock:</span>
+                {stockAssets.map((a) => {
+                  const on = a.asset.toLowerCase() === pairToken.toLowerCase();
+                  return (
+                    <button
+                      key={a.asset}
+                      type="button"
+                      onClick={() => setPairToken(on ? zeroAddress : a.asset)}
+                      aria-pressed={on}
+                      title={on ? "Back to ETH" : `Pair with ${a.name}`}
+                      className={`inline-flex items-center gap-1 rounded-full border py-0.5 pl-0.5 pr-2 text-[11px] font-semibold transition ${
+                        on ? "border-white/40 bg-white/[0.08] text-white" : "border-white/10 text-zinc-500 hover:border-white/25 hover:text-white"
+                      }`}
+                    >
+                      <AssetLogo symbol={a.symbol} size={16} />
+                      {a.symbol}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </>
         )}
 

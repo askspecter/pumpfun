@@ -21,7 +21,19 @@ function eq(a?: string, b?: string) {
  * are credited after a fee sweep, so a zero balance doesn't always mean zero
  * lifetime earnings.
  */
-export function ClaimFees({ pairToken, creator }: { pairToken?: Address; creator?: Address }) {
+export function ClaimFees({
+  pairToken,
+  creator,
+  pairSymbol,
+  tokenOnly = false,
+}: {
+  pairToken?: Address;
+  creator?: Address;
+  /** Display symbol of the quote asset (e.g. NVDA). */
+  pairSymbol?: string;
+  /** Show only the quote-asset balance (the ETH balance is shown elsewhere). */
+  tokenOnly?: boolean;
+}) {
   const { address, isConnected } = useAccount();
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContract();
@@ -90,31 +102,33 @@ export function ClaimFees({ pairToken, creator }: { pairToken?: Address; creator
 
   return (
     <section className="card p-5">
-      <h2 className="text-sm font-medium text-zinc-700">Creator fees</h2>
+      <h2 className="text-sm font-medium text-zinc-700">Creator fees{tokenOnly && pairSymbol ? ` · ${pairSymbol}` : ""}</h2>
       <p className="mt-1 text-xs text-zinc-500">
         Withdraw fees credited to your wallet. Fees are credited after a sweep, so this can read zero even
         when a launch has earned.
       </p>
 
       <div className="mt-3 space-y-2">
-        <div className="flex items-center justify-between rounded-xl border border-ink-line p-3">
-          <div>
-            <div className="text-[10px] uppercase tracking-widest text-zinc-500">Claimable (ETH)</div>
-            <div className="font-mono text-lg">{Number(formatEther(eth)).toFixed(6)} ETH</div>
+        {!tokenOnly && (
+          <div className="flex items-center justify-between rounded-xl border border-ink-line p-3">
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-zinc-500">Claimable (ETH)</div>
+              <div className="font-mono text-lg">{Number(formatEther(eth)).toFixed(6)} ETH</div>
+            </div>
+            <button
+              className="btn-brand"
+              disabled={!isCreator || busy || eth === 0n}
+              onClick={() => claim("eth")}
+            >
+              Claim
+            </button>
           </div>
-          <button
-            className="btn-brand"
-            disabled={!isCreator || busy || eth === 0n}
-            onClick={() => claim("eth")}
-          >
-            Claim
-          </button>
-        </div>
+        )}
 
         {hasPairToken && (
           <div className="flex items-center justify-between rounded-xl border border-ink-line p-3">
             <div>
-              <div className="text-[10px] uppercase tracking-widest text-zinc-500">Claimable (quote token)</div>
+              <div className="text-[10px] uppercase tracking-widest text-zinc-500">Claimable ({pairSymbol ?? "quote token"})</div>
               <div className="font-mono text-lg">{Number(formatEther(tokenBal)).toFixed(6)}</div>
             </div>
             <button

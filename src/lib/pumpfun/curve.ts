@@ -33,6 +33,8 @@ export interface CurveState {
   marketCapSol: number;
   /** 0..1 progress to graduation. */
   progress: number;
+  /** The wallet that created the coin (and is paid its creator fees), when the curve records one. */
+  creator: string | null;
 }
 
 export function bondingCurvePda(mint: PublicKey): PublicKey {
@@ -71,6 +73,7 @@ function parseCurve(pda: PublicKey, d: Buffer): CurveState | null {
   const rSol = d.readBigUInt64LE(32);
   const supply = d.readBigUInt64LE(40);
   const complete = d[48] === 1;
+  const creator = d.length >= 81 ? new PublicKey(d.subarray(49, 81)) : null;
 
   const priceSol = vToken > 0n ? Number(vSol) / 1e9 / (Number(vToken) / 10 ** TOKEN_DECIMALS) : 0;
   const supplyTokens = Number(supply) / 10 ** TOKEN_DECIMALS;
@@ -89,5 +92,6 @@ function parseCurve(pda: PublicKey, d: Buffer): CurveState | null {
     priceSol,
     marketCapSol: priceSol * supplyTokens,
     progress,
+    creator: creator && !creator.equals(PublicKey.default) ? creator.toBase58() : null,
   };
 }

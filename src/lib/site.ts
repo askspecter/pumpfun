@@ -23,9 +23,10 @@ export const OFFICIAL_TOKEN = {
 };
 
 export const NAV = [
-  { href: "/", label: "Markets" },
+  { href: "/", label: "Home" },
+  { href: "/markets", label: "Markets" },
   { href: "/explore", label: "Explore" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/create", label: "Launch" },
-  { href: "/profile", label: "Profile" },
+  { href: "/profile", label: "Creator Bank" },
 ] as const;
