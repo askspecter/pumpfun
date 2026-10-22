@@ -3,6 +3,7 @@ import { isAddress, parseAbi, zeroAddress, type Address } from "viem";
 import { getCurveState, getLaunchedTokenV2 } from "@/lib/pons/readerV2";
 import { ponsClient } from "@/lib/pons/reader";
 import { ethUsd } from "@/lib/eth-price";
+import { dexQuote } from "@/lib/dexscreener";
 import { getKv } from "@/lib/kv";
 
 export const runtime = "nodejs";
@@ -28,9 +29,9 @@ interface Price {
 
 async function readPrice(token: Address, usd: number | null): Promise<Price | null> {
   const record = await getLaunchedTokenV2(token).catch(() => null);
-  if (!record || !record.exists || record.phase !== 0 || !record.curve || record.curve === zeroAddress) {
-    return null;
-  }
+  if (!record || !record.exists) return null;
+  // Graduated coins trade on the DEX pool, so that's where their price is.
+  if (record.phase !== 0 || !record.curve || record.curve === zeroAddress) return readDexPrice(token, usd);
   const [curve, supplyRaw] = await Promise.all([
     getCurveState(record.curve).catch(() => null),
     ponsClient()
@@ -38,11 +39,22 @@ async function readPrice(token: Address, usd: number | null): Promise<Price | nu
       .catch(() => null),
   ]);
   if (!curve || supplyRaw == null) return null;
+  if (curve.graduated) return readDexPrice(token, usd);
   const supply = Number(supplyRaw as bigint) / 1e18; // factory tokens are 18-decimals
   const priceEth = curve.spotPrice;
   const marketCapEth = priceEth * supply;
   const isNative = !record.pairToken || record.pairToken === zeroAddress;
   return { priceEth, marketCapEth, marketCapUsd: isNative && usd != null ? marketCapEth * usd : null };
+}
+
+async function readDexPrice(token: Address, usd: number | null): Promise<Price | null> {
+  const dex = await dexQuote(token);
+  if (!dex || dex.marketCapUsd == null) return null;
+  return {
+    priceEth: usd != null && dex.priceUsd != null ? dex.priceUsd / usd : dex.priceNative ?? 0,
+    marketCapEth: usd != null ? dex.marketCapUsd / usd : 0,
+    marketCapUsd: dex.marketCapUsd,
+  };
 }
 
 export async function GET(req: Request) {

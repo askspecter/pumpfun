@@ -3,6 +3,7 @@ import { isAddress, parseAbi, zeroAddress, type Address } from "viem";
 import { getCurveState, getLaunchedTokenV2, phaseLabel, readTokenInfoV2 } from "@/lib/pons/readerV2";
 import { ponsClient } from "@/lib/pons/reader";
 import { ethUsd } from "@/lib/eth-price";
+import { dexQuote } from "@/lib/dexscreener";
 import { getKv } from "@/lib/kv";
 
 const erc20Supply = parseAbi(["function totalSupply() view returns (uint256)"]);
@@ -64,16 +65,26 @@ export async function GET(req: Request) {
 
     // Price + market cap in the quote asset (ETH for native pairs). spotPrice is
     // quote-per-token; market cap is that times the human token supply.
-    const priceEth = curve ? curve.spotPrice : null;
+    let priceEth = curve ? curve.spotPrice : null;
     const humanSupply =
       supplyRaw != null ? Number(supplyRaw as bigint) / 10 ** info.decimals : null;
-    const marketCapEth = priceEth != null && humanSupply != null ? priceEth * humanSupply : null;
+    let marketCapEth = priceEth != null && humanSupply != null ? priceEth * humanSupply : null;
 
     // USD figures (native ETH pairs only; RWA pairs keep the quote asset).
     const isNative = !record.pairToken || record.pairToken === zeroAddress;
     const usd = isNative ? await ethUsd() : null;
-    const priceUsd = usd != null && priceEth != null ? priceEth * usd : null;
-    const marketCapUsd = usd != null && marketCapEth != null ? marketCapEth * usd : null;
+    let priceUsd = usd != null && priceEth != null ? priceEth * usd : null;
+    let marketCapUsd = usd != null && marketCapEth != null ? marketCapEth * usd : null;
+
+    // Graduated: the curve no longer prices the coin, the DEX pool does.
+    const graduated = record.phase !== 0 || Boolean(curve?.graduated);
+    const dex = graduated ? await dexQuote(token) : null;
+    if (dex && (dex.priceUsd != null || dex.marketCapUsd != null)) {
+      priceUsd = dex.priceUsd;
+      marketCapUsd = dex.marketCapUsd ?? (dex.priceUsd != null && humanSupply != null ? dex.priceUsd * humanSupply : null);
+      priceEth = usd != null && priceUsd != null ? priceUsd / usd : dex.priceNative;
+      marketCapEth = usd != null && marketCapUsd != null ? marketCapUsd / usd : null;
+    }
 
     const payload = {
       token,
@@ -90,6 +101,8 @@ export async function GET(req: Request) {
       buybackEnabled: record.buybackEnabled,
       creatorFeeRecipient: record.creatorFeeRecipient,
       totalSupply: supplyRaw != null ? (supplyRaw as bigint).toString() : null,
+      priceSource: dex ? "dex" : curve ? "curve" : null,
+      dex: dex ? { url: dex.url, dexId: dex.dexId, pairAddress: dex.pairAddress, liquidityUsd: dex.liquidityUsd } : null,
       priceEth,
       marketCapEth,
       priceUsd,
@@ -134,7 +147,24 @@ export async function GET(req: Request) {
     if (kv) {
       try {
         const last = await kv.get<Record<string, unknown>>(lastKey(token));
-        if (last) return NextResponse.json({ ...last, stale: true });
+        if (last) {
+          // A graduated coin can still get a live price from the DEX.
+          const dex = last.phase !== 0 ? await dexQuote(token) : null;
+          if (dex?.marketCapUsd != null) {
+            const usd = await ethUsd();
+            return NextResponse.json({
+              ...last,
+              priceSource: "dex",
+              dex: { url: dex.url, dexId: dex.dexId, pairAddress: dex.pairAddress, liquidityUsd: dex.liquidityUsd },
+              priceUsd: dex.priceUsd,
+              marketCapUsd: dex.marketCapUsd,
+              priceEth: usd != null && dex.priceUsd != null ? dex.priceUsd / usd : dex.priceNative,
+              marketCapEth: usd != null ? dex.marketCapUsd / usd : null,
+              stale: true,
+            });
+          }
+          return NextResponse.json({ ...last, stale: true });
+        }
       } catch {
         // ignore
       }

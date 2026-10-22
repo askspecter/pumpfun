@@ -39,6 +39,7 @@ interface TokenData {
   priceUsd: number | null;
   marketCapUsd: number | null;
   totalSupply: string | null;
+  dex?: { url: string } | null;
   curve: CurveData | null;
   error?: string;
 }
@@ -197,11 +198,18 @@ export default function ProfileCoinPage() {
               <h2 className="text-sm font-medium text-zinc-700">Trading</h2>
               <p className="mt-2">
                 This profile coin has graduated off the bonding curve. Trade it on the graduated
-                Uniswap V4 pool via the explorer.
+                Uniswap V4 pool.
               </p>
-              <a href={explorerToken(data.token)} target="_blank" rel="noreferrer" className="btn-ghost mt-3 inline-flex">
-                View on explorer ↗
-              </a>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {data.dex?.url && (
+                  <a href={data.dex.url} target="_blank" rel="noreferrer" className="btn-brand inline-flex">
+                    Trade on DEX ↗
+                  </a>
+                )}
+                <a href={explorerToken(data.token)} target="_blank" rel="noreferrer" className="btn-ghost inline-flex">
+                  View on explorer ↗
+                </a>
+              </div>
             </div>
           )}
         </div>

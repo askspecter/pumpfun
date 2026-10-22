@@ -11,6 +11,8 @@ interface TokenData {
   symbol?: string;
   marketCapUsd?: number | null;
   marketCapEth?: number | null;
+  phase?: number;
+  priceSource?: "dex" | "curve" | null;
   curve?: { progress?: number; graduated?: boolean } | null;
 }
 
@@ -65,7 +67,8 @@ export function OfficialCoin() {
               </span>
             </div>
             <div className="mt-1 flex items-center gap-1.5 text-xs text-zinc-500">
-              <BrandLogo brand="robinhood" className="h-3.5 w-3.5 rounded-full" /> Robinhood Chain · Pons v2
+              <BrandLogo brand="robinhood" className="h-3.5 w-3.5 rounded-full" /> Robinhood Chain ·{" "}
+              {data?.priceSource === "dex" || (data?.phase ?? 0) !== 0 ? "Graduated · DEX" : "Pons v2"}
             </div>
           </div>
         </Link>
