@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{position:relative;overflow:hidden;background:#000}
+.sq{width:1600px;height:1600px}.ls{width:1600px;height:900px}
+.wm{position:absolute;display:flex;align-items:center;gap:16px;font:600 30px Inter;letter-spacing:.42em;color:#eef0f3}
+.g{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+.stage{position:absolute;perspective:2200px}
+.tile{position:absolute;inset:0;border-radius:22%;transform-style:preserve-3d;
+ background:linear-gradient(150deg,#2a2c33 0%,#121318 45%,#08090b 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -30px 60px rgba(0,0,0,.6),0 80px 160px rgba(0,0,0,.7)}
+.tile:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.05) 40%,rgba(199,205,255,.5) 75%,rgba(255,255,255,.1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tile img{position:absolute;left:21%;top:21%;width:58%;height:58%;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55))}
+.side{position:absolute;inset:0;border-radius:22%;background:linear-gradient(160deg,#3b3e48,#0c0d10);transform:translateZ(-70px)}
+.t{background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.55));-webkit-background-clip:text;color:transparent}
+.k{font:500 22px Inter;letter-spacing:.38em;color:#7d828c}
+.dim{color:#3a3d44}
+.m{font:500 18px 'JetBrains Mono',monospace;letter-spacing:.24em;color:#6b707a}
+.g2{position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+</style></head><body>
+<!-- A · split -->
+<div class="c ls" id=A style="width:1600px;height:900px"><div class=wm style="left:80px;top:72px;font-size:24px"><img src="noir-logo-128.png" style="width:38px;height:38px;border-radius:10px">NOIR</div>
+ <div class=m style="position:absolute;right:80px;top:84px">WHAT COMES NEXT</div>
+ <div style="position:absolute;left:800px;top:220px;bottom:200px;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.14),transparent)"></div>
+ <div style="position:absolute;left:80px;top:250px;width:640px">
+  <div class=m>01 · CAPITAL</div>
+  <div style="margin-top:30px;font:700 104px/1 'Inter Display';letter-spacing:-.05em;color:#55585f">Banks</div>
+  <div style="margin-top:22px;font:500 36px/1.25 Inter;letter-spacing:-.015em;color:#6b707a">for the next generation<br>of builders.</div>
+ </div>
+ <div style="position:absolute;left:880px;top:250px;width:640px">
+  <div class=m style="color:#c7cbd3">02 · ATTENTION</div>
+  <div class=t style="margin-top:30px;font:700 104px/1 'Inter Display';letter-spacing:-.05em">Markets</div>
+  <div style="margin-top:22px;font:500 36px/1.25 Inter;letter-spacing:-.015em;color:#e9ebef">for the next generation<br>of creators.</div>
+ </div>
+ <div style="position:absolute;left:80px;bottom:70px;display:flex;align-items:center;gap:14px;font:500 20px Inter;color:#8a8f98"><img src="robinhood.png" style="width:30px;height:30px;border-radius:8px">Built on Robinhood Chain</div><div style="position:absolute;right:80px;bottom:72px;font:600 20px Inter;color:#fff">usenoir.app</div><svg class=g2 width="100%" height="100%"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#a)"/></svg>
+</div>
+
+<!-- B · stacked with the mark -->
+<div class="c ls" id=B style="width:1600px;height:900px"><div class=wm style="left:80px;top:72px;font-size:24px"><img src="noir-logo-128.png" style="width:38px;height:38px;border-radius:10px">NOIR</div>
+ <div style="position:absolute;left:80px;top:230px">
+  <div style="font:700 74px/1.08 'Inter Display';letter-spacing:-.045em;color:#45484f">Banks for the next<br>generation of builders.</div>
+  <div class=t style="margin-top:34px;font:700 74px/1.08 'Inter Display';letter-spacing:-.045em">Markets for the next<br>generation of creators.</div>
+  <div style="margin-top:44px;font:500 28px Inter;color:#8a8f98">Robinhood is betting on what comes next. <span style="color:#fff">So are we.</span></div>
+ </div>
+ <div class=stage style="left:1150px;top:250px;width:340px;height:340px"><div style="position:absolute;inset:0;transform:rotateX(18deg) rotateY(-30deg) rotateZ(-9deg);transform-style:preserve-3d"><div class=side></div><div class=tile><img src="n-chrome.png"></div></div></div>
+ <div style="position:absolute;left:80px;bottom:70px;display:flex;align-items:center;gap:14px;font:500 20px Inter;color:#8a8f98"><img src="robinhood.png" style="width:30px;height:30px;border-radius:8px">Built on Robinhood Chain</div><div style="position:absolute;right:80px;bottom:72px;font:600 20px Inter;color:#fff">usenoir.app</div><svg class=g2 width="100%" height="100%"><filter id="b"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#b)"/></svg>
+</div>
+</body></html>
