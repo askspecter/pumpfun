@@ -1,0 +1,175 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000;font-family:Inter,sans-serif}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.chap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#world{position:absolute;left:0;top:0;width:1920px;transform-origin:0 0}
+#world img{position:absolute;left:0;top:0;width:1920px;opacity:0}
+.cursor{position:absolute;width:34px;height:34px;z-index:30;filter:drop-shadow(0 4px 10px rgba(0,0,0,.7))}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0;z-index:29}
+.bar{position:absolute;left:0;right:0;height:0;background:#000;z-index:65}
+#vign{position:absolute;inset:0;z-index:40;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.6))}
+#grain{position:absolute;inset:0;z-index:60;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+#cap{position:absolute;left:0;right:0;bottom:150px;text-align:center;font:500 46px Inter;letter-spacing:-.015em;color:#f3f4f6;text-shadow:0 2px 28px rgba(0,0,0,.95);opacity:0;z-index:50}
+#cap b{font-weight:600;color:#fff}
+#cap span{color:#8a8f98}
+#capbg{position:absolute;left:0;right:0;bottom:0;height:420px;z-index:45;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82) 60%,rgba(0,0,0,.95));opacity:0}
+.k{font:500 22px 'JetBrains Mono',monospace;letter-spacing:.3em;color:#8a8f98}
+.t{background:linear-gradient(180deg,#fff 40%,rgba(255,255,255,.55));-webkit-background-clip:text;color:transparent}
+.big{font:700 120px/1.02 'Inter Display';letter-spacing:-.05em;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:14px;padding:18px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.16);font:600 34px Inter;color:#fff}
+.num{font:700 300px/1 'Inter Display';letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.22)}
+#chip{position:absolute;left:72px;top:124px;z-index:66;display:flex;align-items:center;gap:16px;padding:14px 24px 14px 14px;border-radius:20px;background:rgba(8,8,10,.86);border:1px solid rgba(255,255,255,.12);opacity:0}
+#chipN{width:48px;height:48px;border-radius:14px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font:700 22px 'Inter Display'}
+#chipT{font:600 28px Inter;letter-spacing:-.015em;color:#fff}
+</style></head><body>
+
+<div class=layer id=intro style="background:#000"><div class=chap>
+ <img id=inN src="n-chrome.png" style="width:150px;height:150px">
+ <div id=inT class="big t" style="margin-top:56px">NOIR continues<br>to evolve.</div>
+</div></div>
+
+<div class=layer id=two style="background:#000"><div class=chap>
+ <div id=twK class=k>NEW ON NOIR</div>
+ <div id=twT class="big t" style="margin-top:30px">Two new ways to play.</div>
+ <div style="margin-top:56px;display:flex;gap:22px">
+  <div id=twA class=pill><span style="font-size:28px">✦</span>AI Twin</div>
+  <div id=twB class=pill><span style="font-size:26px">▲▼</span>Predict</div>
+ </div>
+</div></div>
+
+<div class=layer id=step style="background:#000"><div class=chap>
+ <div id=stN class=num>01</div>
+ <div id=stT class="t" style="margin-top:-40px;font:700 104px/1.05 'Inter Display';letter-spacing:-.045em;text-align:center"></div>
+ <div id=stS style="margin-top:28px;font:400 32px Inter;color:#8a8f98;text-align:center"></div>
+ <div id=stX class=k style="margin-top:40px;font-size:18px"></div>
+</div></div>
+
+<div class=layer id=app style="background:#09090b"><div id=world></div></div>
+
+<div class=layer id=outro style="background:#000"><div class=chap>
+ <img id=oN src="n-chrome.png" style="width:150px;height:150px">
+ <div id=oT class="big t" style="margin-top:56px">AI Twin. Predict.<br>Live on NOIR.</div>
+ <div id=oU style="margin-top:46px;padding:20px 36px;border-radius:999px;background:#fff;color:#000;font:600 34px Inter">usenoir.app</div>
+ <div id=oB class=k style="margin-top:34px;font-size:17px">AI POWERED BY BANKR LLM · PREDICT IS POINTS ONLY</div>
+</div></div>
+
+<div id=chip><div id=chipN>1</div><div id=chipT></div></div>
+<svg class=cursor id=cur viewBox="0 0 24 24" style="left:0;top:0;opacity:0"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.6 L14.4 20.4 L11.3 13.7 L17.6 13.7 Z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+<div class=ripple id=rip></div>
+<div id=vign></div>
+<div id=capbg></div><div id=cap></div>
+<div class=bar id=barT style="top:0"></div><div class=bar id=barB style="bottom:0"></div>
+<svg id=grain width="100%" height="100%"><filter id="nz"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="3"/></filter><rect width="100%" height="100%" filter="url(#nz)"/></svg>
+<div id=black style="position:absolute;inset:0;background:#000;z-index:70;opacity:1"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const inout = (x) => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, ...a] = keys[i], [t1, ...b] = keys[i + 1];
+    if (t <= t1) { const k = inout((t - t0) / (t1 - t0)); return a.map((v, j) => lerp(v, b[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+const fade = (t, a, b, f = 0.5) => Math.min(ease(seg(t, a, a + f)), 1 - ease(seg(t, b - f, b)));
+function rise(id, t, a, d = 0.8, dy = 30) { const o = ease(seg(t, a, a + d)); $(id).style.opacity = o; $(id).style.transform = `translateY(${dy * (1 - o)}px)`; }
+
+const STEPS = [
+  { at: 7.4, app: [10.0, 22.0], title: "AI Twin", sub: "Every profile coin can talk now.", x: "POWERED BY BANKR LLM", chip: "AI Twin · talk to the profile" },
+  { at: 22.0, app: [24.6, 40.4], title: "Predict", sub: "Call the market. Every single day.", x: "POINTS ONLY · NO FUNDS MOVE", chip: "Predict · call it up or down" },
+];
+
+const SHOTS = "a0 a1 a2 a3 a4 a5 a6 p1 p2 p3 lb".split(" ");
+$("world").innerHTML = SHOTS.map((n) => `<img id="i-${n}" src="shots2/${n}.png">`).join("");
+const CUTS = [
+  [10.0, "a0"], [11.8, "a1"], [12.8, "a2"], [14.3, "a3"], [17.6, "a4"], [18.6, "a5"], [20.0, "a6"],
+  [24.6, "a6"], [27.0, "p1"], [28.9, "p2"], [31.2, "p3"], [35.8, "lb"],
+];
+const DISSOLVE = { a3: 0.3, a6: 0.3, p1: 0.3, p2: 0.25, p3: 0.4, lb: 0.6 };
+function showShot(t) {
+  let cur = 0; for (let i = 0; i < CUTS.length; i++) if (t >= CUTS[i][0]) cur = i;
+  for (const n of SHOTS) { $("i-" + n).style.opacity = 0; $("i-" + n).style.zIndex = 0; }
+  const [t0, n] = CUTS[cur]; const d = DISSOLVE[n] || 0;
+  const k = d ? ease(seg(t, t0, t0 + d)) : 1;
+  if (cur > 0 && k < 1 && CUTS[cur - 1][1] !== n) { $("i-" + CUTS[cur - 1][1]).style.opacity = 1; $("i-" + CUTS[cur - 1][1]).style.zIndex = 1; }
+  $("i-" + n).style.opacity = CUTS[cur - 1]?.[1] === n ? 1 : k; $("i-" + n).style.zIndex = 2;
+}
+let CAM = { fx: 960, fy: 540, s: 1 };
+function camera(t) {
+  const [fx, fy, s] = kf(t, [
+    [10.0, 960, 560, 1.0], [11.4, 725, 830, 1.85], [14.0, 725, 840, 1.85], [16.0, 725, 870, 1.8], [20.0, 725, 895, 1.75], [22.0, 725, 900, 1.72],
+    [24.6, 980, 700, 1.15], [26.2, 1233, 814, 1.7], [27.1, 1233, 814, 1.7], [27.6, 960, 570, 1.55], [28.8, 975, 600, 1.75],
+    [29.4, 1233, 800, 1.95], [31.0, 1233, 810, 1.95], [33.6, 1233, 790, 2.1], [35.7, 1233, 790, 2.15],
+    [35.8, 960, 720, 1.25], [38.0, 960, 690, 1.42], [40.4, 960, 700, 1.47],
+  ]);
+  CAM = { fx, fy, s };
+  $("world").style.transform = `translate(${960 - fx * s}px, ${540 - fy * s}px) scale(${s})`;
+}
+const sx = (x) => 960 + (x - CAM.fx) * CAM.s, sy = (y) => 540 + (y - CAM.fy) * CAM.s;
+function cursor(t) {
+  const [x, y] = kf(t, [[25.2, 1300, 1000], [26.6, 1131, 872], [27.4, 1131, 872], [28.4, 1054, 676], [29.6, 1150, 760]]);
+  const vis = t > 25.2 && t < 29.6;
+  $("cur").style.left = sx(x) + "px"; $("cur").style.top = sy(y) + "px"; $("cur").style.opacity = vis ? 1 : 0;
+  const CL = [[26.8, 1131, 872], [28.6, 1054, 676]];
+  const r = $("rip"); r.style.opacity = 0;
+  for (const [ct, cx, cy] of CL) { const k = seg(t, ct, ct + 0.55); if (k > 0 && k < 1) { r.style.opacity = 1 - k; r.style.transform = `scale(${0.3 + k * 1.1})`; r.style.left = sx(cx) + "px"; r.style.top = sy(cy) + "px"; } }
+}
+function caption(t, items) {
+  const c = $("cap"); let o = 0, html = "";
+  for (const [a, b, h] of items) if (t >= a && t <= b) { o = Math.min(ease(seg(t, a, a + 0.45)), 1 - ease(seg(t, b - 0.45, b))); html = h; }
+  c.style.opacity = o; $("capbg").style.opacity = o * 0.9; if (html && c.innerHTML !== html) c.innerHTML = html; c.style.transform = `translateY(${(1 - o) * 14}px)`;
+}
+
+window.DURATION = 47;
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0.1, 0.9)) + ease(seg(t, 45.8, 46.9));
+
+  $("intro").style.opacity = fade(t, 0, 4.2, 0.6);
+  if (t < 4.3) { rise("inN", t, 0.4, 1.0, 16); rise("inT", t, 1.0); $("inN").style.transform += ` rotate(${-8 + 8 * ease(seg(t, 0.4, 3))}deg)`; }
+  $("two").style.opacity = fade(t, 4.0, 7.6, 0.5);
+  if (t > 4 && t < 7.6) { rise("twK", t, 4.2); rise("twT", t, 4.4); rise("twA", t, 5.2, 0.6, 20); rise("twB", t, 5.5, 0.6, 20); }
+
+  let card = null; STEPS.forEach((s, i) => { if (t >= s.at && t < s.app[0] + 0.1) card = i; });
+  if (card !== null) {
+    const s = STEPS[card]; $("step").style.opacity = fade(t, s.at, s.app[0] + 0.1, 0.35);
+    $("stN").textContent = "0" + (card + 1); $("stT").textContent = s.title; $("stS").textContent = s.sub; $("stX").textContent = s.x;
+    const k = ease(seg(t, s.at, s.at + 0.7)); $("stN").style.transform = `scale(${1.25 - 0.25 * k})`; $("stN").style.opacity = k;
+    rise("stT", t, s.at + 0.15, 0.6, 24); rise("stS", t, s.at + 0.35, 0.6, 18); rise("stX", t, s.at + 0.6, 0.6, 12);
+  } else $("step").style.opacity = 0;
+
+  let step = -1; STEPS.forEach((s, i) => { if (t >= s.app[0] && t < s.app[1]) step = i; });
+  if (step >= 0) {
+    const s = STEPS[step];
+    $("app").style.opacity = fade(t, s.app[0], s.app[1] + 0.05, 0.3);
+    showShot(t); camera(t); cursor(t);
+    $("barT").style.height = "96px"; $("barB").style.height = "96px";
+    const co = fade(t, s.app[0] + 0.2, s.app[1], 0.4);
+    $("chip").style.opacity = co; $("chipN").textContent = step + 1; $("chipT").textContent = s.chip;
+    $("chip").style.transform = `translateX(${-30 * (1 - ease(seg(t, s.app[0] + 0.2, s.app[0] + 0.7)))}px)`;
+  } else {
+    $("app").style.opacity = 0; $("chip").style.opacity = 0; $("cur").style.opacity = 0; $("rip").style.opacity = 0;
+    $("barT").style.height = "0px"; $("barB").style.height = "0px";
+  }
+
+  $("outro").style.opacity = fade(t, 40.4, 47.5, 0.6);
+  if (t > 40.4) { rise("oN", t, 40.7, 1.0, 16); rise("oT", t, 41.2); rise("oU", t, 42.3); rise("oB", t, 42.9, 0.8, 10); }
+
+  caption(t, [
+    [10.6, 13.9, "Every coin now has an <b>AI Twin.</b>"],
+    [14.4, 17.5, "Inspired by the public profile. <span>Never the real person.</span>"],
+    [17.8, 21.6, "Ask it anything. <b>It answers in character.</b>"],
+    [25.0, 28.4, "Up or down. <b>Signed by your wallet.</b>"],
+    [28.9, 31.0, "No gas. No funds. <b>Just conviction.</b>"],
+    [31.4, 35.4, "Call it right, <b>earn points.</b>"],
+    [36.2, 40.0, "Climb the <b>leaderboard.</b>"],
+  ]);
+};
+window.render(0);
+</script></body></html>
