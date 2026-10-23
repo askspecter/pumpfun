@@ -20,6 +20,8 @@ export interface DexQuote {
   marketCapUsd: number | null;
   fdvUsd: number | null;
   liquidityUsd: number | null;
+  /** Price change over the last 24h, in percent (e.g. 12.5 = +12.5%). */
+  change24h: number | null;
 }
 
 interface DexPair {
@@ -32,6 +34,7 @@ interface DexPair {
   priceNative?: string;
   priceUsd?: string;
   liquidity?: { usd?: number };
+  priceChange?: { h24?: number };
   fdv?: number;
   marketCap?: number;
 }
@@ -43,9 +46,12 @@ const num = (v: unknown): number | null => {
   return Number.isFinite(n) && n > 0 ? n : null;
 };
 
+/** EVM addresses are case-insensitive; Solana mints (base58) are not. */
+const norm = (t: string) => (t.startsWith("0x") ? t.toLowerCase() : t);
+
 /** The deepest pool where this token is the base asset. */
 function pick(token: string, pairs: DexPair[]): DexQuote | null {
-  const own = pairs.filter((p) => p.baseToken?.address?.toLowerCase() === token);
+  const own = pairs.filter((p) => norm(p.baseToken?.address ?? "") === token);
   if (own.length === 0) return null;
   own.sort((a, b) => (b.liquidity?.usd ?? 0) - (a.liquidity?.usd ?? 0));
   const p = own[0];
@@ -62,14 +68,18 @@ function pick(token: string, pairs: DexPair[]): DexQuote | null {
     marketCapUsd: num(p.marketCap) ?? fdv,
     fdvUsd: fdv,
     liquidityUsd: num(p.liquidity?.usd),
+    change24h: typeof p.priceChange?.h24 === "number" && Number.isFinite(p.priceChange.h24) ? p.priceChange.h24 : null,
   };
 }
 
-/** Quotes for up to 30 tokens in one request (DexScreener's batch limit). */
+/**
+ * Quotes for up to 30 tokens per request (DexScreener's batch limit). Keys are
+ * lowercased EVM addresses, or Solana mints as given.
+ */
 export async function dexQuotes(tokens: string[]): Promise<Record<string, DexQuote>> {
   const out: Record<string, DexQuote> = {};
   const want: string[] = [];
-  for (const t of tokens.map((x) => x.toLowerCase())) {
+  for (const t of tokens.map(norm)) {
     const hit = cache.get(t);
     if (hit && Date.now() - hit.at < TTL_MS) {
       if (hit.quote) out[t] = hit.quote;
@@ -103,5 +113,5 @@ export async function dexQuotes(tokens: string[]): Promise<Record<string, DexQuo
 }
 
 export async function dexQuote(token: string): Promise<DexQuote | null> {
-  return (await dexQuotes([token]))[token.toLowerCase()] ?? null;
+  return (await dexQuotes([token]))[norm(token)] ?? null;
 }

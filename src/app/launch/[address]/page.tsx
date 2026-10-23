@@ -10,6 +10,8 @@ import { ClaimFees } from "@/components/ClaimFees";
 import { TokenComments } from "@/components/TokenComments";
 import { TwinChat } from "@/components/TwinChat";
 import { PredictCard } from "@/components/PredictCard";
+import { PairChip, VerifiedBadge } from "@/components/markets/Badges";
+import { useMarketItem } from "@/components/markets/useMarket";
 import { explorerToken, explorerUrl } from "@/lib/chain";
 
 interface CurveData {
@@ -56,6 +58,7 @@ export default function ProfileCoinPage() {
   const [data, setData] = useState<TokenData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const market = useMarketItem(address);
 
   function copyCa(value: string) {
     navigator.clipboard?.writeText(value).then(
@@ -126,6 +129,8 @@ export default function ProfileCoinPage() {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="font-display text-2xl font-black text-zinc-900">{data.name}</h1>
               <span className="font-mono text-sm text-pink">${data.symbol}</span>
+              <VerifiedBadge verified={market?.verified ?? null} />
+              <PairChip pair={market?.pair ?? null} />
               <span className="chip">{data.phaseLabel}</span>
               {data.curve?.readyToGraduate && <span className="chip chip-accent">ready to graduate</span>}
             </div>
@@ -174,7 +179,7 @@ export default function ProfileCoinPage() {
             token={data.token}
             marketCapUsd={data.marketCapUsd}
             marketCapEth={data.marketCapEth}
-            quoteSymbol={data.pairToken && data.pairToken !== zeroAddress ? "quote" : "ETH"}
+            quoteSymbol={data.pairToken && data.pairToken !== zeroAddress ? (market?.pair?.symbol ?? "quote") : "ETH"}
           />
           <TwinChat
             chain="robinhood"

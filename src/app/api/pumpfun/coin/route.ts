@@ -4,6 +4,7 @@ import { isSolanaAddress } from "@/lib/solana";
 import { solUsd } from "@/lib/sol-price";
 import { readCurve } from "@/lib/pumpfun/curve";
 import { pumpGet } from "@/lib/pumpfun/http";
+import type { ProfileSource } from "@/lib/profile-source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ interface LaunchRecordLite {
   symbol?: string;
   logo?: string;
   handle?: string;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   twitter?: string;
   telegram?: string;
   website?: string;

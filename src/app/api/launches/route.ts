@@ -2,34 +2,23 @@ import { NextResponse } from "next/server";
 import { isAddress, verifyMessage, type Address } from "viem";
 import { getKv } from "@/lib/kv";
 import { isSolanaAddress, type LaunchChain } from "@/lib/solana";
+import {
+  LAUNCHES_KEY as KEY,
+  isTokenFor,
+  readLaunches,
+  safeParse,
+  sameId,
+  type LaunchRecord,
+} from "@/lib/launches";
+import { proveRobinhoodLaunch, proveSolanaLaunch } from "@/lib/launch-proof";
+import { toSource } from "@/lib/profile-source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const maxDuration = 60;
 
-const KEY = "fomo:launches";
-
-/** A profile coin launched through NOIR (Pons on Robinhood, or Pump.fun on Solana). */
-export interface LaunchRecord {
-  /** Missing on older records, which are all Robinhood. */
-  chain?: LaunchChain;
-  token: string;
-  curve?: string;
-  version: "v2";
-  name: string;
-  symbol: string;
-  logo: string;
-  /** The profile handle this coin represents. */
-  handle?: string;
-  /** Where the handle lives. Missing on older records, which are all fomo.family. */
-  source?: "fomo" | "pumpfun";
-  twitter?: string;
-  telegram?: string;
-  website?: string;
-  deployer: string;
-  txHash: string;
-  createdAt: number;
-}
+export type { LaunchRecord };
 
 /** GET /api/launches?limit=48 - newest profile launches (from KV). */
 export async function GET(req: Request) {
@@ -41,11 +30,7 @@ export async function GET(req: Request) {
   const token = searchParams.get("token"); // optional: fetch one record
   const deployer = searchParams.get("deployer"); // optional: filter by creator
 
-  const raw = (await kv.lrange<LaunchRecord | string>(KEY, 0, 199)) ?? [];
-  const all = raw
-    .map((r) => (typeof r === "string" ? safeParse(r) : r))
-    .filter((r): r is LaunchRecord => !!r && isTokenFor(r.chain ?? "robinhood", r.token))
-    .filter((r) => !isHidden(r.token));
+  const all = await readLaunches();
   const chainFilter = searchParams.get("chain"); // optional: "robinhood" | "solana"
 
   // Single-token lookup (used as an image/metadata fallback on the profile page).
@@ -62,7 +47,11 @@ export async function GET(req: Request) {
   return NextResponse.json({ items });
 }
 
-/** POST /api/launches - record a profile launch made through NOIR. */
+/**
+ * POST /api/launches - record a profile launch made through NOIR.
+ * The launch transaction (txHash) must prove the coin on-chain; the creator
+ * is taken from the chain, not from the request.
+ */
 export async function POST(req: Request) {
   const kv = getKv();
   if (!kv) return NextResponse.json({ error: "Storage not configured." }, { status: 503 });
@@ -79,27 +68,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing/invalid token address." }, { status: 400 });
   }
   const evm = chain === "robinhood";
+  const txHash = String(body.txHash ?? "");
+
+  // Already listed (the browser and the server fallback can both record).
+  if ((await readLaunches()).some((r) => sameId(r.token, body.token!))) return NextResponse.json({ ok: true });
+
+  const proof = evm ? await proveRobinhoodLaunch(txHash, body.token) : await proveSolanaLaunch(txHash, body.token);
+  if (!proof) {
+    return NextResponse.json({ error: "Couldn't verify this launch on-chain." }, { status: 422 });
+  }
 
   const record: LaunchRecord = {
     chain,
     token: body.token,
-    curve: evm && body.curve && isAddress(body.curve) ? body.curve : undefined,
+    curve: proof.curve,
     version: "v2",
     name: String(body.name ?? "").slice(0, 80),
     symbol: String(body.symbol ?? "").slice(0, 16),
     logo: String(body.logo ?? "").slice(0, 2000),
     handle: body.handle ? String(body.handle).slice(0, 80) : undefined,
-    source: body.source === "pumpfun" ? "pumpfun" : "fomo",
+    source: toSource(body.source),
     twitter: body.twitter ? String(body.twitter).slice(0, 200) : undefined,
     telegram: body.telegram ? String(body.telegram).slice(0, 200) : undefined,
     website: body.website ? String(body.website).slice(0, 200) : undefined,
-    deployer:
-      body.deployer && (evm ? isAddress(body.deployer) : isSolanaAddress(body.deployer))
-        ? body.deployer
-        : evm
-          ? "0x0000000000000000000000000000000000000000"
-          : "11111111111111111111111111111111",
-    txHash: String(body.txHash ?? "").slice(0, 100),
+    deployer: proof.deployer,
+    txHash: txHash.slice(0, 100),
     createdAt: Date.now(),
   };
 
@@ -161,32 +154,4 @@ export async function DELETE(req: Request) {
   }
 
   return NextResponse.json({ ok: true, removed });
-}
-
-/**
- * Launches hidden from the NOIR feed (test coins, abuse reports): a
- * comma-separated list of token addresses / mints in HIDDEN_LAUNCHES. The
- * coins still exist on-chain; NOIR just stops listing them.
- */
-function isHidden(token: string): boolean {
-  const list = (process.env.HIDDEN_LAUNCHES ?? "").split(",").map((t) => t.trim()).filter(Boolean);
-  return list.some((h) => sameId(h, token));
-}
-
-/** Token/mint shape check for the record's chain. */
-function isTokenFor(chain: LaunchChain, token: unknown): token is string {
-  return chain === "solana" ? isSolanaAddress(token) : typeof token === "string" && isAddress(token);
-}
-
-/** EVM addresses compare case-insensitively; Solana base58 is case-sensitive. */
-function sameId(a: string, b: string): boolean {
-  return a.startsWith("0x") ? a.toLowerCase() === b.toLowerCase() : a === b;
-}
-
-function safeParse(s: string): LaunchRecord | null {
-  try {
-    return JSON.parse(s) as LaunchRecord;
-  } catch {
-    return null;
-  }
 }

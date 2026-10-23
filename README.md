@@ -21,6 +21,31 @@ your own wallet.
 - **Creator fees:** claim curve fees credited to your wallet in the Pons fee escrow.
 - **Non-custodial:** `wagmi` + `viem` + RainbowKit; the user's wallet signs every transaction.
 
+## 📈 NOIR Markets, Verified Creators & Creator Bank
+
+- **NOIR Markets (`/markets`):** every profile coin on both chains in one live board: ticker tape,
+  Top / Gainers / Losers / New / Verified / Stock-paired tabs, a browser-local ★ watchlist, and a
+  graduation race. Served by `/api/markets` (`src/lib/markets.ts`, cached ~30s). Prices come from the
+  DEX pool when one exists, else the bonding curve; 24h change comes from DexScreener, or from hourly
+  market-cap snapshots in KV for coins still on the curve.
+- **Verified ✓:** a coin is *Verified* when its on-chain creator (Pons deployer / Pump.fun curve
+  creator) is the profile's own wallet, and *Fees → creator* when its creator fees route on-chain to
+  that wallet (`src/lib/verify.ts`). fomo.family wallets are read from the profile cache only, to
+  protect the FOMO resolution quota.
+- **Stock-paired profiles:** coins paired with tokenized stocks (NVDA, TSLA, AAPL…) are tagged
+  everywhere, and the studio offers one-tap stock pairs.
+- **Creator Bank (`/profile`):** coins you launched plus coins whose fees pay you, combined market
+  cap, and claims for ETH and every stock/stable quote asset (Pump.fun fees link to Pump.fun).
+
+## 🐙 GitHub profiles
+
+- **Launch from GitHub:** pick *GitHub* in the studio and enter a username; name, avatar, bio, website
+  and X link are pulled from GitHub's public API (`/api/github/profile/{login}`, cached 10 minutes).
+  Works with either launch chain. Set `GITHUB_TOKEN` to raise GitHub's rate limit (60 → 5,000/hour).
+- **Wallets via bio:** GitHub has no wallets, so a profile's wallets are the EVM / Solana addresses its
+  owner writes in their GitHub bio (only the owner can edit it). A listed EVM wallet receives Pons
+  creator fees, and launching from a listed wallet earns the ✓ Verified badge.
+
 ## 🟣 Solana · Pump.fun
 
 - **@Pumpfun profiles:** pick *@Pumpfun* in the studio and enter a Pump.fun username or Solana

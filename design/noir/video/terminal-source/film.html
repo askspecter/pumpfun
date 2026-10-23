@@ -1,0 +1,262 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#050506;font-family:Inter,sans-serif;color:#fff}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.world{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.world>img.shot{position:absolute;left:0;top:0;width:1920px;height:1080px;display:block}
+.ov{position:absolute}
+.mono{font-family:'JetBrains Mono',monospace}
+.k{font:500 18px 'JetBrains Mono';letter-spacing:.32em;color:#8a8f98}
+#cap{position:absolute;left:0;right:0;bottom:78px;text-align:center;font:500 44px Inter;letter-spacing:-.01em;color:#f3f4f6;text-shadow:0 2px 28px rgba(0,0,0,.9);opacity:0;z-index:50}
+#cap b{font-weight:500;color:#2fe39a}
+#capbg{position:absolute;left:0;right:0;bottom:0;height:300px;z-index:45;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82) 70%);opacity:0}
+#vign{position:absolute;inset:0;z-index:40;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.6))}
+#grain{position:absolute;left:-60px;top:-60px;width:2040px;height:1200px;z-index:60;opacity:.06;mix-blend-mode:overlay}
+#scan{position:absolute;inset:0;z-index:58;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 4px)}
+#black{position:absolute;inset:0;background:#000;z-index:70}
+#flash{position:absolute;inset:0;background:#fff;z-index:65;opacity:0;mix-blend-mode:screen}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(47,227,154,.9);opacity:0}
+.key{position:absolute;width:150px;height:150px;border-radius:30px;display:flex;align-items:center;justify-content:center;font:600 64px 'JetBrains Mono';color:#d6d8de;
+ background:linear-gradient(180deg,#1a1b20,#0d0e11);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 2px 0 rgba(255,255,255,.12),inset 0 -8px 0 rgba(0,0,0,.45),0 30px 60px -20px rgba(0,0,0,.9)}
+.key.on{color:#03130b;background:linear-gradient(180deg,#5cf0b4,#22c886);border-color:rgba(47,227,154,.9);box-shadow:inset 0 2px 0 rgba(255,255,255,.35),inset 0 -8px 0 rgba(0,0,0,.25),0 0 60px 6px rgba(47,227,154,.45)}
+.klbl{position:absolute;width:150px;text-align:center;font:500 16px Inter;color:#8a8f98}
+.cursor{display:inline-block;width:14px;height:30px;background:#2fe39a;vertical-align:-5px;margin-left:4px}
+</style></head><body>
+
+<!-- A · boot -->
+<div class=layer id=boot style="background:#030303">
+ <div style="position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px"></div>
+ <div id=bootTxt class=mono style="position:absolute;left:300px;top:330px;font-size:40px;line-height:1.6;color:#e9eaee"></div>
+</div>
+
+<!-- B · title -->
+<div class=layer id=ti style="background:#040405">
+ <div id=tiBeam style="position:absolute;left:-10%;right:-10%;top:560px;height:420px;background:radial-gradient(ellipse 900px 160px at 50% 0%,rgba(47,227,154,.28),transparent 70%);opacity:0"></div>
+ <img id=tiN src="assets/n-chrome.png" style="position:absolute;left:885px;top:170px;width:150px;height:150px;filter:drop-shadow(0 0 50px rgba(205,212,235,.45));opacity:0">
+ <div id=tiK class=k style="position:absolute;left:0;right:0;top:390px;text-align:center;opacity:0">INTRODUCING</div>
+ <div id=tiT style="position:absolute;left:0;right:0;top:432px;text-align:center;font:600 196px/1.04 'Inter Display';letter-spacing:-.06em;clip-path:inset(0 100% 0 0)">NOIR Terminal<span style="color:#2fe39a">_</span></div>
+ <div id=tiS style="position:absolute;left:0;right:0;top:676px;text-align:center;font:400 34px Inter;color:#8a8f98;opacity:0">Every profile coin. One screen. Robinhood Chain &amp; Solana.</div>
+ <div id=tiSweep style="position:absolute;top:420px;height:250px;width:260px;left:-300px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);mix-blend-mode:overlay"></div>
+</div>
+
+<!-- C · navigate J/K -->
+<div class=layer id=nv><div class=world id=nvW>
+ <img class=shot src="shots/t0-nova.png">
+ <img class=shot id=nv1 src="shots/t1-mira.png" style="opacity:0">
+ <img class=shot id=nv2 src="shots/t2-kairo.png" style="opacity:0">
+</div>
+ <div id=nvKey class=key style="right:120px;bottom:150px;width:120px;height:120px;font-size:52px;opacity:0">J</div>
+</div>
+
+<!-- D · command bar -->
+<div class=layer id=cm><div class=world id=cmW>
+ <img class=shot src="shots/t0-nova.png">
+ <img class=shot id=cm2 src="shots/t3-buy.png" style="opacity:0">
+ <div class=ov id=cmIn style="left:210px;top:101px;width:1480px;height:27px;background:#0e0f12;font:400 14px/27px 'JetBrains Mono';color:#fff;padding-left:3px"></div>
+ <!-- connected-wallet look for the trade panel -->
+ <div class=ov id=cmFix style="left:0;top:0;width:1920px;height:1080px;opacity:0">
+  <div class=ov style="left:1396px;top:419px;width:340px;height:18px;background:#0d0e10"></div>
+  <div class=ov style="left:1400px;top:482px;width:328px;height:46px;border-radius:12px;background:#c7cdff;color:#08090a;font:600 15px/46px Inter;text-align:center;box-shadow:0 0 30px rgba(199,205,255,.35)">Buy KAIRO</div>
+  <div class=ov style="left:1396px;top:535px;width:340px;height:17px;background:#0c0d0f"></div>
+ </div>
+ <div class=ov id=amtRing style="left:1398px;top:348px;width:332px;height:42px;border-radius:12px;box-shadow:0 0 0 2px rgba(47,227,154,.9),0 0 40px 8px rgba(47,227,154,.35);opacity:0"></div>
+ <div class=ov id=logRing style="left:186px;top:172px;width:470px;height:42px;border-radius:10px;box-shadow:0 0 0 2px rgba(47,227,154,.8),0 0 40px 6px rgba(47,227,154,.3);opacity:0"></div>
+</div>
+ <div id=cmKey class=key style="right:120px;bottom:150px;width:150px;height:120px;font-size:30px;opacity:0">ENTER</div>
+</div>
+
+<!-- E · hotkeys -->
+<div class=layer id=hk style="background:#040405">
+ <div style="position:absolute;inset:0;background:radial-gradient(ellipse 800px 420px at 50% 50%,rgba(47,227,154,.1),transparent 70%)"></div>
+ <div id=hkK class=k style="position:absolute;left:0;right:0;top:170px;text-align:center;opacity:0">HOTKEYS</div>
+ <div id=keys></div>
+ <div id=hkT style="position:absolute;left:0;right:0;top:760px;text-align:center;font:600 76px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Trade at the speed of thought<span style="color:#2fe39a">.</span></div>
+</div>
+
+<!-- F · help panel -->
+<div class=layer id=hp><div class=world id=hpW><img class=shot src="shots/t5-help.png">
+ <div class=ov style="left:0;top:470px;width:1920px;height:610px;background:linear-gradient(180deg,rgba(5,5,6,0),#050506 35%)"></div></div></div>
+
+<!-- G · you sign -->
+<div class=layer id=sg style="background:#040405">
+ <div style="position:absolute;inset:0;background:radial-gradient(ellipse 620px 300px at 50% 46%,rgba(199,205,255,.14),transparent 70%)"></div>
+ <svg id=sgLock viewBox="0 0 24 24" width="120" height="120" style="position:absolute;left:900px;top:250px;opacity:0" fill="none" stroke="#c7cdff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path id=sgShackle d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4" fill="#c7cdff"/></svg>
+ <div id=sg1 style="position:absolute;left:0;right:0;top:430px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Commands fill the panel<span style="color:#c7cdff">.</span></div>
+ <div id=sg2 style="position:absolute;left:0;right:0;top:545px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0"><span style="color:#8a8f98;font-weight:400">Your wallet</span> signs<span style="color:#c7cdff">.</span></div>
+ <div id=sg3 style="position:absolute;left:0;right:0;top:690px;text-align:center;font:400 30px Inter;color:#8a8f98;opacity:0">Non-custodial. Nothing trades until you confirm.</div>
+</div>
+
+<!-- H · outro -->
+<div class=layer id=ou style="background:#030304">
+ <div id=ouGlow style="position:absolute;left:-10%;right:-10%;top:520px;height:300px;background:radial-gradient(ellipse 900px 120px at 50% 50%,rgba(47,227,154,.25),transparent 75%);opacity:0"></div>
+ <img id=ouN src="assets/n-chrome.png" style="position:absolute;left:885px;top:250px;width:150px;height:150px;filter:drop-shadow(0 0 50px rgba(205,212,235,.5));opacity:0">
+ <div id=ouTxt style="position:absolute;left:0;right:0;top:440px;text-align:center;opacity:0">
+  <div style="font:600 150px/1 'Inter Display';letter-spacing:-.055em">noir<span style="color:#c7cdff">.</span></div>
+  <div class=mono style="margin-top:34px;font-size:30px;color:#2fe39a">&gt; usenoir.app/terminal<span id=ouCur class=cursor></span></div>
+  <div style="margin-top:22px;font:500 24px Inter;color:#8a8f98">Live now &nbsp;·&nbsp; @usenoirapp</div>
+ </div>
+</div>
+
+<div id=cap></div><div id=capbg></div>
+<div id=vign></div><div id=scan></div>
+<canvas id=grain width=1020 height=600></canvas>
+<div id=flash></div><div id=black></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const out = (x) => 1 - Math.pow(1 - x, 3);
+const back = (x) => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, k) => a + (b - a) * k;
+function show(id, t, a, b, f = 0.5) {
+  const o = Math.min(seg(t, a, a + f), 1 - seg(t, b - f, b));
+  $(id).style.opacity = o; $(id).style.visibility = o > 0 ? "visible" : "hidden";
+  return o > 0;
+}
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [a, ...va] = keys[i], [b, ...vb] = keys[i + 1];
+    if (t <= b) { const k = ease(seg(t, a, b)); return va.map((v, j) => lerp(v, vb[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+function cam(id, t, keys) {
+  const [cx, cy, z, rx = 0] = kf(t, keys);
+  $(id).style.transform = `perspective(2400px) translate(${960 - cx * z}px,${540 - cy * z}px) rotateX(${rx}deg) scale(${z})`;
+}
+function caption(t, list) {
+  const c = $("cap"); let o = 0;
+  for (const [a, b, html] of list) if (t >= a && t <= b) { if (c.dataset.h !== html) { c.innerHTML = html; c.dataset.h = html; } o = Math.min(seg(t, a, a + 0.45), 1 - seg(t, b - 0.45, b)); c.style.transform = `translateY(${14 * (1 - out(seg(t, a, a + 0.6)))}px)`; }
+  c.style.opacity = o; $("capbg").style.opacity = o;
+}
+/** Press animation for a keycap element at time `at`. */
+function press(el, t, at, dur = 0.35) {
+  const k = seg(t, at, at + dur), on = t >= at && t < at + dur + 0.25;
+  el.classList.toggle("on", on);
+  el.style.transform = `translateY(${on ? 6 * (1 - k) : 0}px) scale(${on ? 0.96 + 0.04 * k : 1})`;
+}
+const typed = (text, t, a, cps = 14) => text.slice(0, Math.max(0, Math.floor((t - a) * cps)));
+const blink = (t) => (Math.floor(t * 2.2) % 2 === 0 ? 1 : 0);
+
+// grain
+const g = $("grain").getContext("2d"), gd = g.createImageData(1020, 600);
+for (let i = 0; i < gd.data.length; i += 4) { const v = Math.random() * 255; gd.data[i] = gd.data[i + 1] = gd.data[i + 2] = v; gd.data[i + 3] = 255; }
+g.putImageData(gd, 0, 0);
+
+// hotkey grid: [key, label, x, y, press time]
+const KEYS = [["/", "command", 0, 0, 24.3], ["J", "next", 1, 0, 24.75], ["K", "previous", 2, 0, 25.2], ["B", "buy", 3, 0, 25.65], ["S", "sell", 4, 0, 26.1],
+  ["1", "preset", 0.5, 1, 26.55], ["2", "preset", 1.5, 1, 26.8], ["3", "preset", 2.5, 1, 27.05], ["W", "watch ★", 3.5, 1, 27.5]];
+$("keys").innerHTML = KEYS.map(([k, l, x, y], i) => {
+  const left = 960 - 2.5 * 190 + x * 190 + 20, top = 250 + y * 230;
+  return `<div class=key id=k${i} style="left:${left}px;top:${top}px;opacity:0">${k}</div><div class=klbl id=kl${i} style="left:${left}px;top:${top + 162}px;opacity:0">${l}</div>`;
+}).join("");
+
+const BOOT = [
+  ["> ", "noir --terminal", 0.7],
+  ["", "loading markets ……… 8 profile coins", 3.05],
+  ["", "chains ……………………… robinhood · solana", 3.35],
+  ["", "verified creators … on-chain", 3.65],
+  ["", "custody ………………………… none. you sign.", 3.95],
+  ["", "<span style='color:#2fe39a'>ready.</span>", 4.3],
+];
+
+window.DURATION = 41;
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0, 0.5)) + ease(seg(t, 39.9, 40.9));
+  $("grain").style.transform = `translate(${((t * 977) % 60) | 0}px,${((t * 613) % 60) | 0}px)`;
+  $("grain").style.width = "2040px"; $("grain").style.height = "1200px";
+  $("scan").style.opacity = t < 5.2 ? 1 : 0;
+  let flash = 0;
+
+  // A · boot (0 – 5.4)
+  if (show("boot", t, 0, 5.4, 0.3)) {
+    let html = "";
+    const cmd = BOOT[0];
+    const typedCmd = typed(cmd[1], t, cmd[2], 9);
+    html += `<span style="color:#2fe39a">&gt;</span> ${typedCmd}${t < 2.95 ? `<span class=cursor style="opacity:${blink(t)}"></span>` : ""}<br>`;
+    for (const [, line, at] of BOOT.slice(1)) if (t >= at) html += `<span style="color:#8a8f98">${line}</span><br>`;
+    if (t >= 4.3) html += `<span class=cursor style="opacity:${blink(t)}"></span>`;
+    $("bootTxt").innerHTML = html;
+    $("bootTxt").style.transform = `scale(${1 + 0.03 * seg(t, 0, 5.4)})`;
+    if (t > 2.95) flash = Math.max(flash, 0.18 * (1 - seg(t, 2.95, 3.3)));
+  }
+
+  // B · title (5.0 – 9.4)
+  if (show("ti", t, 5.0, 9.4, 0.5)) {
+    $("tiN").style.opacity = out(seg(t, 5.2, 6.0)); $("tiN").style.transform = `translateY(${30 * (1 - out(seg(t, 5.2, 6.2)))}px)`;
+    $("tiK").style.opacity = out(seg(t, 5.6, 6.3));
+    const r = ease(seg(t, 5.9, 7.0)); $("tiT").style.clipPath = `inset(0 ${100 - r * 100}% 0 0)`;
+    $("tiSweep").style.left = lerp(-300, 2100, seg(t, 6.9, 7.9)) + "px";
+    $("tiS").style.opacity = out(seg(t, 7.2, 7.9));
+    $("tiBeam").style.opacity = out(seg(t, 5.8, 7));
+    if (t > 5.0) flash = Math.max(flash, 0.35 * (1 - seg(t, 5.0, 5.5)));
+  }
+
+  // C · navigate (9.0 – 15.8)
+  if (show("nv", t, 9.0, 15.8, 0.5)) {
+    cam("nvW", t, [[9.0, 960, 560, 0.92, 14], [10.6, 960, 520, 1.0, 0], [11.6, 700, 440, 1.45, 0], [15.8, 720, 450, 1.55, 0]]);
+    $("nv1").style.opacity = ease(seg(t, 12.0, 12.25)); $("nv2").style.opacity = ease(seg(t, 13.6, 13.85));
+    const kv = ease(seg(t, 11.5, 11.9)) * (1 - ease(seg(t, 15.0, 15.4))); $("nvKey").style.opacity = kv;
+    press($("nvKey"), t, 11.95); if (t > 13.4) press($("nvKey"), t, 13.55);
+  }
+
+  // D · command bar (15.4 – 24.0)
+  if (show("cm", t, 15.4, 24.0, 0.5)) {
+    cam("cmW", t, [[15.4, 700, 150, 1.6], [16.2, 620, 150, 2.0], [19.2, 640, 150, 2.0], [20.2, 900, 300, 1.15], [21.0, 1560, 400, 2.0], [24.0, 1565, 405, 2.1]]);
+    const txt = typed("buy $kairo 0.05", t, 16.5, 11);
+    $("cmIn").innerHTML = t < 18.9 ? `${txt}<span style="display:inline-block;width:8px;height:16px;background:#2fe39a;vertical-align:-3px;margin-left:2px;opacity:${blink(t)}"></span>` : "";
+    $("cmIn").style.opacity = t < 18.95 ? 1 : 0;
+    $("cm2").style.opacity = ease(seg(t, 18.9, 19.15));
+    $("cmFix").style.opacity = ease(seg(t, 18.9, 19.15));
+    $("logRing").style.opacity = ease(seg(t, 19.2, 19.6)) * (1 - ease(seg(t, 20.0, 20.4)));
+    $("amtRing").style.opacity = ease(seg(t, 21.0, 21.4)) * (0.75 + 0.25 * Math.sin(t * 6));
+    const kv = ease(seg(t, 18.2, 18.5)) * (1 - ease(seg(t, 19.6, 20.0))); $("cmKey").style.opacity = kv;
+    press($("cmKey"), t, 18.75);
+    if (t > 18.9) flash = Math.max(flash, 0.12 * (1 - seg(t, 18.9, 19.3)));
+  }
+
+  // E · hotkeys (23.6 – 29.2)
+  if (show("hk", t, 23.6, 29.2, 0.5)) {
+    $("hkK").style.opacity = out(seg(t, 23.8, 24.3));
+    KEYS.forEach(([, , , , at], i) => {
+      const o = out(seg(t, 23.9 + i * 0.05, 24.4 + i * 0.05));
+      $("k" + i).style.opacity = o; $("kl" + i).style.opacity = o;
+      press($("k" + i), t, at);
+    });
+    $("hkT").style.opacity = out(seg(t, 27.7, 28.3)); $("hkT").style.transform = `translateY(${20 * (1 - out(seg(t, 27.7, 28.4)))}px)`;
+  }
+
+  // F · help panel (28.8 – 32.8)
+  if (show("hp", t, 28.8, 32.8, 0.5)) cam("hpW", t, [[28.8, 965, 335, 1.16], [32.8, 965, 330, 1.24]]);
+
+  // G · you sign (32.4 – 36.6)
+  if (show("sg", t, 32.4, 36.6, 0.5)) {
+    $("sgLock").style.opacity = out(seg(t, 32.6, 33.1));
+    $("sgShackle").setAttribute("transform", `translate(0 ${-2 * (1 - out(seg(t, 33.1, 33.5)))})`);
+    for (const [id, a] of [["sg1", 33.0], ["sg2", 33.6], ["sg3", 34.3]]) { const o = out(seg(t, a, a + 0.6)); $(id).style.opacity = o; $(id).style.transform = `translateY(${24 * (1 - o)}px)`; }
+  }
+
+  // H · outro (36.2 – 41)
+  if (show("ou", t, 36.2, 41.5, 0.5)) {
+    $("ouN").style.opacity = out(seg(t, 36.5, 37.2)); $("ouN").style.transform = `scale(${lerp(0.9, 1, out(seg(t, 36.5, 37.5)))})`;
+    $("ouTxt").style.opacity = out(seg(t, 36.9, 37.6)); $("ouTxt").style.transform = `translateY(${24 * (1 - out(seg(t, 36.9, 37.7)))}px)`;
+    $("ouGlow").style.opacity = out(seg(t, 36.5, 37.5));
+    $("ouCur").style.opacity = blink(t);
+    if (t > 36.5) flash = Math.max(flash, 0.25 * (1 - seg(t, 36.5, 37.0)));
+  }
+
+  $("flash").style.opacity = flash;
+  $("vign").style.opacity = t > 9 && t < 32.4 ? 1 : 0.7;
+  caption(t, [
+    [10.0, 11.8, "Every profile coin, <b>one screen.</b>"],
+    [12.0, 15.4, "<b>J / K</b> to move. No page loads."],
+    [16.3, 18.9, "Type what you want."],
+    [19.3, 23.6, "It’s ready. <b>You confirm.</b>"],
+    [29.3, 32.4, "Press <b>?</b> for every command."],
+  ]);
+};
+window.render(0);
+</script></body></html>

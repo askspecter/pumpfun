@@ -7,7 +7,8 @@ const COLUMNS = [
   {
     title: "Product",
     links: [
-      { href: "/", label: "Markets" },
+      { href: "/markets", label: "Markets" },
+      { href: "/terminal", label: "Terminal" },
       { href: "/explore", label: "Explore" },
       { href: "/leaderboard", label: "Leaderboard" },
       { href: "/create", label: "Launch" },
@@ -16,7 +17,7 @@ const COLUMNS = [
   {
     title: "Account",
     links: [
-      { href: "/profile", label: "My profile" },
+      { href: "/profile", label: "Creator Bank" },
       { href: "/docs", label: "Docs" },
     ],
   },

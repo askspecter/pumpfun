@@ -1,0 +1,239 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#050506;font-family:Inter,sans-serif;color:#fff}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.world{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.world>img.shot{position:absolute;left:0;top:0;width:1920px;height:1080px;display:block}
+.ov{position:absolute}
+.mono{font-family:'JetBrains Mono',monospace}
+.k{font:500 18px 'JetBrains Mono';letter-spacing:.32em;color:#8a8f98}
+#cap{position:absolute;left:0;right:0;bottom:78px;text-align:center;font:500 44px Inter;letter-spacing:-.01em;color:#f3f4f6;text-shadow:0 2px 28px rgba(0,0,0,.9);opacity:0;z-index:50}
+#cap b{font-weight:500;color:#c7cdff}
+#capbg{position:absolute;left:0;right:0;bottom:0;height:300px;z-index:45;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82) 70%);opacity:0}
+#vign{position:absolute;inset:0;z-index:40;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.6))}
+#grain{position:absolute;left:-60px;top:-60px;width:2040px;height:1200px;z-index:60;opacity:.06;mix-blend-mode:overlay}
+#black{position:absolute;inset:0;background:#000;z-index:70}
+#flash{position:absolute;inset:0;background:#fff;z-index:65;opacity:0;mix-blend-mode:screen}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0}
+.ring{position:absolute;border-radius:12px;box-shadow:0 0 0 2px rgba(199,205,255,.9),0 0 40px 8px rgba(124,140,255,.35);opacity:0}
+.ring.g{box-shadow:0 0 0 2px rgba(47,227,154,.9),0 0 40px 8px rgba(47,227,154,.35)}
+.cursor{display:inline-block;width:14px;height:30px;background:#c7cdff;vertical-align:-5px;margin-left:4px}
+.stage{position:absolute;perspective:2200px}
+.rot{position:absolute;inset:0;transform-style:preserve-3d}
+.tile{position:absolute;inset:0;border-radius:22%;background:linear-gradient(150deg,#2a2c33 0%,#121318 45%,#08090b 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -30px 60px rgba(0,0,0,.6),0 80px 160px rgba(0,0,0,.7)}
+.tile:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.05) 40%,rgba(199,205,255,.5) 75%,rgba(255,255,255,.1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:2}
+.side{position:absolute;inset:0;border-radius:22%;background:linear-gradient(160deg,#3b3e48,#0c0d10);transform:translateZ(-60px)}
+.bioCard{position:absolute;border-radius:28px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,#121317,#0b0c0e);box-shadow:0 60px 140px -40px rgba(0,0,0,.95)}
+.ver{display:inline-flex;align-items:center;gap:14px;border-radius:999px;padding:16px 34px 16px 24px;font:600 48px 'Inter Display';color:#2fe39a;border:2px solid rgba(47,227,154,.45);background:rgba(47,227,154,.1)}
+</style></head><body>
+
+<!-- A · git intro -->
+<div class=layer id=git style="background:#030303">
+ <div style="position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px"></div>
+ <div id=gitTxt class=mono style="position:absolute;left:320px;top:360px;font-size:42px;line-height:1.7;color:#e9eaee"></div>
+</div>
+
+<!-- B · title: GitHub × NOIR -->
+<div class=layer id=ti style="background:#040405">
+ <div style="position:absolute;left:-10%;right:-10%;top:340px;height:420px;background:radial-gradient(ellipse 760px 150px at 50% 50%,rgba(124,140,255,.3),transparent 72%)"></div>
+ <div class=stage id=tiG style="left:470px;top:150px;width:330px;height:330px;opacity:0"><div class=rot style="transform:rotateX(18deg) rotateY(26deg) rotateZ(4deg)"><div class=side></div><div class=tile style="overflow:hidden"><img src="assets-github.svg" style="position:absolute;inset:0;width:100%;height:100%;border-radius:22%;opacity:.95"></div></div></div>
+ <div id=tiX style="position:absolute;left:910px;top:240px;width:100px;text-align:center;font:200 90px Inter;color:#50545c;opacity:0">×</div>
+ <div class=stage id=tiN style="left:1120px;top:150px;width:330px;height:330px;opacity:0"><div class=rot style="transform:rotateX(18deg) rotateY(-26deg) rotateZ(-4deg)"><div class=side></div><div class=tile><img src="assets/n-chrome.png" style="position:absolute;left:21%;top:21%;width:58%;height:58%"></div></div></div>
+ <div id=tiT style="position:absolute;left:0;right:0;top:580px;text-align:center;font:600 150px/1.04 'Inter Display';letter-spacing:-.055em;clip-path:inset(0 100% 0 0)">Launch from GitHub<span style="color:#c7cdff">.</span></div>
+ <div id=tiS style="position:absolute;left:0;right:0;top:780px;text-align:center;font:400 34px Inter;color:#8a8f98;opacity:0">Your GitHub profile. Now a market.</div>
+ <div id=tiSweep style="position:absolute;top:570px;height:200px;width:260px;left:-300px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);mix-blend-mode:overlay"></div>
+</div>
+
+<!-- C · studio: pick GitHub, type, detect -->
+<div class=layer id=st><div class=world id=stW>
+ <img class=shot src="shots/s0-fomo.png">
+ <img class=shot id=st1 src="shots/s1-github.png" style="opacity:0">
+ <div class=ov id=stIn style="left:452px;top:386px;width:494px;height:38px;background:#141518;font:400 15px/38px Inter;color:#fff;padding-left:12px;opacity:0"></div>
+ <img class=shot id=st2 src="shots/s2-detected.png" style="opacity:0">
+ <div class=ripple id=r1 style="left:862px;top:227px"></div>
+ <div class=ripple id=r2 style="left:688px;top:466px"></div>
+ <div class="ring" id=ringFields style="left:1022px;top:398px;width:476px;height:54px"></div>
+ <div class="ring" id=ringAvatar style="left:1022px;top:283px;width:84px;height:84px;border-radius:16px"></div>
+</div></div>
+
+<!-- D · wallet in bio → Verified -->
+<div class=layer id=bio style="background:#040405">
+ <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 380px at 50% 40%,rgba(124,140,255,.14),transparent 70%)"></div>
+ <div id=bioK class=k style="position:absolute;left:0;right:0;top:120px;text-align:center;opacity:0">PROOF OF PROFILE</div>
+ <div class=bioCard id=bioCard style="left:460px;top:190px;width:1000px;height:300px;opacity:0">
+  <div style="position:absolute;left:44px;top:44px;width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#7cf3ff,#a77bff);overflow:hidden"><svg viewBox="0 0 100 100" width="120" height="120"><circle cx="50" cy="40" r="17" fill="#0005"/><path d="M18 100 C20 72 80 72 82 100Z" fill="#0005"/></svg></div>
+  <div style="position:absolute;left:196px;top:52px;font:600 44px Inter">Nova Builds</div>
+  <div style="position:absolute;left:196px;top:112px;display:flex;align-items:center;gap:10px;font:400 26px Inter;color:#8a8f98"><img src="assets-github.svg" style="width:28px;height:28px;border-radius:7px">@novabuilds</div>
+  <div style="position:absolute;left:44px;top:196px;right:44px;font:400 30px Inter;color:#d6d8de">Shipping open source. <span style="color:#8a8f98">wallet:</span> <span id=bioAddr class=mono style="color:#c7cdff;border-radius:8px;padding:2px 6px"></span></div>
+ </div>
+ <svg id=bioArrow width="40" height="90" style="position:absolute;left:940px;top:510px;opacity:0" viewBox="0 0 40 90"><path d="M20 0 V78 M6 64 L20 80 L34 64" fill="none" stroke="#50545c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ <div id=bioVer class=ver style="position:absolute;left:960px;top:670px;transform:translate(-50%,-50%);opacity:0">
+  <svg viewBox="0 0 16 16" width="48" height="48" fill="none" stroke="#2fe39a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id=bioPath d="m3.5 8.5 3 3 6-7" stroke-dasharray="14" stroke-dashoffset="14"/></svg>Verified</div>
+ <div id=bioT style="position:absolute;left:0;right:0;top:790px;text-align:center;font:600 64px/1.05 'Inter Display';letter-spacing:-.04em;opacity:0">Your wallet in your bio<span style="color:#2fe39a">.</span> That’s the proof<span style="color:#2fe39a">.</span></div>
+ <div id=bioS style="position:absolute;left:0;right:0;top:885px;text-align:center;font:400 28px Inter;color:#8a8f98;opacity:0">Only you can edit your GitHub bio. Launch from that wallet and your coin gets the ✓.</div>
+</div>
+
+<!-- E · fees + verified on the real studio -->
+<div class=layer id=fe><div class=world id=feW>
+ <img class=shot src="shots/s2-detected.png">
+ <div class="ring" id=ringFee style="left:430px;top:529px;width:518px;height:46px"></div>
+ <div class="ring g" id=ringSum style="left:1030px;top:830px;width:462px;height:22px;border-radius:8px"></div>
+</div></div>
+
+<!-- F · two chains -->
+<div class=layer id=ch style="background:#050506">
+ <div style="position:absolute;left:0;top:0;width:960px;height:1080px;background:radial-gradient(ellipse 560px 460px at 50% 48%,rgba(204,255,0,.12),transparent 70%)"></div>
+ <div style="position:absolute;right:0;top:0;width:960px;height:1080px;background:radial-gradient(ellipse 560px 460px at 50% 48%,rgba(153,69,255,.18),transparent 70%)"></div>
+ <div id=ch1 style="position:absolute;left:0;width:960px;top:290px;text-align:center;opacity:0"><img src="assets/robinhood.png" style="width:190px;height:190px;border-radius:50px;box-shadow:0 40px 110px -20px rgba(204,255,0,.5)"><div style="margin-top:38px;font:600 58px 'Inter Display';letter-spacing:-.035em">Robinhood Chain</div><div class=k style="margin-top:12px">PONS V2 · ETH OR STOCKS</div></div>
+ <div id=ch2 style="position:absolute;left:960px;width:960px;top:290px;text-align:center;opacity:0"><img src="assets/solana.jpg" style="width:190px;height:190px;border-radius:50px;box-shadow:0 40px 110px -20px rgba(153,69,255,.6)"><div style="margin-top:38px;font:600 58px 'Inter Display';letter-spacing:-.035em">Solana</div><div class=k style="margin-top:12px">PUMP.FUN</div></div>
+ <div id=chT style="position:absolute;left:0;right:0;bottom:150px;text-align:center;font:500 40px Inter;color:#d6d8de;opacity:0">Your GitHub. <span style="color:#c7cdff">Either chain.</span></div>
+</div>
+
+<!-- G · outro -->
+<div class=layer id=ou style="background:#030304">
+ <div id=ouGlow style="position:absolute;left:-10%;right:-10%;top:520px;height:300px;background:radial-gradient(ellipse 900px 120px at 50% 50%,rgba(199,205,255,.3),transparent 75%);opacity:0"></div>
+ <div id=ou1 style="position:absolute;left:0;right:0;top:400px;text-align:center;font:600 110px/1.05 'Inter Display';letter-spacing:-.05em;opacity:0">Ship code<span style="color:#8a8f98">.</span> Ship a coin<span style="color:#c7cdff">.</span></div>
+ <img id=ouN src="assets/n-chrome.png" style="position:absolute;left:885px;top:250px;width:150px;height:150px;filter:drop-shadow(0 0 50px rgba(205,212,235,.5));opacity:0">
+ <div id=ouTxt style="position:absolute;left:0;right:0;top:440px;text-align:center;opacity:0">
+  <div style="font:600 150px/1 'Inter Display';letter-spacing:-.055em">noir<span style="color:#c7cdff">.</span></div>
+  <div class=mono style="margin-top:34px;font-size:30px;color:#c7cdff">usenoir.app/create &nbsp;→&nbsp; GitHub<span id=ouCur class=cursor></span></div>
+  <div style="margin-top:22px;font:500 24px Inter;color:#8a8f98">Live now &nbsp;·&nbsp; @usenoirapp</div>
+ </div>
+</div>
+
+<div id=cap></div><div id=capbg></div>
+<div id=vign></div>
+<canvas id=grain width=1020 height=600></canvas>
+<div id=flash></div><div id=black></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const out = (x) => 1 - Math.pow(1 - x, 3);
+const back = (x) => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, k) => a + (b - a) * k;
+function show(id, t, a, b, f = 0.5) {
+  const o = Math.min(seg(t, a, a + f), 1 - seg(t, b - f, b));
+  $(id).style.opacity = o; $(id).style.visibility = o > 0 ? "visible" : "hidden";
+  return o > 0;
+}
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [a, ...va] = keys[i], [b, ...vb] = keys[i + 1];
+    if (t <= b) { const k = ease(seg(t, a, b)); return va.map((v, j) => lerp(v, vb[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+function cam(id, t, keys) {
+  const [cx, cy, z, rx = 0] = kf(t, keys);
+  $(id).style.transform = `perspective(2400px) translate(${960 - cx * z}px,${540 - cy * z}px) rotateX(${rx}deg) scale(${z})`;
+}
+function ripple(id, t, at) { const k = seg(t, at, at + 0.6); $(id).style.opacity = k > 0 && k < 1 ? 1 - k : 0; $(id).style.transform = `scale(${0.3 + k * 1.2})`; }
+function caption(t, list) {
+  const c = $("cap"); let o = 0;
+  for (const [a, b, html] of list) if (t >= a && t <= b) { if (c.dataset.h !== html) { c.innerHTML = html; c.dataset.h = html; } o = Math.min(seg(t, a, a + 0.45), 1 - seg(t, b - 0.45, b)); c.style.transform = `translateY(${14 * (1 - out(seg(t, a, a + 0.6)))}px)`; }
+  c.style.opacity = o; $("capbg").style.opacity = o;
+}
+const typed = (text, t, a, cps) => text.slice(0, Math.max(0, Math.floor((t - a) * cps)));
+const blink = (t) => (Math.floor(t * 2.2) % 2 === 0 ? 1 : 0);
+const pop = (id, t, a, dy = 24) => { const o = out(seg(t, a, a + 0.6)); $(id).style.opacity = o; $(id).style.transform = `translateY(${dy * (1 - o)}px)`; return o; };
+
+const g = $("grain").getContext("2d"), gd = g.createImageData(1020, 600);
+for (let i = 0; i < gd.data.length; i += 4) { const v = Math.random() * 255; gd.data[i] = gd.data[i + 1] = gd.data[i + 2] = v; gd.data[i + 3] = 255; }
+g.putImageData(gd, 0, 0);
+
+window.DURATION = 38;
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0, 0.5)) + ease(seg(t, 36.9, 37.9));
+  $("grain").style.transform = `translate(${((t * 977) % 60) | 0}px,${((t * 613) % 60) | 0}px)`;
+  $("grain").style.width = "2040px"; $("grain").style.height = "1200px";
+  let flash = 0;
+
+  // A · git (0 – 5.4)
+  if (show("git", t, 0, 5.4, 0.3)) {
+    const c1 = 'git commit -m "ship it"', c2 = "git push";
+    let h = `<span style="color:#8a8f98">$</span> ${typed(c1, t, 0.5, 15)}${t < 2.2 ? `<span class=cursor style="opacity:${blink(t)}"></span>` : ""}<br>`;
+    if (t >= 2.2) h += `<span style="color:#8a8f98">$</span> ${typed(c2, t, 2.4, 12)}${t < 3.2 ? `<span class=cursor style="opacity:${blink(t)}"></span>` : ""}<br>`;
+    if (t >= 3.3) h += `<span style="color:#8a8f98">→ your code ships.</span><br>`;
+    if (t >= 3.9) h += `<span style="color:#c7cdff">→ now your profile does too.</span><span class=cursor style="opacity:${blink(t)}"></span>`;
+    $("gitTxt").innerHTML = h;
+    $("gitTxt").style.transform = `scale(${1 + 0.03 * seg(t, 0, 5.4)})`;
+  }
+
+  // B · title (5.0 – 9.8)
+  if (show("ti", t, 5.0, 9.8, 0.5)) {
+    const a = out(seg(t, 5.2, 6.0)), b = out(seg(t, 5.45, 6.25));
+    $("tiG").style.opacity = a; $("tiG").style.transform = `translateX(${-120 * (1 - a)}px)`;
+    $("tiN").style.opacity = b; $("tiN").style.transform = `translateX(${120 * (1 - b)}px)`;
+    $("tiX").style.opacity = out(seg(t, 5.9, 6.4));
+    const r = ease(seg(t, 6.3, 7.4)); $("tiT").style.clipPath = `inset(0 ${100 - r * 100}% 0 0)`;
+    $("tiSweep").style.left = lerp(-300, 2100, seg(t, 7.3, 8.3)) + "px";
+    pop("tiS", t, 7.6, 16);
+    if (t > 5.0) flash = Math.max(flash, 0.35 * (1 - seg(t, 5.0, 5.5)));
+  }
+
+  // C · studio (9.4 – 19.6)
+  if (show("st", t, 9.4, 19.6, 0.5)) {
+    cam("stW", t, [[9.4, 960, 560, 0.92, 14], [10.6, 960, 540, 1.0, 0], [11.2, 720, 300, 1.7, 0], [12.4, 700, 410, 1.9, 0], [15.4, 700, 420, 1.75, 0], [16.4, 1260, 420, 1.6, 0], [19.6, 1265, 425, 1.7, 0]]);
+    $("st1").style.opacity = ease(seg(t, 11.7, 11.95));
+    $("stIn").style.opacity = t > 11.95 && t < 15.05 ? 1 : 0;
+    const txt = typed("novabuilds", t, 12.8, 9);
+    $("stIn").innerHTML = txt ? `${txt}<span style="display:inline-block;width:2px;height:18px;background:#fff;vertical-align:-3px;margin-left:1px;opacity:${blink(t)}"></span>` : `<span style="color:#50545c">octocat</span>`;
+    $("st2").style.opacity = ease(seg(t, 15.0, 15.3));
+    ripple("r1", t, 11.55); ripple("r2", t, 14.6);
+    $("ringFields").style.opacity = ease(seg(t, 16.6, 17.0)) * (1 - ease(seg(t, 18.9, 19.3)));
+    $("ringAvatar").style.opacity = ease(seg(t, 17.3, 17.7)) * (1 - ease(seg(t, 18.9, 19.3)));
+  }
+
+  // D · wallet in bio → Verified (19.2 – 25.6)
+  if (show("bio", t, 19.2, 25.6, 0.5)) {
+    pop("bioK", t, 19.4, 10);
+    const c = out(seg(t, 19.5, 20.2)); $("bioCard").style.opacity = c; $("bioCard").style.transform = `translateY(${40 * (1 - c)}px) scale(${0.97 + 0.03 * c})`;
+    const addr = typed("0x8F3a…21cD", t, 20.4, 14);
+    $("bioAddr").textContent = addr;
+    const hl = ease(seg(t, 21.3, 21.7)); $("bioAddr").style.background = `rgba(199,205,255,${0.16 * hl})`; $("bioAddr").style.boxShadow = `0 0 0 ${2 * hl}px rgba(199,205,255,${0.6 * hl})`;
+    $("bioArrow").style.opacity = out(seg(t, 21.6, 22.0));
+    const s = seg(t, 22.0, 22.6);
+    $("bioVer").style.opacity = out(s); $("bioVer").style.transform = `translate(-50%,-50%) scale(${s > 0 ? lerp(1.8, 1, back(s)) : 1.8})`;
+    $("bioPath").setAttribute("stroke-dashoffset", 14 * (1 - ease(seg(t, 22.4, 22.9))));
+    pop("bioT", t, 22.9); pop("bioS", t, 23.5);
+    if (t > 22.0) flash = Math.max(flash, 0.25 * (1 - seg(t, 22.0, 22.5)));
+  }
+
+  // E · fees + verified on the real studio (25.2 – 30.6)
+  if (show("fe", t, 25.2, 30.6, 0.5)) {
+    cam("feW", t, [[25.2, 690, 560, 1.6], [26.0, 690, 555, 2.3], [27.8, 690, 555, 2.35], [28.6, 1260, 840, 2.2], [30.6, 1262, 842, 2.3]]);
+    $("ringFee").style.opacity = ease(seg(t, 26.1, 26.5)) * (1 - ease(seg(t, 27.9, 28.3)));
+    $("ringSum").style.opacity = ease(seg(t, 28.8, 29.2)) * (0.75 + 0.25 * Math.sin(t * 6));
+  }
+
+  // F · two chains (30.2 – 33.8)
+  if (show("ch", t, 30.2, 33.8, 0.5)) { pop("ch1", t, 30.4, 50); pop("ch2", t, 30.75, 50); pop("chT", t, 31.4, 16); }
+
+  // G · outro (33.4 – 38)
+  if (show("ou", t, 33.4, 38.5, 0.5)) {
+    const o1 = out(seg(t, 33.6, 34.3)) * (1 - ease(seg(t, 35.0, 35.4)));
+    $("ou1").style.opacity = o1; $("ou1").style.transform = `translateY(${24 * (1 - out(seg(t, 33.6, 34.4)))}px)`;
+    $("ouN").style.opacity = out(seg(t, 35.4, 36.0)); $("ouN").style.transform = `scale(${lerp(0.9, 1, out(seg(t, 35.4, 36.3)))})`;
+    $("ouTxt").style.opacity = out(seg(t, 35.6, 36.2)); $("ouTxt").style.transform = `translateY(${20 * (1 - out(seg(t, 35.6, 36.3)))}px)`;
+    $("ouGlow").style.opacity = out(seg(t, 35.4, 36.4));
+    $("ouCur").style.opacity = blink(t);
+    if (t > 35.4) flash = Math.max(flash, 0.25 * (1 - seg(t, 35.4, 35.9)));
+  }
+
+  $("flash").style.opacity = flash;
+  $("vign").style.opacity = t > 9.4 && t < 30.6 ? 1 : 0.7;
+  caption(t, [
+    [10.6, 12.3, "Pick <b>GitHub</b>."],
+    [12.6, 14.9, "Type your username."],
+    [15.4, 19.2, "Name, avatar, bio, links. <b>Filled.</b>"],
+    [26.2, 28.2, "Creator fees route <b>to your wallet.</b>"],
+    [28.8, 30.4, "Straight from your bio. <b>On-chain.</b>"],
+  ]);
+};
+window.render(0);
+</script></body></html>

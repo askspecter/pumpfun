@@ -6,12 +6,15 @@ import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
 import { BrandLogo } from "./BrandLogo";
 import { OfficialCoin } from "./OfficialCoin";
 import { ProfileAvatar } from "./home/ProfileAvatar";
+import { PairChip, VerifiedBadge } from "./markets/Badges";
+import { useMarket, type MarketItem } from "./markets/useMarket";
 import { OFFICIAL_TOKEN } from "@/lib/site";
+import { SOURCE_LABEL, toSource, type ProfileSource } from "@/lib/profile-source";
 
 /** A profile coin launched through NOIR (from /api/launches). */
 interface LaunchItem {
   chain?: LaunchChain;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   token: string;
   name: string;
   symbol: string;
@@ -137,15 +140,27 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
     });
   }, [items, mcaps]);
 
+  // Verification + pair badges, keyed like mcaps.
+  const market = useMarket();
+  const badges = useMemo(() => new Map((market ?? []).map((m) => [mcKey(m), m])), [market]);
+
   return (
     <div className="space-y-4">
       <OfficialCoin />
-      <FeedBody ranked={ranked} mcaps={mcaps} />
+      <FeedBody ranked={ranked} mcaps={mcaps} badges={badges} />
     </div>
   );
 }
 
-function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Record<string, McInfo> }) {
+function FeedBody({
+  ranked,
+  mcaps,
+  badges,
+}: {
+  ranked: LaunchItem[] | null;
+  mcaps: Record<string, McInfo>;
+  badges: Map<string, MarketItem>;
+}) {
   if (ranked === null) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -169,6 +184,7 @@ function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Recor
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {ranked.map((it, rank) => {
         const mc = mcaps[mcKey(it)];
+        const badge = badges.get(mcKey(it));
         const link = coinLink(it);
         const solana = it.chain === "solana";
         return (
@@ -192,8 +208,14 @@ function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Recor
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate font-bold text-zinc-900">{it.name || short(it.token)}</div>
-                {it.symbol && <div className="font-mono text-xs text-pink">${it.symbol}</div>}
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <span className="truncate font-bold text-zinc-900">{it.name || short(it.token)}</span>
+                  <VerifiedBadge verified={badge?.verified ?? null} compact />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {it.symbol && <span className="font-mono text-xs text-pink">${it.symbol}</span>}
+                  <PairChip pair={badge?.pair ?? null} />
+                </div>
               </div>
               <BrandLogo brand={solana ? "solana" : "robinhood"} className="h-6 w-6 rounded-full" />
               {mc && (
@@ -211,9 +233,9 @@ function FeedBody({ ranked, mcaps }: { ranked: LaunchItem[] | null; mcaps: Recor
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex min-w-0 items-center gap-1.5 truncate font-medium text-pink hover:underline"
-                  title={it.source === "pumpfun" ? "Pump.fun profile" : "fomo.family profile"}
+                  title={`${SOURCE_LABEL[toSource(it.source)]} profile`}
                 >
-                  <BrandLogo brand={it.source === "pumpfun" ? "pumpfun" : "fomo"} className="h-4 w-4 rounded-full" />
+                  <BrandLogo brand={toSource(it.source)} className="h-4 w-4 rounded-full" />
                   @{it.handle.replace(/^@+/, "")}
                 </a>
               ) : (

@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}body{background:#000;font-family:Inter,sans-serif}
+.c{position:relative;overflow:hidden;background:#000}
+.sq{width:1600px;height:1600px}.ls{width:1600px;height:900px}
+.wm{position:absolute;display:flex;align-items:center;gap:16px;font:600 30px Inter;letter-spacing:.42em;color:#eef0f3}
+.g{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;pointer-events:none}
+.k{font:500 22px Inter;letter-spacing:.38em;color:#7d828c}
+.stage{position:absolute;perspective:2200px}
+.rot{position:absolute;inset:0;transform-style:preserve-3d}
+.tile{position:absolute;inset:0;border-radius:22%;background:linear-gradient(150deg,#2a2c33 0%,#121318 45%,#08090b 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -40px 70px rgba(255,90,20,.35),0 80px 160px rgba(0,0,0,.7)}
+.tile:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.05) 40%,rgba(255,150,70,.7) 80%,rgba(255,220,160,.4));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tile img{position:absolute;left:21%;top:21%;width:58%;height:58%;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55)) drop-shadow(0 30px 40px rgba(255,110,40,.35))}
+.side{position:absolute;inset:0;border-radius:22%;background:linear-gradient(160deg,#4a3a34,#120c0a);transform:translateZ(-60px)}
+.fire{position:absolute;border-radius:50%;filter:blur(60px)}
+.num{font:700 150px/1 'Inter Display';letter-spacing:-.05em;background:linear-gradient(180deg,#fff 30%,#ffd2a8 62%,#ff7a2e);-webkit-background-clip:text;color:transparent}
+.unit{font:600 34px 'JetBrains Mono';letter-spacing:.24em;color:#ff9a55}
+.pill{display:inline-flex;align-items:center;gap:14px;padding:15px 28px;border-radius:999px;font:600 22px 'JetBrains Mono';letter-spacing:.14em}
+.p1{border:1px solid rgba(255,140,60,.4);background:rgba(255,120,40,.1);color:#ffb37a}
+.p2{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#e9eaee}
+.tx{font:500 21px 'JetBrains Mono';color:#7d828c;letter-spacing:.04em}
+.tx b{color:#d6d8de;font-weight:500}
+.ember{position:absolute;border-radius:50%;background:#ffb070;box-shadow:0 0 12px 3px rgba(255,120,40,.8)}
+</style></head><body>
+
+<div class="c sq" id=A>
+ <div class=fire style="left:430px;top:640px;width:740px;height:360px;background:rgba(255,80,20,.42)"></div>
+ <div class=fire style="left:560px;top:700px;width:480px;height:240px;background:rgba(255,170,60,.45)"></div>
+ <div class=fire style="left:250px;top:900px;width:1100px;height:300px;background:rgba(160,30,10,.35)"></div>
+ <div id=embersA></div>
+ <div class=wm style="left:96px;top:92px"><img src="../../../../public/noir-logo-128.png" style="width:46px;height:46px;border-radius:12px">NOIR</div>
+ <div style="position:absolute;right:96px;top:100px" class=k>FILE 004</div>
+ <div class=stage style="left:600px;top:250px;width:400px;height:400px"><div class=rot style="transform:rotateX(24deg) rotateY(-18deg) rotateZ(-8deg)"><div class=side></div><div class=tile><img src="../../brand/n-chrome.png"></div></div></div>
+ <div style="position:absolute;left:0;right:0;top:770px;text-align:center">
+  <div class=k style="color:#ff9a55">BUYBACK &amp; BURN · COMPLETE</div>
+  <div class=num style="margin-top:34px">32,646,925</div>
+  <div class=unit style="margin-top:22px">$NOIR BURNED 🔥</div>
+  <div style="margin-top:48px;display:flex;gap:18px;justify-content:center">
+   <span class="pill p1">3.26% OF SUPPLY</span><span class="pill p2">DEV WALLET: 0</span>
+  </div>
+  <div class=tx style="margin-top:56px;line-height:1.9">
+   <div>tx 0x4d4cd4bd… &nbsp;<b>22,687,609</b> → 0x…dEaD</div>
+   <div>tx 0x1e87e0be… &nbsp;<b>&nbsp;9,958,272</b> → 0x…dEaD</div>
+  </div>
+ </div>
+ <svg class=g width="100%" height="100%"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#a)"/></svg>
+</div>
+
+<div class="c ls" id=B>
+ <div class=fire style="left:120px;top:420px;width:600px;height:300px;background:rgba(255,80,20,.42)"></div>
+ <div class=fire style="left:230px;top:470px;width:380px;height:200px;background:rgba(255,170,60,.45)"></div>
+ <div id=embersB></div>
+ <div class=wm style="left:80px;top:72px"><img src="../../../../public/noir-logo-128.png" style="width:42px;height:42px;border-radius:11px">NOIR</div>
+ <div style="position:absolute;right:80px;top:80px" class=k>FILE 004</div>
+ <div class=stage style="left:250px;top:220px;width:340px;height:340px"><div class=rot style="transform:rotateX(24deg) rotateY(18deg) rotateZ(6deg)"><div class=side></div><div class=tile><img src="../../brand/n-chrome.png"></div></div></div>
+ <div style="position:absolute;left:760px;top:215px;width:780px">
+  <div class=k style="font-size:19px;color:#ff9a55">BUYBACK &amp; BURN · COMPLETE</div>
+  <div class=num style="margin-top:24px;font-size:116px">32,646,925</div>
+  <div class=unit style="margin-top:16px;font-size:28px">$NOIR BURNED 🔥</div>
+  <div style="margin-top:34px;display:flex;gap:14px">
+   <span class="pill p1" style="font-size:19px;padding:12px 22px">3.26% OF SUPPLY</span><span class="pill p2" style="font-size:19px;padding:12px 22px">DEV WALLET: 0</span>
+  </div>
+ </div>
+ <div style="position:absolute;left:0;right:0;bottom:62px;text-align:center" class=k>EVERY DEV TOKEN → 0x…DEAD &nbsp;·&nbsp; VERIFY ON-CHAIN</div>
+ <svg class=g width="100%" height="100%"><filter id="b"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#b)"/></svg>
+</div>
+
+<script>
+// deterministic embers rising from the fire
+function embers(id, cx, cy, w, h, n, seed) {
+  let s = seed; const r = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  let html = "";
+  for (let i = 0; i < n; i++) {
+    const x = cx + (r() - 0.5) * w, y = cy - r() * h, d = 2 + r() * 5, o = 0.35 + r() * 0.65;
+    html += `<div class=ember style="left:${x}px;top:${y}px;width:${d}px;height:${d}px;opacity:${o}"></div>`;
+  }
+  document.getElementById(id).innerHTML = html;
+}
+embers("embersA", 800, 760, 900, 640, 70, 7);
+embers("embersB", 420, 560, 560, 520, 45, 11);
+</script>
+</body></html>

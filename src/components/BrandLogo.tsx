@@ -1,10 +1,11 @@
 /** Official brand marks for the profile sources and launch chains. */
-export type Brand = "solana" | "pumpfun" | "fomo" | "robinhood";
+export type Brand = "solana" | "pumpfun" | "fomo" | "github" | "robinhood";
 
 const BRANDS: Record<Brand, { src: string; alt: string }> = {
   solana: { src: "/brands/solana.jpg", alt: "Solana" },
   pumpfun: { src: "/brands/pumpfun.jpg", alt: "Pump.fun" },
   fomo: { src: "/brands/fomo.jpg", alt: "fomo.family" },
+  github: { src: "/brands/github.svg", alt: "GitHub" },
   robinhood: { src: "/brands/robinhood.png", alt: "Robinhood Chain" },
 };
 

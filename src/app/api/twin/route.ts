@@ -4,7 +4,7 @@ import { getKv } from "@/lib/kv";
 import { isSolanaAddress } from "@/lib/solana";
 import { bankrChat, BankrError, type ChatMessage } from "@/lib/bankr";
 import { OFFICIAL_TOKEN } from "@/lib/site";
-import type { LaunchRecord } from "@/app/api/launches/route";
+import { readLaunches, sameId, type LaunchRecord } from "@/lib/launches";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,27 +27,20 @@ interface Persona {
   name: string;
   symbol: string;
   handle?: string;
-  source?: "fomo" | "pumpfun";
+  source?: LaunchRecord["source"];
   chain: "robinhood" | "solana";
   description: string;
 }
 
 async function findLaunch(token: string): Promise<LaunchRecord | null> {
-  const kv = getKv();
-  if (!kv) return null;
-  const raw = (await kv.lrange<LaunchRecord | string>("fomo:launches", 0, 199).catch(() => [])) ?? [];
-  for (const r of raw) {
-    const rec = typeof r === "string" ? (JSON.parse(r) as LaunchRecord) : r;
-    if (!rec?.token) continue;
-    if (token.startsWith("0x") ? rec.token.toLowerCase() === token.toLowerCase() : rec.token === token) return rec;
-  }
-  return null;
+  const all = await readLaunches().catch(() => [] as LaunchRecord[]);
+  return all.find((r) => sameId(r.token, token)) ?? null;
 }
 
 function systemPrompt(p: Persona): string {
   const official = p.symbol.toUpperCase() === "NOIR" && !p.handle;
   const who = p.handle
-    ? `the AI Twin of the ${p.source === "pumpfun" ? "Pump.fun" : "fomo.family"} profile @${p.handle}`
+    ? `the AI Twin of the ${p.source === "pumpfun" ? "Pump.fun" : p.source === "github" ? "GitHub" : "fomo.family"} profile @${p.handle}`
     : official
       ? "the AI Twin of NOIR itself, the official $NOIR coin"
       : `the AI Twin of the profile coin ${p.name}`;

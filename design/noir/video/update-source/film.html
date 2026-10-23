@@ -1,0 +1,352 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#050506;font-family:Inter,sans-serif;color:#fff}
+.layer{position:absolute;inset:0;overflow:hidden;opacity:0}
+.world{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+.world>img.shot{position:absolute;left:0;top:0;width:1920px;height:1080px;display:block}
+.ov{position:absolute}
+.mono{font-family:'JetBrains Mono',monospace}
+#cap{position:absolute;left:0;right:0;bottom:78px;text-align:center;font:500 44px Inter;letter-spacing:-.01em;color:#f3f4f6;text-shadow:0 2px 28px rgba(0,0,0,.9);opacity:0;z-index:50}
+#cap b{font-weight:500;color:#c7cdff}
+#capbg{position:absolute;left:0;right:0;bottom:0;height:300px;z-index:45;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(0,0,0,.82) 70%);opacity:0}
+#vign{position:absolute;inset:0;z-index:40;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.6))}
+#grain{position:absolute;left:-60px;top:-60px;width:2040px;height:1200px;z-index:60;opacity:.06;mix-blend-mode:overlay;pointer-events:none}
+#bars{position:absolute;inset:0;z-index:55;pointer-events:none}
+#bars:before,#bars:after{content:"";position:absolute;left:0;right:0;height:0;background:#000;transition:none}
+#black{position:absolute;inset:0;background:#000;z-index:70;pointer-events:none}
+#flash{position:absolute;inset:0;background:#fff;z-index:65;opacity:0;pointer-events:none;mix-blend-mode:screen}
+.cursor{position:absolute;width:34px;height:34px;z-index:30;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6));opacity:0}
+.ripple{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:3px solid rgba(255,255,255,.9);opacity:0;z-index:29}
+.k{font:500 18px 'JetBrains Mono';letter-spacing:.32em;color:#8a8f98}
+.chk{display:inline-flex;align-items:center;justify-content:center}
+.tick{position:absolute;left:0;top:0;display:flex;white-space:nowrap}
+.tick span.it{display:inline-flex;align-items:center;gap:8px;padding:0 20px;font:500 12px 'JetBrains Mono';height:38px}
+.dot{width:16px;height:16px;border-radius:50%;display:inline-block}
+.card{position:absolute;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#0f1013,#0b0c0e);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 50px 120px -40px rgba(0,0,0,.9)}
+.lbl{font:400 15px Inter;color:#8a8f98}
+.val{font:600 34px 'JetBrains Mono';color:#fff;margin-top:8px}
+.row{display:flex;align-items:center;gap:16px;padding:16px 22px;border-top:1px solid rgba(255,255,255,.05)}
+.av{width:44px;height:44px;border-radius:12px}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px 3px 4px;font:600 13px Inter;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#c9ccd3}
+.ver{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px;font:600 13px Inter;color:#2fe39a;border:1px solid rgba(47,227,154,.35);background:rgba(47,227,154,.1)}
+</style></head><body>
+
+<!-- ═══ 0 · "Not yet." → "Now." ═══ -->
+<div class=layer id=tz style="background:#030303">
+ <div id=tzGlow style="position:absolute;left:0;right:0;top:300px;height:480px;background:radial-gradient(ellipse 760px 200px at 50% 50%,rgba(199,205,255,.28),transparent 70%);opacity:0"></div>
+ <div id=tzK class=k style="position:absolute;left:0;right:0;top:372px;text-align:center;opacity:0">NOIR &nbsp;·&nbsp; FILE 002 &nbsp;·&nbsp; NEXT UPDATE</div>
+ <div id=tzNot style="position:absolute;left:0;right:0;top:430px;text-align:center;font:600 170px/1 'Inter Display';letter-spacing:-.055em;color:#e9eaee;opacity:0">Not yet.</div>
+ <div id=tzNow style="position:absolute;left:0;right:0;top:430px;text-align:center;font:600 170px/1 'Inter Display';letter-spacing:-.055em;opacity:0;background:linear-gradient(180deg,#fff 30%,#c7cdff);-webkit-background-clip:text;color:transparent">Now.</div>
+ <div id=tzLine style="position:absolute;top:660px;height:2px;left:50%;width:0;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#c7cdff 20%,#fff 50%,#c7cdff 80%,transparent);box-shadow:0 0 24px 6px rgba(199,205,255,.5)"></div>
+ <div id=slats style="position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 2px,transparent 2px 7px)"></div>
+</div>
+
+<!-- ═══ 1 · Title: NOIR Markets ═══ -->
+<div class=layer id=ti style="background:#040405">
+ <div id=tiBeam style="position:absolute;left:-10%;right:-10%;top:560px;height:420px;background:radial-gradient(ellipse 900px 160px at 50% 0%,rgba(124,140,255,.45),transparent 70%);opacity:0"></div>
+ <img id=tiN src="assets/n-chrome.png" style="position:absolute;left:885px;top:180px;width:150px;height:150px;filter:drop-shadow(0 0 50px rgba(205,212,235,.45));opacity:0">
+ <div id=tiK class=k style="position:absolute;left:0;right:0;top:396px;text-align:center;opacity:0">INTRODUCING</div>
+ <div id=tiT style="position:absolute;left:0;right:0;top:440px;text-align:center;font:600 196px/1.04 'Inter Display';letter-spacing:-.06em;color:#fff;clip-path:inset(0 100% 0 0)">NOIR Markets<span style="color:#c7cdff">.</span></div>
+ <div id=tiS style="position:absolute;left:0;right:0;top:680px;text-align:center;font:400 34px Inter;color:#8a8f98;opacity:0">The profile market. Live on Robinhood Chain &amp; Solana.</div>
+ <div id=tiSweep style="position:absolute;top:420px;height:250px;width:260px;left:-300px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);mix-blend-mode:overlay"></div>
+</div>
+
+<!-- ═══ 2 · Markets page ═══ -->
+<div class=layer id=mk><div class=world id=mkW>
+ <img class=shot src="shots/markets.png">
+ <div class=ov style="left:0;top:398px;width:1920px;height:37px;background:#0c0c0e;overflow:hidden"><div class=tick id=tickA></div></div>
+ <div class=ov id=s0 style="left:416px;top:321px;width:250px;height:32px;background:#0d0e0f;font:600 20px/32px 'JetBrains Mono';color:#fff">$1.21M</div>
+ <div class=ov id=s1 style="left:699px;top:321px;width:250px;height:32px;background:#0d0e0f;font:600 20px/32px 'JetBrains Mono';color:#fff">9</div>
+ <div class=ov id=s2 style="left:982px;top:321px;width:250px;height:32px;background:#0d0e0f;font:600 20px/32px 'JetBrains Mono';color:#2fe39a">4</div>
+ <div class=ov id=s3 style="left:1265px;top:321px;width:250px;height:32px;background:#0d0e0f;font:600 20px/32px 'JetBrains Mono';color:#fff">1</div>
+ <div id=race></div>
+ <div class=ov id=raceRing style="left:1203px;top:470px;width:316px;height:368px;border-radius:20px;box-shadow:0 0 0 2px rgba(199,205,255,.7),0 0 60px 6px rgba(124,140,255,.35);opacity:0"></div>
+</div></div>
+
+<!-- ═══ 3 · Verified ═══ -->
+<div class=layer id=vf style="background:#040405">
+ <div id=vfGlow style="position:absolute;left:0;right:0;top:180px;height:520px;background:radial-gradient(ellipse 520px 260px at 50% 50%,rgba(47,227,154,.22),transparent 70%);opacity:0"></div>
+ <div id=vfRing style="position:absolute;left:960px;top:400px;width:10px;height:10px;margin:-5px;border-radius:50%;border:2px solid rgba(47,227,154,.8);opacity:0"></div>
+ <div id=vfBadge style="position:absolute;left:960px;top:400px;transform:translate(-50%,-50%);display:flex;align-items:center;gap:22px;padding:26px 52px 26px 34px;border-radius:999px;border:2px solid rgba(47,227,154,.45);background:rgba(47,227,154,.1);font:600 76px 'Inter Display';letter-spacing:-.03em;color:#2fe39a;opacity:0">
+  <svg viewBox="0 0 16 16" width="78" height="78" fill="none" stroke="#2fe39a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id=vfPath d="m3.5 8.5 3 3 6-7" stroke-dasharray="14" stroke-dashoffset="14"/></svg>Verified</div>
+ <div id=vfT style="position:absolute;left:0;right:0;top:560px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Real creators<span style="color:#2fe39a">.</span></div>
+ <div id=vfS style="position:absolute;left:0;right:0;top:680px;text-align:center;font:400 32px Inter;color:#8a8f98;opacity:0">Checked on-chain: the profile’s own wallet launched it.</div>
+</div>
+<div class=layer id=cn><div class=world id=cnW>
+ <img class=shot src="shots/coin.png">
+ <div class=ov id=cnRing style="left:690px;top:153px;width:76px;height:24px;border-radius:999px;box-shadow:0 0 0 2px rgba(47,227,154,.9),0 0 40px 8px rgba(47,227,154,.45);opacity:0"></div>
+ <div class=ov id=cnRing2 style="left:767px;top:153px;width:59px;height:24px;border-radius:999px;box-shadow:0 0 0 2px rgba(199,205,255,.9),0 0 40px 8px rgba(124,140,255,.45);opacity:0"></div>
+</div></div>
+
+<!-- ═══ 4 · Stock-paired ═══ -->
+<div class=layer id=sp style="background:#040405">
+ <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 380px at 50% 42%,rgba(124,140,255,.18),transparent 70%)"></div>
+ <div id=spK class=k style="position:absolute;left:0;right:0;top:170px;text-align:center;opacity:0">STOCK-PAIRED PROFILES</div>
+ <div id=spAv style="position:absolute;left:640px;top:270px;width:240px;height:240px;border-radius:60px;background:linear-gradient(135deg,#3dffb0,#00b3ff);box-shadow:0 50px 120px -30px rgba(61,255,176,.45);opacity:0">
+  <svg viewBox="0 0 100 100" width="240" height="240"><circle cx="50" cy="40" r="17" fill="#0005"/><path d="M18 100 C20 72 80 72 82 100Z" fill="#0005"/></svg></div>
+ <div id=spX style="position:absolute;left:910px;top:340px;width:100px;text-align:center;font:300 90px Inter;color:#50545c;opacity:0">×</div>
+ <div id=spStock style="position:absolute;left:1040px;top:270px;width:240px;height:240px;border-radius:60px;background:#fff;box-shadow:0 50px 120px -30px rgba(255,255,255,.3);opacity:0;display:flex;align-items:center;justify-content:center;overflow:hidden">
+  <img id=spImg src="assets/NVDA.png" style="width:170px;height:170px;border-radius:40px">
+ </div>
+ <div id=spNames style="position:absolute;left:0;right:0;top:540px;text-align:center;font:600 40px 'JetBrains Mono';color:#fff;opacity:0">$MIRA <span style="color:#50545c">×</span> <span id=spSym style="color:#c7cdff">NVDA</span></div>
+ <div id=spT style="position:absolute;left:0;right:0;top:640px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Pair your profile with a stock<span style="color:#c7cdff">.</span></div>
+ <div id=spS style="position:absolute;left:0;right:0;top:760px;text-align:center;font:400 32px Inter;color:#8a8f98;opacity:0">NVDA · TSLA · AAPL · GOOGL · MSFT, tokenized on Robinhood Chain.</div>
+</div>
+<div class=layer id=st><div class=world id=stW>
+ <img class=shot id=st1 src="shots/create-eth.png">
+ <img class=shot id=st2 src="shots/create-nvda.png" style="opacity:0">
+ <div class=ripple id=stR style="left:1152px;top:487px"></div>
+</div></div>
+
+<!-- ═══ 5 · Creator Bank ═══ -->
+<div class=layer id=bk style="background:#060607">
+ <div style="position:absolute;left:-200px;top:-200px;width:1100px;height:800px;background:radial-gradient(ellipse at center,rgba(124,140,255,.16),transparent 65%)"></div>
+ <div id=bkWorld style="position:absolute;inset:0;transform-origin:960px 540px">
+  <div id=bkHead style="position:absolute;left:250px;top:120px;opacity:0">
+   <div class=k>CREATOR BANK</div>
+   <div style="margin-top:18px;font:600 96px/1 'Inter Display';letter-spacing:-.05em">Your profile<span style="color:#50545c">,</span> paid<span style="color:#50545c">.</span></div>
+  </div>
+  <div class=card id=bkC1 style="left:250px;top:330px;width:330px;height:120px;padding:24px 26px;opacity:0"><div class=lbl>Combined market cap</div><div class=val id=bkV1>$0</div></div>
+  <div class=card id=bkC2 style="left:600px;top:330px;width:330px;height:120px;padding:24px 26px;opacity:0"><div class=lbl>Coins you launched</div><div class=val id=bkV2>0</div></div>
+  <div class=card id=bkC3 style="left:950px;top:330px;width:330px;height:120px;padding:24px 26px;opacity:0"><div class=lbl>Coins paying you</div><div class=val id=bkV3>0</div></div>
+  <div class=card id=bkC4 style="left:1300px;top:330px;width:370px;height:120px;padding:24px 26px;opacity:0"><div class=lbl>Verified</div><div class=val id=bkV4 style="color:#2fe39a">0</div></div>
+  <div class=card id=bkFee style="left:250px;top:480px;width:680px;height:300px;padding:28px 30px;opacity:0">
+   <div style="font:500 20px Inter;color:#d6d8de">Creator fees</div>
+   <div style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px 20px">
+    <div><div style="font:500 12px 'JetBrains Mono';letter-spacing:.2em;color:#8a8f98">CLAIMABLE (ETH)</div><div id=bkEth class=mono style="font-size:34px;margin-top:6px">0.000000 ETH</div></div>
+    <div id=bkBtn style="border-radius:14px;background:#fff;color:#08090a;font:600 18px Inter;padding:16px 30px;box-shadow:0 8px 28px -8px rgba(255,255,255,.4)">Claim</div>
+   </div>
+   <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px 20px">
+    <div><div style="font:500 12px 'JetBrains Mono';letter-spacing:.2em;color:#8a8f98;display:flex;align-items:center;gap:8px">CLAIMABLE (NVDA) <img src="assets/NVDA.png" style="width:18px;height:18px;border-radius:5px"></div><div id=bkNv class=mono style="font-size:34px;margin-top:6px">0.0000</div></div>
+    <div style="border-radius:14px;background:#fff;color:#08090a;font:600 18px Inter;padding:16px 30px">Claim</div>
+   </div>
+  </div>
+  <div class=ripple id=bkR style="left:850px;top:574px"></div>
+  <div id=bkToast style="position:absolute;left:250px;top:796px;width:680px;padding:16px 20px;border-radius:14px;background:rgba(47,227,154,.12);border:1px solid rgba(47,227,154,.35);font:600 18px Inter;color:#2fe39a;opacity:0">✓ Claimed 0.8421 ETH to your wallet</div>
+  <div class=card id=bkList style="left:950px;top:480px;width:720px;height:380px;overflow:hidden;opacity:0">
+   <div style="padding:22px 22px 14px;font:500 18px Inter;color:#d6d8de">Your profile coins</div>
+   <div class=row id=bkR1><div class=av style="background:linear-gradient(135deg,#7cf3ff,#a77bff)"></div><div style="flex:1"><div style="display:flex;gap:8px;align-items:center;font:600 20px Inter">Nova <span class=ver>✓</span></div><div class=mono style="font-size:14px;color:#c7cdff;margin-top:3px">$NOVA <span style="color:#8a8f98;font-family:Inter">· You launched</span></div></div><div style="text-align:right"><div class=mono style="font:600 20px 'JetBrains Mono'">$412.8K</div><div class=mono style="font-size:15px;color:#2fe39a">+128%</div></div></div>
+   <div class=row id=bkR2><div class=av style="background:linear-gradient(135deg,#3dffb0,#00b3ff)"></div><div style="flex:1"><div style="display:flex;gap:8px;align-items:center;font:600 20px Inter">Mira <span class=ver>✓</span><span class=pill><img src="assets/NVDA.png" style="width:18px;height:18px;border-radius:50%">NVDA</span></div><div class=mono style="font-size:14px;color:#c7cdff;margin-top:3px">$MIRA <span style="color:#8a8f98;font-family:Inter">· You launched</span></div></div><div style="text-align:right"><div class=mono style="font:600 20px 'JetBrains Mono'">$201.3K</div><div class=mono style="font-size:15px;color:#2fe39a">+46.2%</div></div></div>
+   <div class=row id=bkR3><div class=av style="background:linear-gradient(135deg,#c7cdff,#6e7bff)"></div><div style="flex:1"><div style="display:flex;gap:8px;align-items:center;font:600 20px Inter">Vela <span class=pill><img src="assets/TSLA.png" style="width:18px;height:18px;border-radius:50%">TSLA</span></div><div class=mono style="font-size:14px;color:#c7cdff;margin-top:3px">$VELA <span style="color:#8a8f98;font-family:Inter">· Fees pay you</span></div></div><div style="text-align:right"><div class=mono style="font:600 20px 'JetBrains Mono'">$133.2K</div><div class=mono style="font-size:15px;color:#ff5c6c">−6.1%</div></div></div>
+   <div class=row id=bkR4><div class=av style="background:linear-gradient(135deg,#9cf,#c6f)"></div><div style="flex:1"><div style="display:flex;gap:8px;align-items:center;font:600 20px Inter">Lyra <span class=ver>✓</span></div><div class=mono style="font-size:14px;color:#c7cdff;margin-top:3px">$LYRA <span style="color:#8a8f98;font-family:Inter">· Fees pay you</span></div></div><div style="text-align:right"><div class=mono style="font:600 20px 'JetBrains Mono'">$54.2K</div><div class=mono style="font-size:15px;color:#ff5c6c">−2.4%</div></div></div>
+  </div>
+ </div>
+</div>
+
+<!-- ═══ 6 · Thesis + outro ═══ -->
+<div class=layer id=ou style="background:#030304">
+ <div id=ouGlow style="position:absolute;left:-10%;right:-10%;top:520px;height:300px;background:radial-gradient(ellipse 900px 120px at 50% 50%,rgba(199,205,255,.35),transparent 75%);opacity:0"></div>
+ <div id=ou1 style="position:absolute;left:0;right:0;top:330px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Banks <span style="color:#8a8f98;font-weight:400">for the next builders.</span></div>
+ <div id=ou2 style="position:absolute;left:0;right:0;top:460px;text-align:center;font:600 92px/1.05 'Inter Display';letter-spacing:-.045em;opacity:0">Markets <span style="color:#8a8f98;font-weight:400">for the next creators.</span></div>
+ <div id=ouLine style="position:absolute;top:640px;height:2px;left:50%;width:0;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#c7cdff 20%,#fff 50%,#c7cdff 80%,transparent);box-shadow:0 0 24px 6px rgba(199,205,255,.5)"></div>
+ <img id=ouN src="assets/n-chrome.png" style="position:absolute;left:885px;top:250px;width:150px;height:150px;filter:drop-shadow(0 0 50px rgba(205,212,235,.5));opacity:0">
+ <div id=ouTxt style="position:absolute;left:0;right:0;top:440px;text-align:center;opacity:0">
+  <div style="font:600 150px/1 'Inter Display';letter-spacing:-.055em">noir<span style="color:#c7cdff">.</span></div>
+  <div style="margin-top:34px;font:500 22px 'JetBrains Mono';letter-spacing:.24em;color:#8a8f98">MARKETS &nbsp;·&nbsp; VERIFIED &nbsp;·&nbsp; STOCK-PAIRED &nbsp;·&nbsp; CREATOR BANK</div>
+  <div style="margin-top:26px;font:500 26px Inter;color:#eef0f3">Live now &nbsp;·&nbsp; usenoir.app &nbsp;·&nbsp; @usenoirapp</div>
+ </div>
+</div>
+
+<svg class=cursor id=cur viewBox="0 0 24 24"><path d="M4 2l16 9.5-7 1.6 4.3 7.4-2.9 1.6-4.3-7.5L5 20z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/></svg>
+<div id=capbg></div>
+<div id=cap></div>
+<div id=vign></div>
+<canvas id=grain width=1020 height=600></canvas>
+<div id=flash></div>
+<div id=black></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const out = (x) => 1 - Math.pow(1 - x, 3);
+const back = (x) => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, k) => a + (b - a) * k;
+
+/** Show a layer between a and b with fades; returns whether it's visible. */
+function show(id, t, a, b, f = 0.5) {
+  const o = Math.min(seg(t, a, a + f), 1 - seg(t, b - f, b));
+  $(id).style.opacity = o; $(id).style.visibility = o > 0 ? "visible" : "hidden";
+  return o > 0;
+}
+/** Piecewise keyframes [[time, ...values]] with eased interpolation. */
+function kf(t, keys) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [a, ...va] = keys[i], [b, ...vb] = keys[i + 1];
+    if (t <= b) { const k = ease(seg(t, a, b)); return va.map((v, j) => lerp(v, vb[j], k)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+/** Camera: center (cx, cy) of the world at zoom z, with optional tilt. */
+function cam(id, t, keys) {
+  const [cx, cy, z, rx = 0] = kf(t, keys);
+  $(id).style.transform = `perspective(2400px) translate(${960 - cx * z}px,${540 - cy * z}px) rotateX(${rx}deg) scale(${z})`;
+}
+function cursorAt(x, y, o) { const c = $("cur"); c.style.left = x + "px"; c.style.top = y + "px"; c.style.opacity = o; }
+function ripple(id, t, at) { const k = seg(t, at, at + 0.6); $(id).style.opacity = k > 0 && k < 1 ? 1 - k : 0; $(id).style.transform = `scale(${0.3 + k * 1.2})`; }
+function caption(t, list) {
+  const c = $("cap"); let o = 0;
+  for (const [a, b, html] of list) if (t >= a && t <= b) { if (c.dataset.h !== html) { c.innerHTML = html; c.dataset.h = html; } o = Math.min(seg(t, a, a + 0.45), 1 - seg(t, b - 0.45, b)); c.style.transform = `translateY(${14 * (1 - out(seg(t, a, a + 0.6)))}px)`; }
+  c.style.opacity = o; $("capbg").style.opacity = o;
+}
+const fmtUsd = (n) => (n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(0)}`);
+
+// ── data (fictional demo profiles, as in the app captures) ──
+const COINS = [
+  ["NOVA", 412800, 128, "#7cf3ff", "#a77bff"], ["MIRA", 201300, 46.2, "#3dffb0", "#00b3ff"], ["KAIRO", 154800, 22.7, "#ffb36b", "#ff5f9e"],
+  ["VELA", 133200, -6.1, "#c7cdff", "#6e7bff"], ["ATLAS", 98100, 12.3, "#fff27a", "#ff8a5c"], ["JUNO", 77400, 8.9, "#b6ff6b", "#2fd6a0"],
+  ["LYRA", 54200, -2.4, "#9cf", "#c6f"], ["ORIN", 41700, 64.0, "#ff9a9a", "#7a1fff"], ["SABLE", 33900, 3.2, "#ffd36e", "#ff6e9c"],
+];
+// ticker strip, rendered twice for a seamless loop
+const tickHtml = COINS.map(([s, mc, ch, a, b]) =>
+  `<span class=it><span class=dot style="background:linear-gradient(135deg,${a},${b})"></span><b style="font-weight:600;color:#fff">$${s}</b><span style="color:#8a8f98">${fmtUsd(mc)}</span><span style="color:${ch >= 0 ? "#2fe39a" : "#ff5c6c"}">${ch >= 0 ? "+" : "−"}${Math.abs(ch)}%</span></span>`).join("");
+$("tickA").innerHTML = tickHtml + tickHtml + tickHtml;
+// graduation race overlay rows: progress bars at measured screenshot positions
+const RACE = [0.91, 0.78, 0.64, 0.52, 0.41, 0.29];
+$("race").innerHTML = RACE.map((p, i) => `
+  <div class=ov style="left:1239px;top:${549 + i * 46}px;width:262px;height:10px;background:#0e0f11"></div>
+  <div class=ov style="left:1241px;top:${551 + i * 46}px;width:257px;height:6px;border-radius:9px;background:rgba(255,255,255,.07)"></div>
+  <div class=ov id=rf${i} style="left:1241px;top:${551 + i * 46}px;width:0;height:6px;border-radius:9px;background:linear-gradient(90deg,#9aa3ff,#2fe39a)"></div>
+  <div class=ov id=rp${i} style="left:1440px;top:${526 + i * 46}px;width:62px;height:20px;background:#0e0f11;text-align:right;font:400 12px/20px 'JetBrains Mono';color:#8a8f98">0.0%</div>`).join("");
+
+// grain
+const g = $("grain").getContext("2d"), gd = g.createImageData(1020, 600);
+for (let i = 0; i < gd.data.length; i += 4) { const v = Math.random() * 255; gd.data[i] = gd.data[i + 1] = gd.data[i + 2] = v; gd.data[i + 3] = 255; }
+g.putImageData(gd, 0, 0);
+
+const STOCKS = ["NVDA", "TSLA", "AAPL", "GOOGL", "MSFT"];
+window.DURATION = 52;
+
+window.render = function (t) {
+  $("black").style.opacity = 1 - ease(seg(t, 0, 0.6)) + ease(seg(t, 50.8, 51.9));
+  $("grain").style.transform = `translate(${((t * 977) % 60) | 0}px,${((t * 613) % 60) | 0}px)`;
+  $("grain").style.width = "2040px"; $("grain").style.height = "1200px";
+  let flash = 0;
+
+  // 0 · teaser callback: "Not yet." → "Now."  (0 – 6.2)
+  if (show("tz", t, 0, 6.2, 0.4)) {
+    $("tzK").style.opacity = ease(seg(t, 0.4, 1.2)) * (1 - seg(t, 5.4, 6));
+    const flick = t > 2.4 && t < 3.3 ? (Math.sin(t * 90) > 0.2 ? 1 : 0.25) : 1;
+    $("tzNot").style.opacity = ease(seg(t, 0.9, 1.7)) * (t < 3.3 ? flick : 0);
+    $("tzNot").style.letterSpacing = `${-0.055 + 0.01 * seg(t, 0.9, 3.3)}em`;
+    $("slats").style.opacity = t > 3.1 && t < 3.6 ? 0.9 : 0;
+    const now = seg(t, 3.35, 3.9);
+    $("tzNow").style.opacity = now > 0 ? out(now) * (1 - seg(t, 5.4, 6.1)) : 0;
+    $("tzNow").style.transform = `scale(${lerp(1.18, 1, out(now))})`;
+    $("tzNow").style.filter = `blur(${(1 - out(now)) * 14}px)`;
+    $("tzGlow").style.opacity = out(seg(t, 3.4, 4.2)) * (1 - seg(t, 5.4, 6.1));
+    $("tzLine").style.width = ease(seg(t, 3.6, 5.0)) * 1500 + "px";
+    $("tzLine").style.opacity = t < 3.6 ? 0 : 1 - seg(t, 5.4, 6.0);
+    flash = Math.max(flash, 0.55 * (1 - seg(t, 3.35, 3.9)) * (t >= 3.35 ? 1 : 0));
+  }
+
+  // 1 · title: NOIR Markets  (5.8 – 10.6)
+  if (show("ti", t, 5.8, 10.6, 0.5)) {
+    $("tiN").style.opacity = out(seg(t, 6.0, 6.8)); $("tiN").style.transform = `translateY(${30 * (1 - out(seg(t, 6.0, 7.0)))}px) scale(${1 + 0.04 * seg(t, 6, 10.6)})`;
+    $("tiK").style.opacity = out(seg(t, 6.5, 7.2));
+    const r = ease(seg(t, 6.8, 8.0)); $("tiT").style.clipPath = `inset(0 ${100 - r * 100}% 0 0)`;
+    $("tiT").style.transform = `scale(${1.03 - 0.03 * seg(t, 6.8, 10.6)})`;
+    $("tiSweep").style.left = lerp(-300, 2100, seg(t, 7.9, 9.0)) + "px";
+    $("tiS").style.opacity = out(seg(t, 8.2, 9.0)); $("tiS").style.transform = `translateY(${16 * (1 - out(seg(t, 8.2, 9.0)))}px)`;
+    $("tiBeam").style.opacity = out(seg(t, 6.6, 8.0));
+  }
+
+  // 2 · markets page  (10.2 – 22.6): tilt-in, stats count up, ticker runs, race fills
+  if (show("mk", t, 10.2, 22.6, 0.5)) {
+    cam("mkW", t, [[10.2, 960, 560, 0.92, 14], [12.2, 960, 540, 1.0, 0], [13.6, 900, 340, 1.32, 0], [15.6, 960, 420, 1.42, 0], [17.4, 1000, 520, 1.12, 0], [18.6, 1360, 650, 1.75, 0], [22.6, 1365, 655, 1.85, 0]]);
+    const k = ease(seg(t, 12.6, 14.6));
+    $("s0").textContent = fmtUsd(1213400 * k); $("s1").textContent = Math.round(9 * k); $("s2").textContent = Math.round(4 * k); $("s3").textContent = Math.round(1 * k);
+    $("tickA").style.transform = `translateX(${-((t - 10) * 140) % 1600}px)`;
+    RACE.forEach((p, i) => { const q = out(seg(t, 18.9 + i * 0.22, 20.6 + i * 0.22)); $("rf" + i).style.width = 257 * p * q + "px"; $("rp" + i).textContent = (p * 100 * q).toFixed(1) + "%"; });
+    $("raceRing").style.opacity = ease(seg(t, 18.6, 19.2)) * (1 - seg(t, 21.8, 22.4));
+  }
+
+  // 3 · verified: badge stamp (22.2 – 27.4), then coin page (27.0 – 31.2)
+  if (show("vf", t, 22.2, 27.4, 0.4)) {
+    const s = seg(t, 22.7, 23.3);
+    $("vfBadge").style.opacity = out(s); $("vfBadge").style.transform = `translate(-50%,-50%) scale(${s > 0 ? lerp(1.9, 1, back(s)) : 1.9})`;
+    $("vfPath").setAttribute("stroke-dashoffset", 14 * (1 - ease(seg(t, 23.2, 23.8))));
+    const r = out(seg(t, 23.2, 24.4)), d = 10 + r * 1400;
+    $("vfRing").style.opacity = r > 0 && r < 1 ? 0.9 * (1 - r) : 0;
+    Object.assign($("vfRing").style, { width: d + "px", height: d + "px", margin: `${-d / 2}px 0 0 ${-d / 2}px` });
+    $("vfGlow").style.opacity = out(seg(t, 23.2, 24));
+    $("vfT").style.opacity = out(seg(t, 24.0, 24.7)); $("vfT").style.transform = `translateY(${24 * (1 - out(seg(t, 24, 24.8)))}px)`;
+    $("vfS").style.opacity = out(seg(t, 24.6, 25.3));
+    if (t > 23.2) flash = Math.max(flash, 0.35 * (1 - seg(t, 23.2, 23.7)));
+  }
+  if (show("cn", t, 27.0, 31.4, 0.5)) {
+    cam("cnW", t, [[27.0, 900, 300, 1.3], [28.4, 760, 190, 2.3], [31.4, 770, 195, 2.45]]);
+    $("cnRing").style.opacity = ease(seg(t, 28.3, 28.8)) * (0.75 + 0.25 * Math.sin(t * 6));
+    $("cnRing2").style.opacity = ease(seg(t, 29.5, 30.0)) * (0.75 + 0.25 * Math.sin(t * 6 + 1));
+  }
+
+  // 4 · stock-paired: profile × stock (31.0 – 36.6), studio one-tap pair (36.2 – 40.6)
+  if (show("sp", t, 31.0, 36.6, 0.5)) {
+    $("spK").style.opacity = out(seg(t, 31.3, 32));
+    const a = out(seg(t, 31.5, 32.3)); $("spAv").style.opacity = a; $("spAv").style.transform = `translateX(${-80 * (1 - a)}px)`;
+    const b = out(seg(t, 31.8, 32.6)); $("spStock").style.opacity = b; $("spX").style.opacity = b;
+    // cycle stocks with a flip
+    const cyc = Math.max(0, t - 32.6), idx = Math.min(STOCKS.length - 1, Math.floor(cyc / 0.55)), ph = (cyc % 0.55) / 0.55;
+    const sym = STOCKS[idx]; if ($("spImg").dataset.s !== sym) { $("spImg").src = `assets/${sym}.png`; $("spImg").dataset.s = sym; $("spSym").textContent = sym; }
+    const flip = idx < STOCKS.length - 1 && ph > 0.8 ? (ph - 0.8) / 0.2 : idx > 0 && ph < 0.2 && cyc < STOCKS.length * 0.55 ? 1 - ph / 0.2 : 0;
+    $("spStock").style.transform = `translateX(${80 * (1 - b)}px) rotateY(${flip * 90}deg)`;
+    $("spNames").style.opacity = out(seg(t, 32.4, 33));
+    $("spT").style.opacity = out(seg(t, 33.4, 34.1)); $("spT").style.transform = `translateY(${24 * (1 - out(seg(t, 33.4, 34.2)))}px)`;
+    $("spS").style.opacity = out(seg(t, 34.0, 34.7));
+  }
+  if (show("st", t, 36.2, 40.8, 0.5)) {
+    cam("stW", t, [[36.2, 1310, 420, 1.35], [37.4, 1260, 480, 2.0], [40.8, 1250, 470, 2.1]]);
+    $("st2").style.opacity = ease(seg(t, 38.55, 38.75));
+    ripple("stR", t, 38.5);
+  }
+
+  // 5 · creator bank  (40.4 – 47.0)
+  if (show("bk", t, 40.4, 47.0, 0.5)) {
+    $("bkWorld").style.transform = `scale(${lerp(1.08, 1.0, ease(seg(t, 40.4, 43)))})`;
+    $("bkHead").style.opacity = out(seg(t, 40.6, 41.3)); $("bkHead").style.transform = `translateY(${30 * (1 - out(seg(t, 40.6, 41.4)))}px)`;
+    ["bkC1", "bkC2", "bkC3", "bkC4", "bkFee", "bkList"].forEach((id, i) => { const o = out(seg(t, 41.0 + i * 0.12, 41.7 + i * 0.12)); $(id).style.opacity = o; $(id).style.transform = `translateY(${40 * (1 - o)}px)`; });
+    const k = ease(seg(t, 41.6, 43.4));
+    $("bkV1").textContent = fmtUsd(801500 * k); $("bkV2").textContent = Math.round(2 * k); $("bkV3").textContent = Math.round(2 * k); $("bkV4").textContent = Math.round(3 * k);
+    const claimed = t > 44.9;
+    $("bkEth").textContent = claimed ? "0.000000 ETH" : `${(0.8421 * ease(seg(t, 41.8, 44.0))).toFixed(6)} ETH`;
+    $("bkNv").textContent = (1.2830 * ease(seg(t, 41.9, 44.1))).toFixed(4);
+    $("bkBtn").textContent = t < 44.5 ? "Claim" : t < 44.9 ? "Sign…" : "Claimed ✓";
+    ripple("bkR", t, 44.4);
+    $("bkToast").style.opacity = out(seg(t, 44.9, 45.3));
+    ["bkR1", "bkR2", "bkR3", "bkR4"].forEach((id, i) => { $(id).style.opacity = out(seg(t, 41.9 + i * 0.15, 42.5 + i * 0.15)); });
+    const [x, y] = kf(t, [[43.0, 1100, 900], [44.2, 852, 576], [46.5, 856, 580]]);
+    cursorAt(x, y, ease(seg(t, 42.9, 43.3)) * (1 - ease(seg(t, 45.8, 46.2))));
+  } else if (!(t > 36.2 && t < 40.8)) $("cur").style.opacity = 0;
+  if (t > 36.2 && t < 40.8) {
+    // studio cursor lives in world space; map it through the same camera
+    const [cx, cy, z] = kf(t, [[36.2, 1310, 420, 1.35], [37.4, 1260, 480, 2.0], [40.8, 1250, 470, 2.1]]);
+    const [wx, wy] = kf(t, [[36.8, 1000, 640], [38.3, 1152, 488], [40.8, 1154, 490]]);
+    cursorAt(960 + (wx - cx) * z, 540 + (wy - cy) * z, ease(seg(t, 36.7, 37.1)) * (1 - ease(seg(t, 40.0, 40.5))));
+  }
+
+  // 6 · thesis → outro  (46.6 – 52)
+  if (show("ou", t, 46.6, 52.5, 0.5)) {
+    for (const [id, a] of [["ou1", 46.9], ["ou2", 47.6]]) { const o = out(seg(t, a, a + 0.7)) * (1 - ease(seg(t, 49.2, 49.7))); $(id).style.opacity = o; $(id).style.transform = `translateY(${30 * (1 - out(seg(t, a, a + 0.8)))}px)`; }
+    $("ouN").style.opacity = out(seg(t, 49.6, 50.3)); $("ouN").style.transform = `scale(${lerp(0.9, 1, out(seg(t, 49.6, 50.6)))})`;
+    $("ouTxt").style.opacity = out(seg(t, 49.9, 50.6)); $("ouTxt").style.transform = `translateY(${24 * (1 - out(seg(t, 49.9, 50.7)))}px)`;
+    const lw = ease(seg(t, 48.2, 49.4)) * 1500 * (1 - seg(t, 49.3, 49.7));
+    $("ouLine").style.width = lw + "px"; $("ouLine").style.opacity = lw > 4 ? 1 : 0;
+    $("ouGlow").style.opacity = out(seg(t, 49.6, 50.6));
+    if (t > 49.6) flash = Math.max(flash, 0.3 * (1 - seg(t, 49.6, 50.1)));
+  }
+
+  $("flash").style.opacity = flash;
+  $("vign").style.opacity = t > 10 && t < 47 ? 1 : 0.7;
+
+  caption(t, [
+    [12.3, 15.4, "Every profile coin. <b>Both chains. Live.</b>"],
+    [15.8, 18.4, "Ticker, gainers, losers, <b>your watchlist.</b>"],
+    [19.0, 22.2, "The race <b>to graduation.</b>"],
+    [28.2, 31.0, "Verified on every coin page. <b>Paired with NVDA.</b>"],
+    [37.0, 40.4, "One tap. <b>Your profile, backed by a stock.</b>"],
+  ]);
+};
+window.render(0);
+</script></body></html>

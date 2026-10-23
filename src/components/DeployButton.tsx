@@ -7,6 +7,7 @@ import { getStrategy, type LaunchInput } from "@/lib/pons";
 import { toOnchainLogo } from "@/lib/upload";
 import { v2TokenLaunchedEvent } from "@/lib/pons/abisV2";
 import { robinhoodChain, explorerTx } from "@/lib/chain";
+import type { ProfileSource } from "@/lib/profile-source";
 
 /**
  * Deploy path (Pons v2 only): the v2 strategy prepares a plan, the user's wallet
@@ -21,7 +22,7 @@ export function DeployButton({
 }: {
   input: LaunchInput;
   handle?: string;
-  source?: "fomo" | "pumpfun";
+  source?: ProfileSource;
   disabled?: boolean;
 }) {
   const { address, isConnected, chainId } = useAccount();

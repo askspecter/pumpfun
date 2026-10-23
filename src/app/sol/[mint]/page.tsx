@@ -7,8 +7,11 @@ import { SolanaTradeWidget } from "@/components/SolanaTradeWidget";
 import { TwinChat } from "@/components/TwinChat";
 import { PredictCard } from "@/components/PredictCard";
 import { BrandLogo } from "@/components/BrandLogo";
+import { VerifiedBadge } from "@/components/markets/Badges";
+import { useMarketItem } from "@/components/markets/useMarket";
 import { compact } from "@/components/home/format";
 import { isSolanaAddress, profileLink, pumpCoinUrl, SOLANA_EXPLORER_URL } from "@/lib/solana";
+import { toSource, type ProfileSource } from "@/lib/profile-source";
 
 interface CoinData {
   mint: string;
@@ -18,7 +21,7 @@ interface CoinData {
   description: string;
   creator: string;
   handle: string | null;
-  source: "fomo" | "pumpfun" | null;
+  source: ProfileSource | null;
   twitter: string | null;
   telegram: string | null;
   website: string | null;
@@ -52,6 +55,7 @@ export default function SolanaCoinPage() {
   const [data, setData] = useState<CoinData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const market = useMarketItem(mint);
 
   const load = useCallback(() => {
     if (!isSolanaAddress(mint)) {
@@ -121,6 +125,7 @@ export default function SolanaCoinPage() {
               <span className="chip flex items-center gap-1">
                 <BrandLogo brand="solana" className="h-3 w-3 rounded-full" /> Solana · Pump.fun
               </span>
+              <VerifiedBadge verified={market?.verified ?? null} />
               {data.complete && <span className="chip chip-accent">graduated</span>}
             </div>
             {data.description && <p className="mt-1 line-clamp-2 max-w-2xl text-sm text-zinc-600">{data.description}</p>}
@@ -138,7 +143,7 @@ export default function SolanaCoinPage() {
               </button>
               {data.handle && (
                 <a href={profileLink(data.handle, data.source ?? undefined)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-white">
-                  <BrandLogo brand={data.source === "pumpfun" ? "pumpfun" : "fomo"} className="h-3 w-3 rounded-full" />@{data.handle}
+                  <BrandLogo brand={toSource(data.source)} className="h-3 w-3 rounded-full" />@{data.handle}
                 </a>
               )}
               {data.creator && <span>Creator {short(data.creator)}</span>}
