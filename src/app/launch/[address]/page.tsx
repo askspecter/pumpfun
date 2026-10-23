@@ -8,6 +8,8 @@ import { CurveTradeWidget } from "@/components/CurveTradeWidget";
 import { PriceChartV2 } from "@/components/PriceChartV2";
 import { ClaimFees } from "@/components/ClaimFees";
 import { TokenComments } from "@/components/TokenComments";
+import { TwinChat } from "@/components/TwinChat";
+import { PredictCard } from "@/components/PredictCard";
 import { explorerToken, explorerUrl } from "@/lib/chain";
 
 interface CurveData {
@@ -174,6 +176,14 @@ export default function ProfileCoinPage() {
             marketCapEth={data.marketCapEth}
             quoteSymbol={data.pairToken && data.pairToken !== zeroAddress ? "quote" : "ETH"}
           />
+          <TwinChat
+            chain="robinhood"
+            token={data.token}
+            name={data.name}
+            symbol={data.symbol}
+            avatar={data.logo || null}
+            description={data.description}
+          />
           <ClaimFees pairToken={pairToken} creator={data.creatorFeeRecipient as Address} />
           <TokenComments token={data.token as `0x${string}`} symbol={data.symbol} />
         </div>
@@ -213,6 +223,7 @@ export default function ProfileCoinPage() {
               </div>
             </div>
           )}
+          <PredictCard chain="robinhood" token={data.token} symbol={data.symbol} />
         </div>
       </div>
     </div>

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { SolanaTradeWidget } from "@/components/SolanaTradeWidget";
+import { TwinChat } from "@/components/TwinChat";
+import { PredictCard } from "@/components/PredictCard";
 import { BrandLogo } from "@/components/BrandLogo";
 import { compact } from "@/components/home/format";
 import { isSolanaAddress, profileLink, pumpCoinUrl, SOLANA_EXPLORER_URL } from "@/lib/solana";
@@ -161,21 +163,33 @@ export default function SolanaCoinPage() {
 
       {/* Body */}
       <div className="mt-5 grid gap-5 lg:grid-cols-[1fr,360px]">
-        <div className="card overflow-hidden p-0">
-          <div className="flex items-center justify-between border-b border-white/[0.05] px-5 py-3 text-sm">
-            <span className="font-semibold text-white">Chart</span>
-            <a href={`https://dexscreener.com/solana/${data.mint}`} target="_blank" rel="noreferrer" className="text-xs text-zinc-500 hover:text-white">
-              DexScreener ↗
-            </a>
+        <div className="min-w-0 space-y-5">
+          <div className="card overflow-hidden p-0">
+            <div className="flex items-center justify-between border-b border-white/[0.05] px-5 py-3 text-sm">
+              <span className="font-semibold text-white">Chart</span>
+              <a href={`https://dexscreener.com/solana/${data.mint}`} target="_blank" rel="noreferrer" className="text-xs text-zinc-500 hover:text-white">
+                DexScreener ↗
+              </a>
+            </div>
+            <iframe src={chartSrc} title={`${data.symbol} chart`} className="h-[420px] w-full border-0 sm:h-[520px]" loading="lazy" />
+            <p className="border-t border-white/[0.05] px-5 py-2.5 text-[11px] text-zinc-400">
+              Brand-new coins can take a few minutes to appear on the chart.
+            </p>
           </div>
-          <iframe src={chartSrc} title={`${data.symbol} chart`} className="h-[420px] w-full border-0 sm:h-[520px]" loading="lazy" />
-          <p className="border-t border-white/[0.05] px-5 py-2.5 text-[11px] text-zinc-400">
-            Brand-new coins can take a few minutes to appear on the chart.
-          </p>
+          <TwinChat
+            chain="solana"
+            token={data.mint}
+            name={data.name}
+            symbol={data.symbol}
+            handle={data.handle}
+            avatar={data.logo || null}
+            description={data.description}
+          />
         </div>
 
         <div className="space-y-5">
           <SolanaTradeWidget mint={data.mint} symbol={data.symbol} reserves={data.complete ? null : data.curve} onTraded={load} />
+          <PredictCard chain="solana" token={data.mint} symbol={data.symbol} />
           <div className="card p-5 text-sm">
             <div className="font-semibold text-white">Creator fees</div>
             <p className="mt-1.5 text-zinc-600">
