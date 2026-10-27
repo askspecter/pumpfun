@@ -2,6 +2,7 @@
 
 import { TopProfiles } from "@/components/home/TopProfiles";
 import { useTopProfiles } from "@/components/home/useTopProfiles";
+import { PredictLeaderboard } from "@/components/PredictLeaderboard";
 
 export default function LeaderboardPage() {
   const profiles = useTopProfiles();
@@ -13,6 +14,7 @@ export default function LeaderboardPage() {
         title="Leaderboard"
         subtitle="The most-followed real profiles on fomo.family and Pump.fun, live. Tokenize any profile in one click."
       />
+      <PredictLeaderboard />
     </div>
   );
 }
