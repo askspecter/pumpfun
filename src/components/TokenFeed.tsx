@@ -4,11 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { coinLink, profileLink, type LaunchChain } from "@/lib/solana";
 import { BrandLogo } from "./BrandLogo";
-import { OfficialCoin } from "./OfficialCoin";
 import { ProfileAvatar } from "./home/ProfileAvatar";
 import { PairChip, VerifiedBadge } from "./markets/Badges";
 import { useMarket, type MarketItem } from "./markets/useMarket";
-import { OFFICIAL_TOKEN } from "@/lib/site";
 import { SOURCE_LABEL, toSource, type ProfileSource } from "@/lib/profile-source";
 
 /** A profile coin launched through NOIR (from /api/launches). */
@@ -128,8 +126,7 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
   // Rank by market cap (bought coins rise); unpriced new coins fall in by recency.
   const ranked = useMemo(() => {
     if (!items) return null;
-    // The official coin is pinned above the feed, so it isn't listed twice.
-    return items.filter((i) => i.token.toLowerCase() !== OFFICIAL_TOKEN.address.toLowerCase()).sort((a, b) => {
+    return [...items].sort((a, b) => {
       // Rank by USD so ETH and SOL coins compare fairly.
       const ma = mcaps[mcKey(a)]?.usd;
       const mb = mcaps[mcKey(b)]?.usd;
@@ -146,7 +143,6 @@ export function TokenFeed({ limit = 48 }: { limit?: number }) {
 
   return (
     <div className="space-y-4">
-      <OfficialCoin />
       <FeedBody ranked={ranked} mcaps={mcaps} badges={badges} />
     </div>
   );

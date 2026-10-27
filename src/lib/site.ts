@@ -15,13 +15,6 @@ export const SITE = {
   pumpfunUrl: "https://pump.fun",
 } as const;
 
-/** The official $NOIR coin, pinned at the top of the feed. */
-export const OFFICIAL_TOKEN = {
-  chain: "robinhood" as const,
-  address: (process.env.NEXT_PUBLIC_OFFICIAL_TOKEN?.trim() || "0x598c669d41927200b46c9856c25dcb9fffe3ef2d") as `0x${string}`,
-  symbol: "NOIR",
-};
-
 export const NAV = [
   { href: "/", label: "Home" },
   { href: "/markets", label: "Markets" },
