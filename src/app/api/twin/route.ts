@@ -3,7 +3,6 @@ import { isAddress } from "viem";
 import { getKv } from "@/lib/kv";
 import { isSolanaAddress } from "@/lib/solana";
 import { bankrChat, BankrError, type ChatMessage } from "@/lib/bankr";
-import { OFFICIAL_TOKEN } from "@/lib/site";
 import { readLaunches, sameId, type LaunchRecord } from "@/lib/launches";
 
 export const runtime = "nodejs";
@@ -111,11 +110,10 @@ export async function POST(req: Request) {
 
   // Identity comes from our own launch record; only the free-text bio comes from the page.
   const rec = await findLaunch(token);
-  const isOfficial = chain === "robinhood" && token.toLowerCase() === OFFICIAL_TOKEN.address.toLowerCase();
   const persona: Persona = {
     chain,
-    name: (rec?.name || body.name || (isOfficial ? "NOIR" : "Profile coin")).slice(0, 40),
-    symbol: (rec?.symbol || body.symbol || (isOfficial ? "NOIR" : "COIN")).slice(0, 12),
+    name: (rec?.name || body.name || "Profile coin").slice(0, 40),
+    symbol: (rec?.symbol || body.symbol || "COIN").slice(0, 12),
     handle: rec?.handle?.replace(/^@+/, ""),
     source: rec?.source ?? (rec ? "fomo" : undefined),
     description: String(body.description ?? "").replace(/\s+/g, " ").slice(0, 280),
